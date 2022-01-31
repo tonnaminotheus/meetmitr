@@ -1,0 +1,7 @@
+.login-page-desc{
+    flex: 50;
+    justify-content: center;
+    border-style:groove;
+    border-color: crimson;
+    margin : 5px;
+}
