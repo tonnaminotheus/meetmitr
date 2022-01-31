@@ -1,0 +1,8 @@
+.login-box{
+    flex: 50%;
+    justify-content: center;
+    border-style:groove;
+    border-color: crimson;
+    padding : 20px;
+    margin : 5px;
+}
