@@ -1,0 +1,8 @@
+.info-component-container {
+
+    border-style:solid;
+    border-color: black;
+    float: right;
+    width: 49%;
+    height:85vh;
+}

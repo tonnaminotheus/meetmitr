@@ -8,6 +8,7 @@ import LoginComponent from "./components/LoginComponent"
 //create event
 import CreateEventPicComponent from "./components/CreateEventPicComponent"
 import CreateEventFormComponent from "./components/CreateEventFormComponent"
+import CreateEventInfoComponent from "./components/CreateEventInfoComponent"
 
 // login page
 // function App() {
@@ -22,7 +23,6 @@ import CreateEventFormComponent from "./components/CreateEventFormComponent"
 //   );
 // }
 
-
 //create event form 
 function App() {
   return (
@@ -30,6 +30,7 @@ function App() {
       <h1>Create Event Page</h1>
       <div className="create-event-container">
         <CreateEventPicComponent />
+        <CreateEventInfoComponent/>
       </div>
     </div>
   );

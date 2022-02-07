@@ -1,0 +1,8 @@
+.form-box{
+    border-style: dashed;
+    border-color: black;
+    
+    text-align: center;
+    justify-content: center;
+    display: flex;
+}

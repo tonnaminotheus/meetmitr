@@ -1,0 +1,11 @@
+.pic-component-container{
+    border-style: solid;
+    border-color: black;
+    float: left;
+    width: 49%;
+    height:85vh;
+    
+    /* text-align: center; */
+    justify-content: center;
+    /* display: flex; */
+}

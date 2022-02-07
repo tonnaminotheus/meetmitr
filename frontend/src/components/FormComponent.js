@@ -16,7 +16,7 @@ const FormComponent=(props)=>{
                 <input type="email" placeholder="Email Address"/>
             </div>
             <div className="form-control">
-                <input type="password" placeholder="Password" id="passbox" name="password" minLength={8} required/>
+                <input type="password" placeholder="Password" id="passbox" name="password" minLength={0} required/>
             </div>
             <div className="form-control">
                 <input type="checkbox" onClick={togglePassword}/>Show Password

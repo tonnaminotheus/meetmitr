@@ -12,7 +12,7 @@ const CreateEventPicComponent=()=>{
     }
 
     return (
-        <div>
+        <div className="pic-component-container">
             <CreateEventPicDisplayComponent img_path={img_path}/>
             <CreateEventPicUploadComponent onImgUpload={onImgUpload}/>
         </div>

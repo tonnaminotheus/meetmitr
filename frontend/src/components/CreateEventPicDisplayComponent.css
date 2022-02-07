@@ -1,6 +1,13 @@
 #display_img{
-    width: 375px;
-    height: 211px;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    width: 100%;
+    height: 57%;
+    background-size: 100%;
     border: 1px solid black;
     background-size: cover;
+
+    /* text-align: center; */
+    justify-content: center;
+    display: flex;
 }
