@@ -1,14 +1,19 @@
 /*-------------------------------------- App-login-style --------------------------------------*/
 .App {
-  border-color: black;
-  border-style:groove;
+  /* border-color: black;
+  border-style:groove; */
   /* border-color: crimson; */
   background-color: rgb(255, 218, 155);
   height:95vh;
-  margin: 1%;
+  margin: 0.5%;
   padding-left: 0.5%;
   padding-right: 0.5%;
+
+  background-image: url(https://cdn.discordapp.com/attachments/929697662901555230/940574193534271538/unknown.png);
+  background-size: 100% auto;
 }
+
+
 
 /*-------------------------------------- App-login-container-style --------------------------------------*/
 

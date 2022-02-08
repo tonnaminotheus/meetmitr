@@ -2,8 +2,8 @@
     display: flex;
     flex: 50;
     justify-content: center;
-    border-style:groove;
-    border-color: crimson;
+    /* border-style:groove;
+    border-color: crimson; */
     margin: 5px;
 
     text-align: center;

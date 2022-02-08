@@ -1,6 +1,6 @@
 .login-box{
-    border-style:groove;
-    border-color: crimson;
+    /* border-style:groove;
+    border-color: crimson; */
     margin : 5px;
 
     display: flex;
