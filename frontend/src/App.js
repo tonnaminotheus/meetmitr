@@ -11,30 +11,30 @@ import CreateEventFormComponent from "./components/CreateEventFormComponent"
 import CreateEventInfoComponent from "./components/CreateEventInfoComponent"
 
 // login page
-// function App() {
-//   return (
-//     <div className="App">
-//       <h1>Welcome to Meetmitr</h1>
-//       <div className="login-container">
-//         <LoginPageDesc/>
-//         <LoginComponent/>
-//       </div>
-//     </div>
-//   );
-// }
-
-//create event form 
 function App() {
   return (
     <div className="App">
-      <h1>Create Event Page</h1>
-      <div className="create-event-container">
-        <CreateEventPicComponent />
-        <CreateEventInfoComponent/>
+      {/* <h1>Welcome to Meetmitr</h1> */}
+      <div className="login-container">
+        <LoginPageDesc/>
+        <LoginComponent/>
       </div>
     </div>
   );
 }
+
+//create event form 
+// function App() {
+//   return (
+//     <div className="App">
+//       <h1>Create Event Page</h1>
+//       <div className="create-event-container">
+//         <CreateEventPicComponent />
+//         <CreateEventInfoComponent/>
+//       </div>
+//     </div>
+//   );
+// }
 
 
 export default App;

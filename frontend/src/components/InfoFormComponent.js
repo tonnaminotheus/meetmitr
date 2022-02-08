@@ -19,7 +19,7 @@ const InfoFormComponent=(props)=>{
         <div className="info-form-box">
 
             {/* wait for api */}
-            <form style={{margin: "5px"}} id="create-event-info-form" method="POST" action="">
+            <form style={{margin: "5px"}} id="create-event-info-form" method="POST" action="    ">
                 
                 {/* Eventname */}
                 <div>
