@@ -1,9 +1,10 @@
 import "./CreateEventInfoComponent.css";
+import InfoFormComponent from "./InfoFormComponent";
 
 const CreateEventInfoComponent=(props)=>{
     return (
         <div className="info-component-container">
-            <h1>asdasd</h1>
+            <InfoFormComponent/>
         </div>
     );
 }

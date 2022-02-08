@@ -1,0 +1,22 @@
+input{
+    margin: 5px;
+}
+
+.location-input{
+    height: auto;
+    width: 480px;
+    /* margin-left: 10px; */
+    /* margin-right: 20px; */
+    margin-top: 5px;
+    margin-bottom: 5px;
+
+}
+
+.about-input{
+    height: auto;
+    width: 480px;
+    /* margin-left: 10px; */
+    /* margin-right: 20px; */
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
