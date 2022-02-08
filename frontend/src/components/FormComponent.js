@@ -11,21 +11,23 @@ const FormComponent=(props)=>{
     }
     return (
     <div className="login-form">
-        <form method="post">
+        <form method="POST">
             <div className="form-control">
                 <input type="email" placeholder="Email Address"/>
             </div>
             <div className="form-control">
                 <input type="password" placeholder="Password" id="passbox" name="password" minLength={0} required/>
             </div>
-            <div className="form-control">
+            <div>
                 <input type="checkbox" onClick={togglePassword}/>Show Password
             </div>
-            <button formAction="google.com">Login</button>
+            <div>
+                <button formAction="google.com" id="login-btn" className="btn"><span>Login </span></button>
+            </div>
         </form>
         <a href="https://www.google.com/">Forgot Password?</a>
         <form action="https://www.google.com">
-            <button type="submit">Create New Account</button>
+            <button type="submit" className="btn" id="create-acc-btn"><span>Create New Account</span></button>
         </form>
 
     </div>

@@ -6,10 +6,11 @@
   justify-content: center;
   background-color: rgb(255, 218, 155);
   /* height:100%; */
+  /* width: 100%; */
   height:95vh;
-  margin: 10px;
-  padding-left: 1%;
-  padding-right: 1%;
+  margin: 1%;
+  padding-left: 0.5%;
+  padding-right: 0.5%;
 }
 
 /*-------------------------------------- App-login-container-style --------------------------------------*/
@@ -20,6 +21,50 @@
   display: flex;
 }
 
+
+/* -------- global css ------------ */
+
+.btn {
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #f4511e;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  /* font-size: 28px; */
+  /* padding: 20px; */
+  /* width: 200px; */
+  font-weight: bold;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.btn span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.btn span:after {
+  content: '\27AA';
+  font-weight: bold;
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.btn:hover span {
+  padding-right: 25px;
+}
+
+.btn:hover span:after {
+  opacity: 1;
+  right: 0;
+}
 
 
 
