@@ -10,18 +10,20 @@ import CreateEventPicComponent from "./components/CreateEventPicComponent"
 import CreateEventFormComponent from "./components/CreateEventFormComponent"
 import CreateEventInfoComponent from "./components/CreateEventInfoComponent"
 
+import JoinEventFilterModal from "./components/modal/modal.js"
+
 // login page
-function App() {
-  return (
-    <div className="App">
-      {/* <h1>Welcome to Meetmitr</h1> */}
-      <div className="login-container">
-        <LoginPageDesc/>
-        <LoginComponent/>
-      </div>
-    </div>
-  );
-}
+// function App() {
+//   return (
+//     <div className="App">
+//       {/* <h1>Welcome to Meetmitr</h1> */}
+//       <div className="login-container">
+//         <LoginPageDesc/>
+//         <LoginComponent/>
+//       </div>
+//     </div>
+//   );
+// }
 
 //create event form 
 // function App() {
@@ -36,5 +38,16 @@ function App() {
 //   );
 // }
 
+//modal
+function App() {
+    return (
+      <div className="App">
+        <h1>Create Event Page</h1>
+        <div className="modal-filter-container">
+          <JoinEventFilterModal />
+        </div>
+      </div>
+    );
+  }
 
 export default App;

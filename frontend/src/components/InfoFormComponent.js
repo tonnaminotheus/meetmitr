@@ -37,6 +37,7 @@ const InfoFormComponent=(props)=>{
                 <div className="info-form-box" id="radio-eventtype-container">
                     <label htmlFor="radio-eventtype-container">Event Type : </label>
                     <label htmlFor="Online-radio">Online</label>
+                    {/* name is used to let the radio know it is the same category */}
                     <input type={"radio"} id="Online-radio" name="event-type" className="radio-eventtype"/>
                     <label htmlFor="On-site-radio">On-site</label>
                     <input type={"radio"} id="On-site-radio" name="event-type" className="radio-eventtype"/>
