@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import Card from "react-bootstrap/Card";
-import nuke from "../asset/nuclear.png";
 import "./card.css";
 
 class EventCard extends Component {
@@ -8,17 +7,21 @@ class EventCard extends Component {
 
   render() {
     return (
-      <div className="cardTemplate">
-        <Card>
+      <div>
+        <Card className="cardTemplate">
           <Card.Img
             variant="top"
             src={this.props.imgSource}
             alt="event image"
           />
-          <span className="cardTitleBg">Nuclear Discuss</span>
+          <span className="cardTitleBg">{this.props.events.title}</span>
           <Card.Body>
-            <Card.Text className="eventDate">Sat 06 November</Card.Text>
-            <Card.Text className="eventPlace">Pathumwan99, Bangkok</Card.Text>
+            <Card.Text className="eventDate">
+              {this.props.events.date}
+            </Card.Text>
+            <Card.Text className="eventPlace">
+              {this.props.events.place}
+            </Card.Text>
           </Card.Body>
         </Card>
       </div>

@@ -2,19 +2,28 @@ import React, { Component } from "react";
 import nuke from "../asset/nuclear.png";
 import EventCard from "./card";
 import "./card.css";
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
+import Container from "react-bootstrap/Container";
 
 class Cards extends Component {
-  state = {
-    srcURL: nuke,
-    events: [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }],
-  };
+  state = {};
 
   render() {
     return (
       <div>
-        {this.state.events.map((card) => (
-          <EventCard key={card.id} imgSource={this.state.srcURL} />
-        ))}
+        <Container>
+          {" "}
+          <Row xs={1} md={2} xl={3} xxl={3} className="g-4">
+            {this.props.events.map((card) => (
+              <EventCard
+                key={card.id}
+                imgSource={this.props.srcURL}
+                events={card}
+              />
+            ))}
+          </Row>
+        </Container>
       </div>
     );
   }
