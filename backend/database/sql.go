@@ -15,7 +15,7 @@ const (
 )
 
 var (
-	UserTable *sql.DB
+	Sql *sql.DB
 )
 
 func GetConnString() string {
@@ -24,6 +24,6 @@ func GetConnString() string {
 
 func Init() error {
 	var err error
-	UserTable, err = sql.Open("mysql", GetConnString())
+	Sql, err = sql.Open("mysql", GetConnString())
 	return err
 }
