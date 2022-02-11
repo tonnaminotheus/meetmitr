@@ -1,6 +1,7 @@
 package router
 
 import (
+	"backend/app/handlers"
 	"io/ioutil"
 	"os"
 	"time"
@@ -34,6 +35,6 @@ func GenerateRouter() *gin.Engine {
 	router.NoRoute(func(c *gin.Context) {
 		c.JSON(404, gin.H{"message": "Page not found."})
 	})
-
+	router.POST("/api/v1/register", handlers.RegisterHandler)
 	return router
 }

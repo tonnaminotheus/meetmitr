@@ -8,7 +8,9 @@ import (
 
 func main() {
 	errs := database.Init()
-	log.Panic(errs)
+	if errs != nil {
+		log.Panic(errs)
+	}
 	router := router.GenerateRouter()
 	router.Run()
 }
