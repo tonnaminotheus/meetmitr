@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"backend/app/requests"
+	"backend/app/responses"
 	"backend/app/services"
 	"backend/database"
 	"backend/utils"
@@ -18,6 +19,15 @@ func RegisterHandler(c *gin.Context) {
 			"message": err.Error(),
 		})
 		return
+	}
+	if services.RepeatedEmail(body.Email) {
+		c.JSON(401, gin.H{
+			"message": "repeated email",
+		})
+		return
+	}
+	if body.Gender == "" {
+		body.Gender = "Unspecified"
 	}
 	hideGender := true
 	if body.HideGender != nil {
@@ -45,4 +55,36 @@ func RegisterHandler(c *gin.Context) {
 		return
 	}
 	c.Status(200)
+}
+
+func ActivateUserHandler(c *gin.Context) {
+	activateKey := c.Param("activStr")
+	var email, gender, profileName, birthDate, password, firstName, middleName, lastName string
+	var hideGender bool
+	err := database.Sql.QueryRow(`SELECT email, gender, profileName, birthDate, password, firstName, middleName, lastName, hideGender 
+		from PreUser where activateKey = ?`, activateKey).Scan(&email, &gender, &profileName, &birthDate, &password, &firstName, &middleName, &lastName, &hideGender)
+	if err != nil {
+		c.JSON(401, gin.H{
+			"message": "activation failed",
+		})
+		return
+	}
+	_, err = database.Sql.Exec(
+		`Insert Into User
+		(email, gender, profileName, birthDate, password, firstName, middleName, lastName, hideGender)
+		VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+		email, gender, profileName, birthDate, password, firstName, middleName, lastName, hideGender)
+
+	if err != nil {
+		c.JSON(500, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+	_, _ = database.Sql.Exec("DELETE From PreUser where activateKey = ?", activateKey)
+	c.JSON(200, responses.ActivateResp{
+		Message:   "activated",
+		FirstName: firstName,
+		LastName:  lastName,
+	})
 }

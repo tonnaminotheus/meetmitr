@@ -5,6 +5,8 @@ import (
 	"backend/utils"
 	"crypto/tls"
 
+	"backend/database"
+
 	gomail "gopkg.in/mail.v2"
 )
 
@@ -30,5 +32,9 @@ func SendActivationfEmail(email, activateKey string) error {
 	}
 
 	return nil
+}
 
+func RepeatedEmail(email string) bool {
+	err := database.Sql.QueryRow("SELECT email FROM User where email = ?", email).Scan(&email)
+	return err == nil || err.Error() != "sql: no rows in result set"
 }
