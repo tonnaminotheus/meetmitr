@@ -39,6 +39,7 @@ func GenerateRouter() *gin.Engine {
 	router.POST("/api/v1/register", handlers.RegisterHandler)
 	router.GET("/api/v1/event/desciptions", handlers.GetEventDescHandler)
 	router.GET("/api/v1/event/tags", handlers.GetEventTagsHandler)
+	router.PUT("/api/v1/event/update", AttractAuthMiddleware(ABORT), handlers.PutEventHandler)
 	router.POST("/api/v1/activate/:activStr", handlers.ActivateUserHandler)
 	router.POST("/login", handlers.LoginHandler)
 	return router

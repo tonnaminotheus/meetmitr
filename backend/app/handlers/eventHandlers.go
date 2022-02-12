@@ -3,7 +3,6 @@ package handlers
 import (
 	"backend/app/requests"
 	"backend/database"
-	"errors"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -67,14 +66,16 @@ func GetEventTagsHandler(c *gin.Context) {
 	})
 }
 
-func PostEventHandler(c *gin.Context) {
+func PutEventHandler(c *gin.Context) {
 	_, err1 := c.Get("user_id")
 	if !err1 {
-		utils.SendNotFoundResponse(c, errors.New("no user_id"))
+		c.JSON(401, gin.H{
+			"message": "oh shit",
+		})
 		return
 	}
 
-	body := &requests.EventReq{}
+	body := &requests.EventChangeReq{}
 	err := c.ShouldBindJSON(body)
 	if err != nil {
 		c.JSON(401, gin.H{
@@ -83,25 +84,17 @@ func PostEventHandler(c *gin.Context) {
 		return
 	}
 
-	rows, err2 := database.Sql.Query("select Tag.tagName from Tag,EventTag where Tag.TagId=EventTag.tagId and EventTag.eventId=?", body.EventId)
+	_, err2 := database.Sql.Query("UPDATE Event SET Event.description=? WHERE Event.eventId=?", body.Description, body.EventId)
+
 	if err2 != nil {
 		c.JSON(500, gin.H{
 			"message": err.Error(),
 		})
 		return
+	} else {
+		c.JSON(http.StatusOK, gin.H{
+			"message": "Oh yeah",
+		})
+		return
 	}
-
-	defer rows.Close()
-
-	var tags []string
-
-	for rows.Next() {
-		var tag string
-		rows.Scan(&tag)
-		tags = append(tags, tag)
-	}
-
-	c.JSON(http.StatusOK, gin.H{
-		"tagList": tags,
-	})
 }
