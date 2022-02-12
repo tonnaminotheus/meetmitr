@@ -36,5 +36,7 @@ func GenerateRouter() *gin.Engine {
 		c.JSON(404, gin.H{"message": "Page not found."})
 	})
 	router.POST("/api/v1/register", handlers.RegisterHandler)
+	router.GET("/api/v1/event/desctions", handlers.GetEventDescHandler)
+	router.GET("/api/v1/event/tags", handlers.GetEventTagsHandler)
 	return router
 }
