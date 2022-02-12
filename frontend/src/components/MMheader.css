@@ -7,3 +7,17 @@
     background-size: cover; /* Resize the background image to cover the entire container */
     background-position: center top;
 }
+
+.iconImg{
+    margin-top: 46px;
+    margin-left: 47px;
+    width: 75px;
+    height: 83px;
+}
+
+.feedHeader{
+    font-size: 50px;
+    margin-top: 150px;
+    font-size: 80px;
+    text-align: center;
+}

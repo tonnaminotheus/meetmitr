@@ -18,15 +18,19 @@
 
 img{
     width: 363px;
-    height: 290px;
+    height: 67%;
     border-radius: 1em;
 }
 
 .eventDate{
     color: red;
     text-align: center;
+    margin: 0px;
+    margin-bottom: 2px;
 }
 
 .eventPlace{
     text-align: center;
+    margin: 0px;
+    margin-bottom: 2px;
 }

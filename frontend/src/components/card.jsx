@@ -11,7 +11,7 @@ class EventCard extends Component {
         <Card className="cardTemplate">
           <Card.Img
             variant="top"
-            src={this.props.imgSource}
+            src={this.props.events.imgSrc}
             alt="event image"
           />
           <span className="cardTitleBg">{this.props.events.title}</span>
