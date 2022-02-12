@@ -69,7 +69,9 @@ const InfoFormComponent=(props)=>{
                 {/* location */}
                 <div className="info-form-box">
                     <label htmlFor="location-input" style={{display: "block"}}>Location :</label>
-                    <textarea id="location-input" className="location-input" rows={5} placeholder="Please Enter Location of this Event" htmlFor="create-event-info-form"></textarea>
+                    <textarea id="location-input" className="location-input" rows={5} placeholder="Please Enter Location of this Event" htmlFor="create-event-info-form" onChange={(event)=>{
+                        console.log(event.target.value)
+                    }}></textarea>
                 </div>
 
 

@@ -11,6 +11,13 @@
     flex-direction: column;
 }
 
+#loginpagedesc-meetmitr-logo{
+    width: 50%;
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 1%;
+}
+
 #meetmitr-desc{
     display: inline-block;
     width: 80%;

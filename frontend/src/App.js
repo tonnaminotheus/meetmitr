@@ -14,18 +14,20 @@ import CreateEventInfoComponent from "./components/CreateEventInfoComponent"
 import JoinEventFilterModal from "./components/modal/modal.js"
 import { useState } from 'react';
 
+var hash = require('object-hash');
+
 // login page
-// function App() {
-//   return (
-//     <div className="App">
-//       {/* <h1>Welcome to Meetmitr</h1> */}
-//       <div className="login-container">
-//         <LoginPageDesc/>
-//         <LoginComponent/>
-//       </div>
-//     </div>
-//   );
-// }
+function App() {
+  return (
+    <div className="App">
+      {/* <h1>Welcome to Meetmitr</h1> */}
+      <div className="login-container">
+        <LoginPageDesc/>
+        <LoginComponent/>
+      </div>
+    </div>
+  );
+}
 
 //create event form 
 // function App() {
@@ -41,31 +43,30 @@ import { useState } from 'react';
 // }
 
 //modal
-function App() {
-  
-    const date=()=>{
-      var today = new Date();
-      var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-      return date
-    }
+// function App() {
+//     const date=()=>{
+//       var today = new Date();
+//       var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+//       return date
+//     }
 
-    //data to get from form
-    const [joinEventFilterProps, setJoinEventFilterProps] = useState({})
+//     //data to get from form
+//     const [joinEventFilterProps, setJoinEventFilterProps] = useState({})
 
-    //passed function
-    const onFilterSubmit=(filter_props)=>{
-      console.log("get props from child compo")
-      setJoinEventFilterProps(filter_props)
-    }
+//     //passed function
+//     const onFilterSubmit=(filter_props)=>{
+//       console.log("get props from child compo")
+//       setJoinEventFilterProps(filter_props)
+//     }
 
-    return (
-      <div className="App">
-        <h1>Create Event Page</h1>
-        <div className="modal-filter-container">
-          <JoinEventFilterModal onFilterSubmit={onFilterSubmit}/>
-        </div>
-      </div>
-    );
-  }
+//     return (
+//       <div className="App">
+//         <h1>Create Event Page</h1>
+//         <div className="modal-filter-container">
+//           <JoinEventFilterModal onFilterSubmit={onFilterSubmit}/>
+//         </div>
+//       </div>
+//     );
+//   }
 
 export default App;
