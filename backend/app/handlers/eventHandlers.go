@@ -67,7 +67,7 @@ func GetEventTagsHandler(c *gin.Context) {
 	})
 }
 
-func PutEventHandler(c *gin.Context) {
+func UpdateEventDescHandler(c *gin.Context) {
 	_, err1 := c.Get("user_id")
 	if !err1 {
 		c.JSON(401, gin.H{
@@ -100,7 +100,7 @@ func PutEventHandler(c *gin.Context) {
 	}
 }
 
-func PostEventJoinHandler(c *gin.Context) {
+func JoinEventHandler(c *gin.Context) {
 	_, err1 := c.Get("user_id")
 	if !err1 {
 		c.JSON(401, gin.H{
