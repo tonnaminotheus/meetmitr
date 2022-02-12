@@ -1,6 +1,14 @@
 import "./modal.css"
+// import 'bootstrap/dist/css/bootstrap.min.css';
 
-const JoinEventFilterModal=()=>{
+
+// import { Button } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
+
+const JoinEventFilterModal=(props)=>{
+
+    const onFilterSubmit = props.onFilterSubmit;
+
     const getTodayDate=()=>{
         let today = new Date();
         let dd = today.getDate();
@@ -14,9 +22,25 @@ const JoinEventFilterModal=()=>{
         return yyyy+'-'+mm+'-'+dd;
     }
 
+    const onClickSubmitFilter=(event)=>{
+        console.log("hi!!")
+        event.preventDefault();
+        const filter_props = {
+            "date_start": document.getElementById("filter-date-start").value,
+            "date_end": document.getElementById("filter-date-end").value,
+            "time_start": document.getElementById("filter-time-start").value,
+            "time_end": document.getElementById("filter-time-end").value,
+            "is_online": document.getElementById("Online-checkbox").value,
+            "is_onsite": document.getElementById("Onsite-checkbox").value
+        };
+        console.log(filter_props)
+        onFilterSubmit(filter_props)
+    }
+
     return (
+    // <div method="POST" className="modal">
     <div className="modal">
-        <form type="POST">
+        <form onSubmit={onFilterSubmit}>
             <div className="info-form-box">
                 <h3>Date</h3>
                 <label htmlFor="date-start">Date Start :</label>
@@ -42,11 +66,11 @@ const JoinEventFilterModal=()=>{
                 <label htmlFor="checkbox-eventtype-container">Event Type : </label>
                 <label htmlFor="Online-checkbox">Online</label>
                 <input type={"checkbox"} id="Online-checkbox" name="event-type" className="checkbox-eventtype"/>
-                <label htmlFor="On-site-checkbox">On-site</label>
-                <input type={"checkbox"} id="On-site-checkbox" name="event-type" className="checkbox-eventtype"/>
+                <label htmlFor="Onsite-checkbox">On-site</label>
+                <input type={"checkbox"} id="Onsite-checkbox" name="event-type" className="checkbox-eventtype"/>
             </div>
             <div className="info-form-box">
-                <button type="submit" className="btn">
+                <button className="btn" onClick={onClickSubmitFilter}>
                     <span>Create Event</span>
                 </button>
             </div>
