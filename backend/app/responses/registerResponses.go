@@ -10,3 +10,9 @@ type RegisterResp struct {
 	FirstName   string `json:"firstName,omitempty"`
 	LastName    string `json:"lastName,omitempty"`
 }
+
+type ActivateResp struct {
+	Message   string `json:"message"`
+	FirstName string `json:"firstName"`
+	LastName  string `json:"lastName"`
+}
