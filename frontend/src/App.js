@@ -2,9 +2,14 @@ import logo from "./logo.svg";
 import "./App.css";
 import LoginPageDesc from "./components/LoginPageDesc";
 import LoginComponent from "./components/LoginComponent";
-import Chat from "./screen/Chat";
+import JoinComponent from "./components/JoinCompo";
+
 function App() {
-  return <Chat></Chat>;
+  return (
+    <div className="App">
+      <JoinComponent />
+    </div>
+  );
 }
 
 export default App;
