@@ -1,7 +1,25 @@
 .login-page-desc{
+    display: flex;
     flex: 50;
     justify-content: center;
-    border-style:groove;
-    border-color: crimson;
-    margin : 5px;
+    /* border-style:groove;
+    border-color: crimson; */
+    margin: 5px;
+
+    text-align: center;
+    align-content: center;
+    flex-direction: column;
+}
+
+#loginpagedesc-meetmitr-logo{
+    width: 50%;
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 1%;
+}
+
+#meetmitr-desc{
+    display: inline-block;
+    width: 80%;
+    color: brown;
 }
