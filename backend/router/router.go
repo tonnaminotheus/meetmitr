@@ -37,11 +37,20 @@ func GenerateRouter() *gin.Engine {
 	})
 
 	router.POST("/api/v1/register", handlers.RegisterHandler)
-	router.GET("/api/v1/event/desciptions", handlers.GetEventDescHandler)
-	router.GET("/api/v1/event/tags", handlers.GetEventTagsHandler)
-	router.PUT("/api/v1/event/update", AttractAuthMiddleware(ABORT), handlers.UpdateEventDescHandler)
 	router.POST("/api/v1/activate/:activStr", handlers.ActivateUserHandler)
-	router.POST("/api/v1/event/join", AttractAuthMiddleware(ABORT), handlers.JoinEventHandler)
-	router.POST("/login", handlers.LoginHandler)
+	router.POST("/api/v1/login", handlers.LoginHandler)
+
+	// EventHandler
+	v1Event := router.Group("/api/v1/event")
+	{
+		v1Event.GET("/desciptions/:eventId", handlers.GetEventDescHandler)
+		v1Event.GET("/tags", handlers.GetEventTagsHandler)
+
+		v1Event.PUT("/update/:eventId", AttractAuthMiddleware(ABORT), handlers.UpdateEventHandler)
+
+		v1Event.POST("/join/:eventId", AttractAuthMiddleware(ABORT), handlers.JoinEventHandler)
+		v1Event.POST("/create", AttractAuthMiddleware(ABORT), handlers.CreateEventHandler)
+	}
+
 	return router
 }

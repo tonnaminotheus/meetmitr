@@ -2,12 +2,10 @@ package services
 
 import (
 	"backend/database"
-
-	"golang.org/x/crypto/bcrypt"
+	"errors"
 )
 
 var userSvc *UserServiceImpl
-
 
 type UserServiceImpl struct {
 }
@@ -31,8 +29,8 @@ func (s *UserServiceImpl) FindUserByUsernameAndPassword(email, password string) 
 		return "", err
 	}
 
-	if err := bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password)); err != nil {
-		return "", err
+	if hashedPassword != password {
+		return "", errors.New("message: The email address you entered does not exist or wrong password")
 	}
 
 	return userId, err

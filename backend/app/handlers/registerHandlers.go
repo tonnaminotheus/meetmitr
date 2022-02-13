@@ -6,6 +6,7 @@ import (
 	"backend/app/services"
 	"backend/database"
 	"backend/utils"
+	"net/http"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -15,13 +16,13 @@ func RegisterHandler(c *gin.Context) {
 	body := &requests.RegisterReq{}
 	err := c.ShouldBindJSON(body)
 	if err != nil {
-		c.JSON(401, gin.H{
+		c.JSON(400, gin.H{
 			"message": err.Error(),
 		})
 		return
 	}
 	if services.RepeatedEmail(body.Email) {
-		c.JSON(401, gin.H{
+		c.JSON(400, gin.H{
 			"message": "repeated email",
 		})
 		return
@@ -39,7 +40,7 @@ func RegisterHandler(c *gin.Context) {
 		`Insert Into PreUser
 		(activateKey, email, gender, profileName, birthDate, password, firstName, middleName, lastName, hideGender, createdAt)
 		VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-		activeKey, body.Email, body.Gender, body.ProfileName, body.BirthDate, body.Password,
+		activeKey, body.Email, body.Gender, body.FirstName + " " + body.LastName, body.BirthDate, body.Password,
 		body.FirstName, body.MiddleName, body.LastName, hideGender, createdAt)
 	if err != nil {
 		c.JSON(500, gin.H{
@@ -54,7 +55,9 @@ func RegisterHandler(c *gin.Context) {
 		})
 		return
 	}
-	c.Status(200)
+	c.JSON(http.StatusOK, gin.H{
+		"message": "OK",
+	})
 }
 
 func ActivateUserHandler(c *gin.Context) {
