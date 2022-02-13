@@ -1,16 +1,13 @@
-import logo from './logo.svg';
-import './App.css';
-import LoginPageDesc from "./components/LoginPageDesc"
-import LoginComponent from "./components/LoginComponent"
+import logo from "./logo.svg";
+import "./App.css";
+import LoginPageDesc from "./components/LoginPageDesc";
+import LoginComponent from "./components/LoginComponent";
+import JoinComponent from "./components/JoinCompo";
 
 function App() {
   return (
     <div className="App">
-      <h1>Welcome to Meetmitr</h1>
-      <div className="login-container">
-        <LoginPageDesc/>
-        <LoginComponent/>
-      </div>
+      <JoinComponent />
     </div>
   );
 }
