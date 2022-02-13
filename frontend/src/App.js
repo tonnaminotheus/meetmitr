@@ -1,18 +1,10 @@
-import logo from './logo.svg';
-import './App.css';
-import LoginPageDesc from "./components/LoginPageDesc"
-import LoginComponent from "./components/LoginComponent"
-
+import logo from "./logo.svg";
+import "./App.css";
+import LoginPageDesc from "./components/LoginPageDesc";
+import LoginComponent from "./components/LoginComponent";
+import Chat from "./screen/Chat";
 function App() {
-  return (
-    <div className="App">
-      <h1>Welcome to Meetmitr</h1>
-      <div className="login-container">
-        <LoginPageDesc/>
-        <LoginComponent/>
-      </div>
-    </div>
-  );
+  return <Chat></Chat>;
 }
 
 export default App;
