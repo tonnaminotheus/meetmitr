@@ -1,0 +1,23 @@
+.MMbar{
+    background-image: url("../asset/header.png");
+    background-color: #FAF3E7; /* Used if the image is unavailable */
+    height: 270px; /* You must set a specified height */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: cover; /* Resize the background image to cover the entire container */
+    background-position: center top;
+}
+
+.iconImg{
+    margin-top: 46px;
+    margin-left: 47px;
+    width: 75px;
+    height: 83px;
+}
+
+.feedHeader{
+    font-size: 50px;
+    margin-top: 150px;
+    font-size: 80px;
+    text-align: center;
+}
