@@ -101,7 +101,7 @@ func UpdateEventHandler(c *gin.Context) {
 	userId, err := c.Get("user_id")
 	if !err {
 		c.JSON(401, gin.H{
-			"message": "no token",
+			"message": "invalid token",
 		})
 		return
 	}
