@@ -78,8 +78,12 @@ func GetEventTagsHandler(c *gin.Context) {
 		`select Tag.tagName from Tag,EventTag 
 		where Tag.TagId=EventTag.tagId and EventTag.eventId=?`, eventId)
 	if err != nil || rows == nil {
+		message := "No tag found"
+		if err != nil {
+			message = err.Error()
+		}
 		c.JSON(500, gin.H{
-			"message": err.Error(),
+			"message": message,
 		})
 		return
 	}
