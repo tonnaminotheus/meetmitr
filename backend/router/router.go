@@ -43,7 +43,7 @@ func GenerateRouter() *gin.Engine {
 	// EventHandler
 	v1Event := router.Group("/api/v1/event")
 	{
-		v1Event.GET("/desciptions/:eventId", handlers.GetEventDescHandler)
+		v1Event.GET("/descriptions/:eventId", handlers.GetEventDescHandler)
 		v1Event.GET("/tags", handlers.GetEventTagsHandler)
 
 		v1Event.PUT("/update/:eventId", AttractAuthMiddleware(ABORT), handlers.UpdateEventHandler)
