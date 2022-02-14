@@ -4,6 +4,7 @@ import "./FormComponent.css"
 
 var axios = require('axios').default;
 var hash = require('object-hash');
+const bcrypt = require('bcrypt');
 
 const FormComponent=(props)=>{
     function togglePassword(){
@@ -33,7 +34,7 @@ const FormComponent=(props)=>{
 
         axios({
             method: 'post',
-            url: '/api/v1/login',
+            url: 'http://ec2-54-166-46-110.compute-1.amazonaws.com:8080/api/v1/login',
             data: data
         })
         .then(function (response) {
