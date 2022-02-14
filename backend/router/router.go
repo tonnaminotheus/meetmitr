@@ -35,6 +35,22 @@ func GenerateRouter() *gin.Engine {
 	router.NoRoute(func(c *gin.Context) {
 		c.JSON(404, gin.H{"message": "Page not found."})
 	})
+
 	router.POST("/api/v1/register", handlers.RegisterHandler)
+	router.POST("/api/v1/activate/:activStr", handlers.ActivateUserHandler)
+	router.POST("/api/v1/login", handlers.LoginHandler)
+
+	// EventHandler
+	v1Event := router.Group("/api/v1/event")
+	{
+		v1Event.GET("/desciptions/:eventId", handlers.GetEventDescHandler)
+		v1Event.GET("/tags", handlers.GetEventTagsHandler)
+
+		v1Event.PUT("/update/:eventId", AttractAuthMiddleware(ABORT), handlers.UpdateEventHandler)
+
+		v1Event.POST("/join/:eventId", AttractAuthMiddleware(ABORT), handlers.JoinEventHandler)
+		v1Event.POST("/create", AttractAuthMiddleware(ABORT), handlers.CreateEventHandler)
+	}
+
 	return router
 }
