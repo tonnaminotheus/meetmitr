@@ -98,8 +98,8 @@ func GetEventTagsHandler(c *gin.Context) {
 }
 
 func UpdateEventHandler(c *gin.Context) {
-	userId, err := c.Get("user_id")
-	if !err {
+	userId, ok := c.Get("user_id")
+	if !ok {
 		c.JSON(401, gin.H{
 			"message": "invalid token",
 		})
