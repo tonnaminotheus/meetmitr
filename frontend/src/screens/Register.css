@@ -3,7 +3,7 @@
   height: 100%;
   min-height: 100vh;
   justify-content: center;
-  background-color: #ece0ca;
+  background-image: url("../asset/MeetmitrBgNoHead.png");
 }
 .register-container {
   border-radius: 15px;
