@@ -7,9 +7,9 @@ import (
 )
 
 func main() {
-	errs := database.Init()
-	if errs != nil {
-		log.Panic(errs)
+	err := database.Init()
+	if err != nil {
+		log.Panic(err)
 	}
 	router := router.GenerateRouter()
 	router.Run()
