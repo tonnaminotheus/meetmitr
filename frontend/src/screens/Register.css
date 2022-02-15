@@ -55,9 +55,9 @@
 }
 .field {
   flex: 1;
-  margin: 0px;
+  margin-top: 10px;
   white-space: nowrap;
-  line-height: 0px;
+  line-height: 10px;
   font-size: 24px;
   font-weight: medium;
   font-family: "Roboto", sans-serif;
@@ -104,13 +104,16 @@
   font-weight: bold;
   font-family: "Titillium Web";
   padding-left: 10px;
+  line-height: 30px;
+  margin: 0px;
+  color: #000000;
 }
 .gender-field {
   display: flex;
   flex: 1;
-  margin: 0px;
+  margin-top: 10px;
   white-space: nowrap;
-  line-height: 0px;
+  line-height: 10px;
   font-size: 24px;
   font-weight: medium;
   font-family: "Roboto", sans-serif;
