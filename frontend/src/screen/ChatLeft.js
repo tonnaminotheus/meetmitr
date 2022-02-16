@@ -1,6 +1,8 @@
 import naem from "./../asset/naemblack.jpg";
 import styles from "./ChatLeft.css";
+import { useNavigate } from "react-router-dom";
 const ChatLeft = (props) => {
+  const navigate = useNavigate();
   return (
     <div style={container}>
       <img src={naem} className="profile" style={picture} />
@@ -8,7 +10,13 @@ const ChatLeft = (props) => {
       <button className="button" style={button}>
         See Profile
       </button>
-      <button className="button" style={button}>
+      <button
+        className="button"
+        style={button}
+        onClick={() => {
+          navigate("/chatList");
+        }}
+      >
         Back to Chat List
       </button>
     </div>
