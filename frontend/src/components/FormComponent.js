@@ -37,29 +37,29 @@ const FormComponent = (props) => {
       .then(function (response) {
         console.log(response);
 
-        if (response.status == 200) {
-          globalVar.accessToken = response.data["accessToken"];
-          globalVar.refreshToken = response.data["refreshToken"];
-          globalVar.UserID = response.data["UserID"];
-
-          //redirect
-          toFeed();
-        }
-      })
-      .catch(function (error) {
-        console.log("error!!");
-        console.log(error);
-      })
-      .then(function () {
-        // always executed
-      });
-  };
+            if (response.status == 200) {
+                globalVar.accessToken = response.data["accessToken"]
+                globalVar.refreshToken = response.data["refreshToken"]
+                globalVar.UserID = response.data["userId"]
+                
+                //redirect
+                toFeed()
+            }
+        })
+        .catch(function (error) {
+            console.log("error!!")
+            console.log(error);
+        })
+        .then(function () {
+            // always executed
+        });
+  }
 
   return (
     <div className="login-form">
       <h2>Hi Mitr!</h2>
       <form>
-        <div className="form-control">
+        <div className="Form-control">
           <input
             type="email"
             placeholder="Email Address"
@@ -69,7 +69,7 @@ const FormComponent = (props) => {
             pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
           />
         </div>
-        <div className="form-control">
+        <div className="Form-control">
           <input
             type="password"
             placeholder="Password"
@@ -80,12 +80,12 @@ const FormComponent = (props) => {
             required
           />
         </div>
-        <div className="form-control">
+        <div className="Form-control">
           <input type="checkbox" onClick={togglePassword} />
           Show Password
         </div>
 
-        <button id="login-btn" className="btn" onClick={requestLogin}>
+        <button id="login-btn" className="custom-button" onClick={requestLogin}>
           <span>Login </span>
         </button>
       </form>
@@ -97,7 +97,7 @@ const FormComponent = (props) => {
           </a>
           <button
             type="submit"
-            className="btn"
+            className="custom-button"
             id="create-acc-btn"
             onClick={() => {
               navigate("/register");
