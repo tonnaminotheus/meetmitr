@@ -1,12 +1,12 @@
-import "./EditEventComponent.css"
-
+import "./EditEventComponent.css";
 import CreateEventPicComponent from "./CreateEventPicComponent"
 import CreateEventInfoComponent from "./CreateEventInfoComponent"
-import { useNavigate } from "react-router-dom"
+import { useLocation } from "react-router-dom"
 
-const editEventComponent=(props)=>{
+const EditEventComponent=(props)=>{
 
-    const {eventID} = useNavigate();
+    const {eventID} = useLocation();
+    // console.log("eventID :"+eventID)  
     
     return (
         <div className="create-event-container">
@@ -16,4 +16,4 @@ const editEventComponent=(props)=>{
     );
 }
 
-export default editEventComponent;
+export default EditEventComponent;

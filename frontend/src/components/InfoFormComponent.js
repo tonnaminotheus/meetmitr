@@ -14,6 +14,9 @@ const defaultOption = "Bangkok";
 
 const InfoFormComponent=(props)=>{
 
+    let title = "Edit Event"
+    if (props.eventID == undefined) title = "Create Event"
+
     const [data, setData] = useState({
         "name": "",
         "description" : "",
@@ -46,6 +49,15 @@ const InfoFormComponent=(props)=>{
         console.log("event "+event.target.value)
         document.getElementById(event.target.id).value = event.target.value
         console.log(document.getElementById(event.target.id).value)
+    }
+
+    const onBtnClicked=(event)=>{
+        if (props.eventID == undefined) {
+            requestCreateEvent(event)
+        }
+        else {
+            requestUpdateEvent(event)
+        }
     }
 
     const requestCreateEvent=(event)=>{
@@ -168,7 +180,7 @@ const InfoFormComponent=(props)=>{
     return (
         <div className="info-form-box">
             <div className="info-form-box">
-                <h1>Edit Event {data.name}</h1>
+                <h1>{title} {data.name}</h1>
             </div>
             {/* wait for api */}
             <form style={{margin: "5px"}} id="create-event-info-form">
@@ -280,8 +292,8 @@ const InfoFormComponent=(props)=>{
 
                 {/* btn */}
                 <div className="info-form-box">
-                    <button className="btn create-event-btn" style={{padding: "5px", margin: "10px", float: "right"}} onClick={requestCreateEvent} >
-                        <span>Create Event</span>
+                    <button className="btn create-event-btn" style={{padding: "5px", margin: "10px", float: "right"}} onClick={onBtnClicked} >
+                        <span>{title}</span>
                     </button>
                 </div>
 
