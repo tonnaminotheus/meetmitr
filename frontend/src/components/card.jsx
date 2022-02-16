@@ -24,13 +24,13 @@ class EventCard extends Component {
       console.log(res.data);
       this.setState({ eventInfo: res.data });
       // this.handleTag(res);
-      var tagData = res.data.tags;
-      var tag = "";
-      var i;
-      for (i = 0; i < tagData.length; i++) {
-        tag += `<li>${tagData[i].name}</li>`;
-      }
-      this.setState({ tagss: tag });
+      // var tagData = res.data.tags;
+      // var tag = "";
+      // var i;
+      // for (i = 0; i < tagData.length; i++) {
+      //   tag += `<li>${tagData[i].name}</li>`;
+      // }
+      // this.setState({ tagss: tag });
     });
   }
 
@@ -59,7 +59,6 @@ class EventCard extends Component {
 
     return (
       <div>
-        {/* <h1>hwllo</h1> */}
         <Card
           className="cardTemplate"
           onClick={() => {
@@ -85,15 +84,7 @@ class EventCard extends Component {
 
             <div className="cardCate" style={this.state.style2}>
               <h2>Category</h2>
-              <ul
-                className="cardCateLi"
-                dangerouslySetInnerHTML={{ __html: tagLi }}
-              >
-                {/* {this.handleTag()} */}
-                {/* {this.state.eventInfo.tags != null &&
-                  this.state.eventInfo.tags.maps((tag) => {
-                    <li key={"tag-" + tag}>{tag}</li>;
-                  })} */}
+              <ul className="cardCateLi">
                 {/* <li>yare</li>
                 <li>yare</li>
                 <li>daze</li> */}
