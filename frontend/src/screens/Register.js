@@ -5,7 +5,64 @@ import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import globalApi from "../globalApi";
+import bg from "../asset/MeetmitrBgNoHead.png";
 
+const Button = styled.button`
+  background-color: #303b5b;
+  color: white;
+  border-radius: 15px;
+  outline: 0;
+  cursor: pointer;
+  box-shadow: 0px 2px 2px lightgray;
+  transition: ease background-color 250ms;
+  height: 72px;
+  width: 360px;
+  margin-right: 75px;
+  margin-left: 0px;
+  font-size: 30px;
+  font-weight: bold;
+  font-family: "Roboto", sans-serif;
+  align-self: flex-end;
+`;
+const Select = styled.select`
+  width: 110px;
+  height: 60px;
+  background: white;
+  color: #000000;
+  padding-left: 5px;
+  margin-right: 15px;
+  font-size: 30px;
+  font-weight: bold;
+  font-family: "Titillium Web";
+  border: 2px solid #c4c4c4;
+  border-radius: 10px;
+  option {
+    color: black;
+    background: white;
+    display: flex;
+    white-space: pre;
+    min-height: 20px;
+    padding: 0px 2px 1px;
+  }
+`;
+const TextInput = styled.input`
+  height: 60px;
+  width: 90%;
+  border: 2px solid #c4c4c4;
+  border-radius: 10px;
+  background-color: #ffffff;
+  font-size: 30px;
+  font-weight: bold;
+  font-family: "Titillium Web";
+  padding-left: 10px;
+`;
+const InputHeader = styled.text`
+  margin-top: 0px;
+  line-height: 10px;
+  font-size: 24px;
+  font-weight: medium;
+  font-family: "Roboto", sans-serif;
+`;
 function Register() {
   let navigate = useNavigate();
   var hash = require("object-hash");
@@ -90,67 +147,11 @@ function Register() {
         },
       })
         .then((respond) => {
-          navigate("/verifyEmail");
+          navigate("/verifyEmail", { email: email });
         })
         .catch((error) => {});
     }
   };
-  const Button = styled.button`
-    background-color: #303b5b;
-    color: white;
-    border-radius: 15px;
-    outline: 0;
-    cursor: pointer;
-    box-shadow: 0px 2px 2px lightgray;
-    transition: ease background-color 250ms;
-    height: 72px;
-    width: 360px;
-    margin-right: 75px;
-    margin-left: 0px;
-    font-size: 30px;
-    font-weight: bold;
-    font-family: "Roboto", sans-serif;
-    align-self: flex-end;
-  `;
-  const Select = styled.select`
-    width: 110px;
-    height: 60px;
-    background: white;
-    color: #000000;
-    padding-left: 5px;
-    margin-right: 15px;
-    font-size: 30px;
-    font-weight: bold;
-    font-family: "Titillium Web";
-    border: 2px solid #c4c4c4;
-    border-radius: 10px;
-    option {
-      color: black;
-      background: white;
-      display: flex;
-      white-space: pre;
-      min-height: 20px;
-      padding: 0px 2px 1px;
-    }
-  `;
-  const TextInput = styled.input`
-    height: 60px;
-    width: 90%;
-    border: 2px solid #c4c4c4;
-    border-radius: 10px;
-    background-color: #ffffff;
-    font-size: 30px;
-    font-weight: bold;
-    font-family: "Titillium Web";
-    padding-left: 10px;
-  `;
-  const InputHeader = styled.text`
-    margin-top: 0px;
-    line-height: 10px;
-    font-size: 24px;
-    font-weight: medium;
-    font-family: "Roboto", sans-serif;
-  `;
   return (
     <div
       className="registerPage"
@@ -159,7 +160,8 @@ function Register() {
         height: "100%",
         "min-height": "100vh",
         "justify-content": "center",
-        "background-image": `url("../asset/MeetmitrBgNoHead.png")`,
+        backgroundImage: `url(${bg})`,
+        backgroundColor: `#FFE5B9`,
       }}
     >
       <div
@@ -378,6 +380,9 @@ function Register() {
                   color: "#303b5b",
                   "flex-direction": "column",
                   textAlign: "left",
+                  display: "flex",
+                  flex: "1",
+                  marginRight: "70px",
                 }}
               >
                 <div style={{ marginBottom: "10px" }}>
@@ -391,7 +396,7 @@ function Register() {
                     onChange={handleBirthDateChange}
                     style={{
                       height: "60px",
-                      width: "128%",
+                      width: "100%",
                       border: "2px solid #c4c4c4",
                       borderRadius: "10px",
                       backgroundColor: "#ffffff",

@@ -6,6 +6,7 @@ import React, { useEffect } from "react";
 import moment from "moment";
 import axios from "axios";
 import globalApi from "../globalApi";
+import globalVar from "../cookie";
 
 function JoinEventDetail() {
   const eventId = 2;
@@ -40,8 +41,7 @@ function JoinEventDetail() {
     price: 0,
     createdTimeStamp: "2022-02-13 07:56:41",
     creatorId: 1,
-    listOfParticipant: ["PRyuSudHod", "PRyuSudTae"],
-    //ขาดจำนวน Attendance, host name pic ,attendance
+    participants: ["PRyuSudHod", "PRyuSudTae"],
   });
   const JoinOrEditButton = styled.button`
     background-color: #ffc229;
@@ -105,6 +105,8 @@ function JoinEventDetail() {
         const attenNum = respond.data.participants.length;
         const percent =
           String((attenNum / respond.data.maxParticipant) * 100) + "%";
+        console.log(attenNum);
+        console.log(percent);
 
         setEventData(respond.data);
         setAttendance(attenNum);
@@ -120,7 +122,9 @@ function JoinEventDetail() {
           })
           .catch((error) => {});
       })
-      .catch((error) => {});
+      .catch((error) => {
+        console.log(error);
+      });
   }, []);
   return (
     <div className="joinContainer">
@@ -146,7 +150,12 @@ function JoinEventDetail() {
         <div className="status">
           <div className="joinButton">
             <p>Price : {eventData.price} Coin</p>
-            <JoinOrEditButton type="submit">Edit</JoinOrEditButton>
+            {globalVar.UserID !== eventData.creatorId && (
+              <JoinOrEditButton type="submit">Join</JoinOrEditButton>
+            )}
+            {globalVar.UserID === eventData.creatorId && (
+              <JoinOrEditButton type="submit">Edit</JoinOrEditButton>
+            )}
           </div>
           <div className="attendances">
             <p>Attendances:</p>

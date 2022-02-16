@@ -1,10 +1,10 @@
 import "./VerifyEmail.css";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function VerifyEmail() {
   let navigate = useNavigate();
-  const email = "";
+  const { email } = useLocation();
   const goToLogin = () => {
     navigate("/");
   };
