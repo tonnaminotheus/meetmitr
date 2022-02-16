@@ -3,4 +3,5 @@
     justify-content: center;
     display: flex;
     height: 100vh;
+    background-image: url(../asset/MeetmitrBgNoHead.png);
   }

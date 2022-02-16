@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 import globalApi from "../globalApi";
+import globalVar from "../cookie";
 
 //location.replace("/view/drawing.html");
 
@@ -93,6 +94,9 @@ const InfoFormComponent=(props)=>{
         axios({
             method: 'post',
             url: globalApi.createEvent,
+            headers: {
+                "Authorization" : "Bearer "+globalVar.accessToken,
+            }, 
             data: new_data
         })
         .then(function (response) {
@@ -132,7 +136,7 @@ const InfoFormComponent=(props)=>{
             method: 'PUT',
             url: globalApi.updateEvent+props.eventID,
             headers: {
-                "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxIiwiYXV0aG9yaXplZCI6dHJ1ZSwiZXhwIjoxNjUzNjI3NDc2fQ.9ZoVhVFMYxfweHRAu4B8J4naN7GMgRI69oP9gUpnbgg",
+                "Authorization" : "Bearer "+globalVar.accessToken,
             }, 
             data: new_data
         })
