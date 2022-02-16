@@ -68,12 +68,6 @@ type Tag struct {
 	TagName string
 }
 
-<<<<<<< HEAD
-type tag struct {
-	tagId   int
-	tagName string
-}
-
 type User struct {
 	UserId          int    `json:"userId"`
 	Email           string `json:"email"`
@@ -87,18 +81,7 @@ type User struct {
 	LastName        string `json:"lastName"`
 	HideGender      bool   `json:"hideGender,omitempty"`
 	NumberOfPenalty int    `json:"numberOfPenalty"`
-=======
-type User struct {
-	UserId      int
-	Email       string
-	Gender      string
-	ProfileName string
-	PhoneName   string
-	Bio         string
-	Birthdate   time.Time
->>>>>>> 012b19c3276b3a1d8e21ff7243ce6f0af10ba376
 }
-
 type Usereventstatus struct {
 	UserId  int
 	EventId int
