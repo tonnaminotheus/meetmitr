@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+
 import "./FormComponent.css";
 
 import globalApi from "../globalApi";
@@ -23,7 +23,6 @@ const FormComponent=(props)=>{
             pass_box.type="text";
         }
     }
-  }
 
   const requestLogin = (event) => {
     event.preventDefault();
@@ -114,6 +113,6 @@ const FormComponent=(props)=>{
       </div>
     </div>
   );
-;
+};
 
 export default FormComponent;
