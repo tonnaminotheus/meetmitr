@@ -85,14 +85,19 @@ type tag struct {
 	tagName string
 }
 
-type user struct {
-	userId      int
-	Email       string
-	Gender      string
-	profileName string
-	phoneName   string
-	bio         string
-	birthdate   time.Time
+type User struct {
+	UserId          int    `json:"userId"`
+	Email           string `json:"email"`
+	Gender          string `json:"gender"`
+	ProfileName     string `json:"profileName"`
+	Bio             string `json:"bio"`
+	Birthdate       string `json:"birthdate"`
+	Password        string `json:"password,omitempty"`
+	FirstName       string `json:"firstName"`
+	MiddleName      string `json:"middleName"`
+	LastName        string `json:"lastName"`
+	HideGender      bool   `json:"hideGender,omitempty"`
+	NumberOfPenalty int    `json:"numberOfPenalty"`
 }
 
 type usereventstatus struct {
