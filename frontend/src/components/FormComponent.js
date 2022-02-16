@@ -111,6 +111,6 @@ const FormComponent = (props) => {
       </div>
     </div>
   );
-};
+;
 
 export default FormComponent;

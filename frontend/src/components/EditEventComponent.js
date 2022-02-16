@@ -11,7 +11,8 @@ const EditEventComponent=(props)=>{
     return (
         <div className="create-event-container">
             <CreateEventPicComponent/>
-            <CreateEventInfoComponent eventID={eventID}/>
+            {/* <CreateEventInfoComponent eventID={eventID}/> */}
+            <CreateEventInfoComponent eventID={"2"}/>
         </div>
     );
 }
