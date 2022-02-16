@@ -51,6 +51,6 @@ func GenerateRouter() *gin.Engine {
 		v1Event.POST("/join/:eventId", AttractAuthMiddleware(ABORT), handlers.JoinEventHandler)
 		v1Event.POST("/create", AttractAuthMiddleware(ABORT), handlers.CreateEventHandler)
 	}
-	router.GET("/api/v1/chatRoom/:otherId/:chatType", AttractAuthMiddleware(ABORT), handlers.GetChatRoomHandler)
+	router.GET("/api/v1/chatRoom/:chatType/:otherId", AttractAuthMiddleware(ABORT), handlers.GetChatRoomHandler)
 	return router
 }
