@@ -7,6 +7,7 @@ import Row from "react-bootstrap/Row";
 import JoinEventFilterModal from "./modal";
 import "./JoinCompo.css";
 import { useState } from "react";
+import globalApi from "../globalApi";
 
 import nuke from "../asset/nuclear.png";
 import weed from "../asset/weed.jpg";
@@ -17,11 +18,13 @@ import girl from "../asset/girl_night.jpg";
 import uno from "../asset/uno.jpg";
 import john from "../asset/John.jpg";
 
+var axios = require("axios").default;
+
 function JoinComponent() {
   const [cardInfo, setCardInfo] = useState({
     events: [
       {
-        id: 1,
+        id: 9,
         title: "Nuclear Discuss",
         date: "Mon 28 February",
         place: "Pathumwan99, Bangkok",
@@ -82,9 +85,57 @@ function JoinComponent() {
       },
     ],
   });
+
   const [search, setSearch] = useState("");
   const [modalstate, setModalstate] = useState(false);
   const [joinEventFilterProps, setJoinEventFilterProps] = useState({});
+
+  // const requestCreateEvent = (event) => {
+  //   //****might error if some fields is missing
+
+  //   event.preventDefault();
+
+  //   const data = {
+  //     name: document.getElementById("event-name-form").value,
+  //     description: document.getElementById("about-input").value,
+  //     address: document.getElementById("address-input").value,
+  //     province: document.getElementById("event-province").value,
+  //     startTime:
+  //       document.getElementById("event-date-start").value +
+  //       document.getElementById("event-time-start").value,
+  //     endTime:
+  //       document.getElementById("event-date-end").value +
+  //       document.getElementById("event-time-end").value,
+  //     // "onSite" : document.getElementById("event-date-end").value  document.getElementById("event-time-end").value,
+  //     onSite: () => {
+  //       let x = document.getElementById("Online-radio");
+  //       let y = document.getElementById("On-site-radio");
+  //       if (x.checked && !y.checked) {
+  //         console.log("onsite!!");
+  //         return true;
+  //       } else return false;
+  //     },
+  //     maxParticipant: document.getElementById("max-atten").value,
+  //     price: document.getElementById("event-price"),
+  //   };
+
+  //   axios({
+  //     method: "",
+  //     url: globalApi.eventDescription,
+  //     data: data,
+  //   })
+  //     .then(function (response) {
+  //       console.log(response);
+  //       //redirect
+  //     })
+  //     .catch(function (error) {
+  //       console.log("error!!");
+  //       console.log(error);
+  //     })
+  //     .then(function () {
+  //       // always executed
+  //     });
+  // };
 
   const updateSearch = (event) => {
     // console.log(event.target.value);

@@ -1,34 +1,44 @@
 import logo from "./logo.svg";
 import "./App.css";
 
+//css
+import "./components/css_extensions/btn.css";
+import "./components/css_extensions/page_div_config.css";
+
 // login page
-import LoginPageDesc from "./components/LoginPageDesc";
-import LoginComponent from "./components/LoginComponent";
+import LoginRootComponent from "./components/LoginRootComponent";
 
 // create event
-import CreateEventPicComponent from "./components/CreateEventPicComponent";
-import CreateEventFormComponent from "./components/CreateEventFormComponent";
-import CreateEventInfoComponent from "./components/CreateEventInfoComponent";
+import EditEventComponent from "./components/EditEventComponent";
 
+//modal
 import JoinEventFilterModal from "./components/modal/modal.js";
+
 import { useState } from "react";
 import ChatListUser from "./components/ChatListUser";
+
 
 import JoinComponent from "./components/JoinCompo";
 import FriendYouMayKnow from "./components/FriendYouMayKnow";
 var hash = require("object-hash");
 
-// login page
-// {/* <h1>Welcome to Meetmitr</h1> */}
-// <div className="login-container">
-//<LoginPageDesc />
-// <LoginComponent />
-//</div>
 function App() {
   return (
+
     <div>
       <FriendYouMayKnow />
+
     </div>
   );
 }
+
+// create event form
+// function App() {
+//   return (
+//     <div className="App">
+//       <EditEventComponent eventID={"2"}/>
+//     </div>
+//   );
+// }
+
 export default App;
