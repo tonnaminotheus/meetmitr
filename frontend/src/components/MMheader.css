@@ -1,7 +1,7 @@
 .MMbar{
     background-image: url("../asset/header.png");
     background-color: #FAF3E7; /* Used if the image is unavailable */
-    height: 270px; /* You must set a specified height */
+    height: 235px; /* You must set a specified height */
     background-position: center; /* Center the image */
     background-repeat: no-repeat; /* Do not repeat the image */
     background-size: cover; /* Resize the background image to cover the entire container */
@@ -17,7 +17,7 @@
 
 .feedHeader{
     font-size: 50px;
-    margin-top: 150px;
+    margin-top: 110px;
     font-size: 80px;
     text-align: center;
 }
