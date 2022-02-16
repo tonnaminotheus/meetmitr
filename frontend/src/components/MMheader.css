@@ -21,3 +21,34 @@
     font-size: 80px;
     text-align: center;
 }
+
+.createButt {
+    margin-top: 20px;
+    border-radius: 30px;
+    width: 262px;
+    height: 60px;
+}
+
+.chatList {
+    margin-top: 20px;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    margin-left: 13px;
+}
+
+.notification {
+    margin-top: 20px;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    margin-left: 13px;
+}
+
+.dropSetting {
+    margin-top: 20px;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    margin-left: 13px;
+}
