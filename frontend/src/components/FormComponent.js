@@ -1,5 +1,7 @@
 import "./FormComponent.css"
 
+import globalApi from "../globalApi";
+
 var axios = require('axios').default;
 var hash = require('object-hash');
 
@@ -27,7 +29,7 @@ const FormComponent=(props)=>{
 
         axios({
             method: 'post',
-            url: 'http://ec2-3-91-230-147.compute-1.amazonaws.com:8080/api/v1/login',
+            url: globalApi.login,
             data: data
         })
         .then(function (response) {
