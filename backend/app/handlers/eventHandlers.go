@@ -150,7 +150,7 @@ func UpdateEventHandler(c *gin.Context) {
 	}
 
 	if userId2 != userId.(string) {
-		c.JSON(500, gin.H{
+		c.JSON(401, gin.H{
 			"message": "you have no permission to edit this event",
 		})
 		return
