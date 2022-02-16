@@ -5,6 +5,7 @@ import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 import globalApi from "../globalApi";
 import globalVar from "../cookie.js";
+import { useNavigate } from "react-router-dom";
 
 //location.replace("/view/drawing.html");
 
@@ -76,6 +77,11 @@ const InfoFormComponent=(props)=>{
         }
     }
 
+    let navigate = useNavigate();
+    const toFeed = () => {
+        navigate("/feed");
+    };
+
     const requestCreateEvent=(event)=>{
 
         //****might error if some fields is missing
@@ -106,6 +112,7 @@ const InfoFormComponent=(props)=>{
         .then(function (response) {
             console.log(response);
             //redirect
+            toFeed()
             
         })
         .catch(function (error) {
@@ -147,6 +154,7 @@ const InfoFormComponent=(props)=>{
         .then(function (response) {
             console.log(response);
             //redirect
+            toFeed()
             
         })
         .catch(function (error) {
@@ -189,7 +197,6 @@ const InfoFormComponent=(props)=>{
         new_data[field_name] = value
         console.log(new_data)
         setData(new_data)
-
     }
     // console.log(props.eventID)
     return (
@@ -310,7 +317,7 @@ const InfoFormComponent=(props)=>{
 
                 {/* btn */}
                 <div className="info-form-box">
-                    <button className="btn create-event-btn" style={{padding: "5px", margin: "10px", float: "right"}} onClick={onBtnClicked} >
+                    <button className="custom-button create-event-btn" style={{padding: "5px", margin: "10px", float: "right"}} onClick={onBtnClicked} >
                         <span>{title}</span>
                     </button>
                 </div>
