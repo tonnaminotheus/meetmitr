@@ -14,6 +14,7 @@ import EditEventComponent from "./components/EditEventComponent";
 //modal
 import JoinEventFilterModal from "./components/modal/modal.js";
 
+import { useState } from "react";
 
 import JoinComponent from "./components/JoinCompo";
 
