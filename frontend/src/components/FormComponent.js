@@ -1,29 +1,25 @@
-
 import "./FormComponent.css";
 
 import globalApi from "../globalApi";
 import globalVar from "../cookie";
 import { useNavigate } from "react-router-dom";
+var axios = require("axios").default;
+var hash = require("object-hash");
 
-var axios = require('axios').default;
-var hash = require('object-hash');
-
-const FormComponent=(props)=>{
-    let navigate = useNavigate();
-    const toFeed = () => {
-        navigate("/feed");
-    };
-    function togglePassword(){
-        let pass_box = document.getElementById("password-input-box")
-        console.log("click checkbox")
-        if (pass_box.type === "text") {
-            pass_box.type="password";
-        }
-        else if (pass_box.type === "password") {
-            pass_box.type="text";
-        }
+const FormComponent = (props) => {
+  let navigate = useNavigate();
+  const toFeed = () => {
+    navigate("/feed");
+  };
+  function togglePassword() {
+    let pass_box = document.getElementById("password-input-box");
+    console.log("click checkbox");
+    if (pass_box.type === "text") {
+      pass_box.type = "password";
+    } else if (pass_box.type === "password") {
+      pass_box.type = "text";
     }
-
+  }
   const requestLogin = (event) => {
     event.preventDefault();
 
@@ -33,13 +29,13 @@ const FormComponent=(props)=>{
       password: document.getElementById("password-input-box").value,
     };
 
-        axios({
-            method: 'post',
-            url: globalApi.login,
-            data: data
-        })
-        .then(function (response) {
-            console.log(response);
+    axios({
+      method: "post",
+      url: globalApi.login,
+      data: data,
+    })
+      .then(function (response) {
+        console.log(response);
 
             if (response.status == 200) {
                 globalVar.accessToken = response.data["accessToken"]
