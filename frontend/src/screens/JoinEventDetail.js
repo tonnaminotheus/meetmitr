@@ -2,15 +2,32 @@ import "./JoinEventDetail.css";
 import styled from "styled-components";
 import host from "../asset/naemblack.jpg";
 import logo from "../asset/icon.png";
-import React from "react";
+import React, { useEffect } from "react";
 import moment from "moment";
+import axios from "axios";
+import globalApi from "../globalApi";
 
 function JoinEventDetail() {
+  const eventId = 2;
   const [show, setShow] = React.useState([true, false, false]);
+  const [attendance, setAttendance] = React.useState(0);
   const [progressData, setProgressData] = React.useState("50%");
+  const [hostData, setHostData] = React.useState({
+    userId: 1,
+    email: "test@gmail.com",
+    gender: "unspecified",
+    profileName: "jack",
+    bio: "",
+    birthdate: "2000-11-23",
+    firstName: "ryuio",
+    middleName: "ioio",
+    lastName: "ryuryu",
+    numberOfPenalty: 0,
+    profilePicUrl: "",
+  });
   const [eventData, setEventData] = React.useState({
     eventId: 2,
-    name: "Ryu Event",
+    name: "What",
     description: "Yamete Iyaaaa!",
     tags: ["Game", "Anime", "Charity"],
     address: "test address",
@@ -19,10 +36,11 @@ function JoinEventDetail() {
     startTime: "2021-11-23 23:22:22",
     endTime: "2021-11-25 23:22:22",
     onsite: false,
-    maxParticipant: 1,
+    maxParticipant: 10,
     price: 0,
     createdTimeStamp: "2022-02-13 07:56:41",
     creatorId: 1,
+    listOfParticipant: ["PRyuSudHod", "PRyuSudTae"],
     //ขาดจำนวน Attendance, host name pic ,attendance
   });
   const JoinOrEditButton = styled.button`
@@ -78,6 +96,32 @@ function JoinEventDetail() {
     font-weight: bold;
     font-family: "Roboto", sans-serif;
   `;
+  useEffect(() => {
+    axios({
+      method: "GET",
+      url: globalApi.eventDescription + eventId,
+    })
+      .then((respond) => {
+        const attenNum = respond.data.participants.length;
+        const percent =
+          String((attenNum / respond.data.maxParticipant) * 100) + "%";
+
+        setEventData(respond.data);
+        setAttendance(attenNum);
+        setProgressData(percent);
+
+        const hostId = respond.data.creatorId;
+        axios({
+          method: "GET",
+          url: globalApi.userData + hostId,
+        })
+          .then((respond) => {
+            setHostData(respond.data);
+          })
+          .catch((error) => {});
+      })
+      .catch((error) => {});
+  }, []);
   return (
     <div className="joinContainer">
       <div className="pic">
@@ -95,7 +139,7 @@ function JoinEventDetail() {
           <div className="header-right">
             <img className="host" src={host} alt="" />
             <p>
-              Pattharapon Srithong is <span>Host!</span>
+              {hostData.profileName} is <span>Host!</span>
             </p>
           </div>
         </div>
@@ -110,6 +154,7 @@ function JoinEventDetail() {
               <div
                 className="progress"
                 style={{
+                  display: "flex",
                   background: "linear-gradient(to left, #FF937C, #F8CE6C)",
                   width: progressData,
                   height: "100%",
@@ -118,7 +163,9 @@ function JoinEventDetail() {
                   justifyContent: "flex-end",
                 }}
               >
-                <p>25/{eventData.maxParticipant}</p>
+                <p>
+                  {attendance} / {eventData.maxParticipant}
+                </p>
               </div>
             </div>
           </div>
@@ -174,7 +221,7 @@ function JoinEventDetail() {
           <div className="tabbar-detail">
             {show[0] && <p>{eventData.description}</p>}
             {show[1] && <p>{eventData.address}</p>}
-            {show[2] && <p></p>}
+            {show[2] && <p>{eventData.participants}</p>}
           </div>
         </div>
       </div>
