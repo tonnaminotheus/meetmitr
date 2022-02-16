@@ -258,7 +258,7 @@ func CreateEventHandler(c *gin.Context) {
 		return
 	}
 
-	_, err2 := database.Sql.Exec(
+	stmt, err2 := database.Sql.Exec(
 		`INSERT INTO Event 
 		VALUES (null, ?, ?, ?,?,?,?,?,?,?,?,CURRENT_TIMESTAMP,?)`,
 		req.Name, req.Description, req.Address, req.Province, req.ImagUrl, req.StartTime,
@@ -271,16 +271,14 @@ func CreateEventHandler(c *gin.Context) {
 		return
 	}
 
-	var eventId int
-	err3 := database.Sql.QueryRow(`SELECT LAST_INSERT_ID();`).Scan(&eventId)
-
+	eventId, err3 := stmt.LastInsertId()
 	if err3 != nil {
 		c.JSON(500, gin.H{
 			"message": err3.Error(),
 		})
 		return
 	}
-
+	
 	for _, tag := range req.Tags {
 
 		_, err4 := database.Sql.Exec(
@@ -298,6 +296,7 @@ func CreateEventHandler(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "create success",
+		"eventId": eventId,
 	})
 
 }
