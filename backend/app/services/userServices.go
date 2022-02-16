@@ -1,7 +1,9 @@
 package services
 
 import (
+	"backend/app/models"
 	"backend/database"
+	"database/sql"
 	"errors"
 )
 
@@ -34,4 +36,20 @@ func (s *UserServiceImpl) FindUserByUsernameAndPassword(email, password string) 
 	}
 
 	return userId, err
+}
+
+func (s *UserServiceImpl) FindUserById(userId string) (*models.User, error) {
+	bio := sql.NullString{}
+	middleName := sql.NullString{}
+	noPenalty := sql.NullInt64{}
+	user := &models.User{}
+	err := database.Sql.QueryRow(`Select *from User where userId = ?`, userId).Scan(&userId, &user.Email, &user.Gender, &user.ProfileName,
+		&bio, &user.Birthdate, &user.Password, &user.FirstName, &middleName, &user.LastName, &user.HideGender, &noPenalty)
+	if err != nil {
+		return nil, err
+	}
+	user.Bio = bio.String
+	user.MiddleName = middleName.String
+	user.NumberOfPenalty = int(noPenalty.Int64)
+	return user, nil
 }

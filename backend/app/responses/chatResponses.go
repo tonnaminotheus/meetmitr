@@ -1,6 +1,12 @@
 package responses
 
-type JoinChatResponse struct {
-	Message string `json:"message"`
-	RoomId  string `json:"roomId"`
+type ChatPartnersResponse struct {
+	Partners []Partner `json:"partners"`
+}
+
+type Partner struct {
+	DMId          int    `json:"DMId"`
+	UserId        int    `json:"userId"`
+	ProfileName   string `json:"profileName"`
+	ProfilePicUrl string `json:"profilePicUrl"`
 }
