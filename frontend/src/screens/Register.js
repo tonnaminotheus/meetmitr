@@ -72,7 +72,7 @@ function Register() {
       setPassword("");
       pass = false;
     }
-    if (password != confirmPassword) {
+    if (password !== confirmPassword) {
       setConfirmPasswordPlaceHolder("Password not matched");
       setConfirmPassword("");
       pass = false;
@@ -95,14 +95,6 @@ function Register() {
         })
         .catch((error) => {});
     }
-    console.log("firstName:", firstName);
-    console.log("lastName:", lastName);
-    console.log("email:", email);
-    console.log("gender:", gender);
-    console.log("birthDate:", birthDate);
-    console.log("password:", password);
-    console.log("confirmPassword:", confirmPassword);
-    navigate("/verifyEmail");
   };
   const Button = styled.button`
     background-color: #303b5b;
