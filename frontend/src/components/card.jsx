@@ -9,23 +9,32 @@ import { useNavigate } from "react-router-dom";
 function EventCard({ events, id }) {
   const navigate = useNavigate();
   const [eventInfo, setEventInfo] = useState({});
-  const [tagss, setTagss] = useState({});
+  // const [tagAvailable, setTagAvailable] = useState({});
   const [display, setDisplay] = useState([true, false, true]);
 
   useEffect(() => {
     axios.get(globalApi.eventDescription + id).then((res) => {
       console.log(res.data);
       setEventInfo(res.data);
+      TagList();
     });
   }, []);
+
+  function TagList() {
+    const tags = eventInfo.tags;
+    const ta = eventInfo.tags === null ? false : true;
+    const listTags = ta && tags.map((tag) => <li key={"tag-" + tag}>{tag}</li>);
+    return <ul>{listTags}</ul>;
+  }
 
   const handleMouseIn = () => {
     console.log("mouse in");
     if (display[2]) {
       setDisplay([false, true, false]);
-      setTimeout(() => {
+      const timer = setTimeout(() => {
         setDisplay([true, false, true]);
       }, 3500);
+      return () => clearTimeout(timer);
     }
   };
 
@@ -40,7 +49,7 @@ function EventCard({ events, id }) {
       >
         <div
           onMouseEnter={handleMouseIn}
-          // onMouseOut={this.handleMouseOut}
+          // onMouseOut={handleMouseOut}
           className="cardImg"
         >
           {display[0] && (
@@ -54,7 +63,7 @@ function EventCard({ events, id }) {
           {display[1] && (
             <div className="cardCate">
               <h2>Category</h2>
-              <ul className="cardCateLi"></ul>
+              <ul className="cardCateLi">{TagList()}</ul>
             </div>
           )}
         </div>
