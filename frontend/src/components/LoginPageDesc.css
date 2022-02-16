@@ -9,6 +9,8 @@
   text-align: center;
   align-content: center;
   flex-direction: column;
+  
+  height: 100%;
 }
 
 #loginpagedesc-meetmitr-logo {
