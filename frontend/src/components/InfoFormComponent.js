@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
+import globalApi from "../globalApi";
 
 //location.replace("/view/drawing.html");
 
@@ -56,7 +57,7 @@ const InfoFormComponent=(props)=>{
             requestCreateEvent(event)
         }
         else {
-            requestUpdateEvent(event)
+            requestUpdateEvent(event) 
         }
     }
 
@@ -89,7 +90,7 @@ const InfoFormComponent=(props)=>{
 
         axios({
             method: 'post',
-            url: 'http://3.86.116.219:8080/api/v1/event/create',
+            url: globalApi.createEvent,
             data: data
         })
         .then(function (response) {
@@ -135,7 +136,10 @@ const InfoFormComponent=(props)=>{
 
         axios({
             method: 'PUT',
-            url: 'http://3.86.116.219:8080/api/v1/event/update/',
+            url: globalApi.updateEvent,
+            headers: {
+                "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxIiwiYXV0aG9yaXplZCI6dHJ1ZSwiZXhwIjoxNjUzNjI3NDc2fQ.9ZoVhVFMYxfweHRAu4B8J4naN7GMgRI69oP9gUpnbgg"
+            }, 
             data: data
         })
         .then(function (response) {
@@ -155,7 +159,7 @@ const InfoFormComponent=(props)=>{
     useEffect(()=>{
         axios({
             method: 'get',
-            url: `http://3.86.116.219:8080/api/v1/event/descriptions/${props.eventID}`,
+            url: globalApi.eventDescription + `${props.eventID}`,
             timeout: 8000
         })
         .then((res)=>{
@@ -175,6 +179,13 @@ const InfoFormComponent=(props)=>{
             }
         )
     },[]);
+
+    const setParticularField=(event, field_name)=>{
+        let new_data = data
+        new_data[field_name] = event.target.value
+        setData(new_data)
+        console.log("changed data")
+    }
     
     console.log(props.eventID)
     return (
@@ -190,7 +201,7 @@ const InfoFormComponent=(props)=>{
                     <label htmlFor="event-name-form">Event Name :</label>
                     <input type={"text"} id="event-name-form" value={data.name} required onChange={(event)=>{
                         console.log(event.target.value)
-                        setData({name: event.target.value})
+                        setParticularField(event, "name")
                     }}/>
                 </div>
 
@@ -199,7 +210,7 @@ const InfoFormComponent=(props)=>{
                     <label htmlFor="max-atten">Max Attendance :</label>
                     <input type="number" min={1} id={"max-atten"} value={data.maxParticipant} required onChange={(event)=>{
                         console.log(event.target.value)
-                        setData({maxParticipant: event.target.value})
+                        setParticularField(event, "maxParticipant")
                     }}/><span>participants</span>
                 </div>
 
@@ -208,7 +219,7 @@ const InfoFormComponent=(props)=>{
                     <label htmlFor="event-price">Price :</label>
                     <input type="number" min={0} id={"event-price"} value={data.price} required onChange={(event)=>{
                         console.log(event.target.value)
-                        setData({price: event.target.value})
+                        setParticularField(event, "price")
                     }}/><span>coins</span>
                 </div>
                 
@@ -226,13 +237,13 @@ const InfoFormComponent=(props)=>{
                     <label htmlFor="event-date-start">Date Start :</label>
                     <input type={"date"} id={"event-date-start"} min={getTodayDate()} value={data.startDate} onChange={(event)=>{
                         console.log(event.target.value)
-                        setData({dateStart: event.target.value})
+                        setParticularField(event, "dateStart")
                     }}></input>
 
                     <label htmlFor="event-date-end">Date End :</label>
                     <input type={"date"} id={"event-date-end"} min={getTodayDate()} value={data.endDate} onChange={(event)=>{
                         console.log(event.target.value)
-                        setData({dateEnd: event.target.value})
+                        setParticularField(event, "dataEnd")
                     }}></input>
                 </div>
 
@@ -242,6 +253,7 @@ const InfoFormComponent=(props)=>{
                     <input type={"time"} id={"event-time-start"} value={data.startTime} onChange={(event)=>{
                         console.log(event.target.value)
                         setData({timeEnd: event.target.value.split(" ")[1]})
+                        setParticularField(event, "name")
                     }}/>
                     <label htmlFor="event-time-end">Time End :</label>
                     <input type={"time"} id={"event-time-end"} value={data.endTime} onChange={(event)=>{
@@ -272,11 +284,11 @@ const InfoFormComponent=(props)=>{
                         console.log(event.target.value)
                         setData({province: event.target.value})
                     }}/> */}
-                    <Dropdown className="province-dropdown" id="event-province" options={provinces} onChange={(event)=>{
+                    <Dropdown className="province-dropdown" id="event-province" options={provinces} value={data.province} placeholder="Select an option" onChange={(event)=>{
                         console.log(event)
                         // console.log(provinces)
-                        // setData({province: event.target})  
-                    }} value={data.province} placeholder="Select an option"/>
+                        setData({province: event.value})  
+                    }}/>
                 </div>
                 
 
