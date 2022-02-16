@@ -1,9 +1,12 @@
 import "./FinishRegister.css";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 function FinishRegister() {
-  const email = "";
-  const goToLogin = () => {};
+  let navigate = useNavigate();
+  const goToLogin = () => {
+    navigate("/");
+  };
   const Button = styled.button`
     background-color: #303b5b;
     color: white;
