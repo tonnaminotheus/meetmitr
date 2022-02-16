@@ -9,7 +9,6 @@ import noti from "../asset/notification.png";
 import drop from "../asset/dropDownSetting.png";
 import { useNavigate } from "react-router-dom";
 
-
 const MMheader = (props) => {
   const navigate = useNavigate();
   return (
@@ -39,7 +38,7 @@ const MMheader = (props) => {
               className="chatList"
               onClick={() => {
                 console.log("clicked");
-                navigate("/chat");
+                navigate("/chatList");
               }}
             ></img>
             <img src={noti} alt="noti" className="notification"></img>
