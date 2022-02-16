@@ -32,6 +32,16 @@ const InfoFormComponent=(props)=>{
         "price" : 0
     });
 
+    const getRadio=()=>{
+        let x = document.getElementById("Online-radio");
+        let y = document.getElementById("On-site-radio");
+        if (x.checked && !y.checked) {
+            console.log("onsite!!")
+            return true
+        }
+        else return false;
+    }
+
     const getTodayDate=()=>{
         let today = new Date();
         let dd = today.getDate();
@@ -67,31 +77,23 @@ const InfoFormComponent=(props)=>{
 
         event.preventDefault()
         
-        const data = {
+        const new_data = {
             "name": document.getElementById("event-name-form").value,
             "description" : document.getElementById("about-input").value,
             "address" : document.getElementById("address-input").value,
-            "province" : document.getElementById("event-province").value,
-            "startTime" : document.getElementById("event-date-start").value + document.getElementById("event-time-start").value,
-            "endTime" : document.getElementById("event-date-end").value + document.getElementById("event-time-end").value,
+            "province" : data.province,
+            "startTime" : document.getElementById("event-date-start").value +" "+ document.getElementById("event-time-start").value,
+            "endTime" : document.getElementById("event-date-end").value + " "+ document.getElementById("event-time-end").value,
             // "onSite" : document.getElementById("event-date-end").value  document.getElementById("event-time-end").value,
-            "onSite" : ()=>{
-                let x = document.getElementById("Online-radio");
-                let y = document.getElementById("On-site-radio");
-                if (x.checked && !y.checked) {
-                    console.log("onsite!!")
-                    return true
-                }
-                else return false;
-            },
-            "maxParticipant" : document.getElementById("max-atten").value,
-            "price" : document.getElementById("event-price")
+            "onSite" : getRadio(),
+            "maxParticipant" : parseInt(document.getElementById("max-atten").value),
+            "price" : parseInt(document.getElementById("event-price").value)
         }
 
         axios({
             method: 'post',
             url: globalApi.createEvent,
-            data: data
+            data: new_data
         })
         .then(function (response) {
             console.log(response);
@@ -113,34 +115,26 @@ const InfoFormComponent=(props)=>{
 
         event.preventDefault()
         
-        const data = {
+        const new_data = {
             "name": document.getElementById("event-name-form").value,
             "description" : document.getElementById("about-input").value,
             "address" : document.getElementById("address-input").value,
-            "province" : document.getElementById("event-province").value,
-            "startTime" : document.getElementById("event-date-start").value + document.getElementById("event-time-start").value,
-            "endTime" : document.getElementById("event-date-end").value + document.getElementById("event-time-end").value,
+            "province" : data.province,
+            "startTime" : document.getElementById("event-date-start").value +" "+ document.getElementById("event-time-start").value,
+            "endTime" : document.getElementById("event-date-end").value + " "+ document.getElementById("event-time-end").value,
             // "onSite" : document.getElementById("event-date-end").value  document.getElementById("event-time-end").value,
-            "onSite" : ()=>{
-                let x = document.getElementById("Online-radio");
-                let y = document.getElementById("On-site-radio");
-                if (x.checked && !y.checked) {
-                    console.log("onsite!!")
-                    return true
-                }
-                else return false;
-            },
-            "maxParticipant" : document.getElementById("max-atten").value,
-            "price" : document.getElementById("event-price")
+            "onSite" : getRadio(),
+            "maxParticipant" : parseInt(document.getElementById("max-atten").value),
+            "price" : parseInt(document.getElementById("event-price").value)
         }
-
+        console.log(new_data)
         axios({
             method: 'PUT',
-            url: globalApi.updateEvent,
+            url: globalApi.updateEvent+props.eventID,
             headers: {
-                "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxIiwiYXV0aG9yaXplZCI6dHJ1ZSwiZXhwIjoxNjUzNjI3NDc2fQ.9ZoVhVFMYxfweHRAu4B8J4naN7GMgRI69oP9gUpnbgg"
+                "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxIiwiYXV0aG9yaXplZCI6dHJ1ZSwiZXhwIjoxNjUzNjI3NDc2fQ.9ZoVhVFMYxfweHRAu4B8J4naN7GMgRI69oP9gUpnbgg",
             }, 
-            data: data
+            data: new_data
         })
         .then(function (response) {
             console.log(response);
@@ -149,10 +143,12 @@ const InfoFormComponent=(props)=>{
         })
         .catch(function (error) {
             console.log("error!!")
-            console.log(error);
+            console.log(error.response);
+
         })
         .then(function () {
             // always executed
+            
         });
     }
 
@@ -180,14 +176,15 @@ const InfoFormComponent=(props)=>{
         )
     },[]);
 
-    const setParticularField=(event, field_name)=>{
-        let new_data = data
-        new_data[field_name] = event.target.value
+    const setParticularField=(value, field_name)=>{
+        let new_data = {...data} //beware copying onj
+        new_data[field_name] = value
+        console.log(new_data)
         setData(new_data)
-        console.log("changed data")
+
     }
     
-    console.log(props.eventID)
+    // console.log(props.eventID)
     return (
         <div className="info-form-box">
             <div className="info-form-box">
@@ -201,7 +198,7 @@ const InfoFormComponent=(props)=>{
                     <label htmlFor="event-name-form">Event Name :</label>
                     <input type={"text"} id="event-name-form" value={data.name} required onChange={(event)=>{
                         console.log(event.target.value)
-                        setParticularField(event, "name")
+                        setParticularField(event.target.value, "name")
                     }}/>
                 </div>
 
@@ -210,7 +207,7 @@ const InfoFormComponent=(props)=>{
                     <label htmlFor="max-atten">Max Attendance :</label>
                     <input type="number" min={1} id={"max-atten"} value={data.maxParticipant} required onChange={(event)=>{
                         console.log(event.target.value)
-                        setParticularField(event, "maxParticipant")
+                        setParticularField(event.target.value, "maxParticipant")
                     }}/><span>participants</span>
                 </div>
 
@@ -219,7 +216,7 @@ const InfoFormComponent=(props)=>{
                     <label htmlFor="event-price">Price :</label>
                     <input type="number" min={0} id={"event-price"} value={data.price} required onChange={(event)=>{
                         console.log(event.target.value)
-                        setParticularField(event, "price")
+                        setParticularField(event.target.value, "price")
                     }}/><span>coins</span>
                 </div>
                 
@@ -237,13 +234,14 @@ const InfoFormComponent=(props)=>{
                     <label htmlFor="event-date-start">Date Start :</label>
                     <input type={"date"} id={"event-date-start"} min={getTodayDate()} value={data.startDate} onChange={(event)=>{
                         console.log(event.target.value)
-                        setParticularField(event, "dateStart")
+                        setParticularField(event.target.value, "startDate")
                     }}></input>
 
                     <label htmlFor="event-date-end">Date End :</label>
                     <input type={"date"} id={"event-date-end"} min={getTodayDate()} value={data.endDate} onChange={(event)=>{
                         console.log(event.target.value)
-                        setParticularField(event, "dataEnd")
+                        setParticularField(event.target.value, "endDate")
+                        
                     }}></input>
                 </div>
 
@@ -252,13 +250,12 @@ const InfoFormComponent=(props)=>{
                     <label htmlFor="event-time-start">Time Start :</label>
                     <input type={"time"} id={"event-time-start"} value={data.startTime} onChange={(event)=>{
                         console.log(event.target.value)
-                        setData({timeEnd: event.target.value.split(" ")[1]})
-                        setParticularField(event, "name")
+                        setParticularField(event.target.value, "startTime")
                     }}/>
                     <label htmlFor="event-time-end">Time End :</label>
                     <input type={"time"} id={"event-time-end"} value={data.endTime} onChange={(event)=>{
                         console.log(event.target.value)
-                        setData({timeEnd: event.target.value.split(" ")[1]})
+                        setParticularField(event.target.value, "endTime")
                     }}/>
                 </div>
 
@@ -273,7 +270,7 @@ const InfoFormComponent=(props)=>{
                     <label htmlFor="address-input" style={{display: "block"}}>Address :</label>
                     <textarea id="address-input" className="address-input text-area" rows={5} placeholder="Please Enter Address of this Event" htmlFor="create-event-info-form" value={data.address} onChange={(event)=>{
                         console.log(event.target.value)
-                        setData({address: event.target.value})
+                        setParticularField(event.target.value, "address")
                     }}></textarea>
                 </div>
 
@@ -287,7 +284,8 @@ const InfoFormComponent=(props)=>{
                     <Dropdown className="province-dropdown" id="event-province" options={provinces} value={data.province} placeholder="Select an option" onChange={(event)=>{
                         console.log(event)
                         // console.log(provinces)
-                        setData({province: event.value})  
+                        setData({province: event.value})
+                        setParticularField(event.value, "province")
                     }}/>
                 </div>
                 
@@ -299,6 +297,7 @@ const InfoFormComponent=(props)=>{
                     <textarea id="about-input" className="text-area" rows={5} placeholder="Please Enter More Info about this Event" value={data.description} form="create-event-info-form" onChange={(event)=>{
                         console.log(event.target.value)
                         setData({description: event.target.value})
+                        setParticularField(event.target.value, "description")
                     }}></textarea>
                 </div>
 
