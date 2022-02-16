@@ -1,8 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import "./FormComponent.css";
 
-var axios = require("axios").default;
-var hash = require("object-hash");
+import globalApi from "../globalApi";
+
+var axios = require('axios').default;
+var hash = require('object-hash');
 
 const FormComponent = (props) => {
   let navigate = useNavigate();
@@ -25,23 +27,24 @@ const FormComponent = (props) => {
       password: document.getElementById("password-input-box").value,
     };
 
-    axios({
-      method: "post",
-      url: "http://ec2-3-91-230-147.compute-1.amazonaws.com:8080/api/v1/login",
-      data: data,
-    })
-      .then(function (response) {
-        console.log(response);
-        //redirect
-      })
-      .catch(function (error) {
-        console.log("error!!");
-        console.log(error);
-      })
-      .then(function () {
-        // always executed
-      });
-  };
+        axios({
+            method: 'post',
+            url: globalApi.login,
+            data: data
+        })
+        .then(function (response) {
+            console.log(response);
+            //redirect
+            
+        })
+        .catch(function (error) {
+            console.log("error!!")
+            console.log(error);
+        })
+        .then(function () {
+            // always executed
+        });
+  }
 
   return (
     <div className="login-form">
