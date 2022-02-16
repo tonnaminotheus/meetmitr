@@ -20,15 +20,8 @@ var hash = require("object-hash");
 // login page
 function App() {
   return (
-    <div className="App">
-      {/* <h1>Welcome to Meetmitr</h1> */}
-      {/* <h1>help</h1> */}
+    <div>
       <JoinComponent />
-
-      {/* <div className="login-container">
-        <LoginPageDesc />
-        <LoginComponent />
-      </div> */}
     </div>
   );
 }
