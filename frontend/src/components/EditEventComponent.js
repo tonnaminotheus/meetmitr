@@ -5,14 +5,14 @@ import { useLocation } from "react-router-dom"
 
 const EditEventComponent=(props)=>{
 
-    const {eventID} = useLocation();
+    const {state} = useLocation();
     // console.log("eventID :"+eventID)  
     
     return (
         <div className="create-event-container">
             <CreateEventPicComponent/>
-            {/* <CreateEventInfoComponent eventID={eventID}/> */}
-            <CreateEventInfoComponent/>
+            {state&&<CreateEventInfoComponent eventID={state.eventId}/>}
+            {!state&&<CreateEventInfoComponent/>}
         </div>
     );
 }

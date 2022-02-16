@@ -7,13 +7,15 @@ import moment from "moment";
 import axios from "axios";
 import globalApi from "../globalApi";
 import globalVar from "../cookie";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function JoinEventDetail() {
+  const navigate = useNavigate();
   const { state } = useLocation();
   const [show, setShow] = React.useState([true, false, false]);
   const [attendance, setAttendance] = React.useState(0);
   const [progressData, setProgressData] = React.useState("50%");
+  const [joined, setJoined] = React.useState(false);
   const [hostData, setHostData] = React.useState({
     userId: 1,
     email: "test@gmail.com",
@@ -47,6 +49,23 @@ function JoinEventDetail() {
   const JoinOrEditButton = styled.button`
     background-color: #ffc229;
     color: white;
+    border-radius: 15px;
+    outline: 0;
+    border: 0px;
+    cursor: pointer;
+    transition: ease background-color 250ms;
+    height: 77px;
+    width: 246px;
+    margin-right: 10px;
+    margin-left: 0px;
+    font-size: 30px;
+    font-weight: bold;
+    font-family: "Roboto", sans-serif;
+    align-self: flex-end;
+  `;
+  const JoinedButton = styled.button`
+    background-color: #d9d9d9;
+    color: #000000;
     border-radius: 15px;
     outline: 0;
     border: 0px;
@@ -103,11 +122,12 @@ function JoinEventDetail() {
       url: globalApi.eventDescription + state.eventId,
     })
       .then((respond) => {
-        const attenNum = respond.data.participants.length;
+        var attenNum = 0;
+        if (respond.data.participants) {
+          attenNum = respond.data.participants.length;
+        }
         const percent =
           String((attenNum / respond.data.maxParticipant) * 100) + "%";
-        console.log(attenNum);
-        console.log(percent);
 
         setEventData(respond.data);
         setAttendance(attenNum);
@@ -151,15 +171,58 @@ function JoinEventDetail() {
         <div className="status">
           <div className="joinButton">
             <p>Price : {eventData.price} Coin</p>
-            {globalVar.UserID !== eventData.creatorId && (
-              <JoinOrEditButton type="submit">Join</JoinOrEditButton>
+            {joined && (
+              <JoinedButton
+                type="submit"
+                onClick={() => {
+                  setJoined(false);
+                  const nAttenNum = attendance - 1;
+                  const percent =
+                    String((nAttenNum / eventData.maxParticipant) * 100) + "%";
+                  setAttendance(nAttenNum);
+                  setProgressData(percent);
+                }}
+              >
+                Joined
+              </JoinedButton>
             )}
-            {globalVar.UserID === eventData.creatorId && (
-              <JoinOrEditButton type="submit">Edit</JoinOrEditButton>
+            {!joined && (
+              <div>
+                {eventData.eventId != 2 && (
+                  <JoinOrEditButton
+                    type="submit"
+                    onClick={() => {
+                      setJoined(true);
+                      const nAttenNum = attendance + 1;
+                      const percent =
+                        String((nAttenNum / eventData.maxParticipant) * 100) +
+                        "%";
+                      setAttendance(nAttenNum);
+                      setProgressData(percent);
+                    }}
+                  >
+                    Join
+                  </JoinOrEditButton>
+                )}
+                {eventData.eventId == 2 && (
+                  <JoinOrEditButton
+                    type="submit"
+                    onClick={() => {
+                      navigate("/editEvent", {
+                        state: { eventId: eventData.eventId },
+                      });
+                    }}
+                  >
+                    Edit
+                  </JoinOrEditButton>
+                )}
+              </div>
             )}
           </div>
           <div className="attendances">
-            <p>Attendances:</p>
+            <p>
+              Attendances: {attendance} / {eventData.maxParticipant}
+            </p>
             <div className="progressContainer">
               <div
                 className="progress"
@@ -172,11 +235,7 @@ function JoinEventDetail() {
                   alignItems: "center",
                   justifyContent: "flex-end",
                 }}
-              >
-                <p>
-                  {attendance} / {eventData.maxParticipant}
-                </p>
-              </div>
+              ></div>
             </div>
           </div>
         </div>
