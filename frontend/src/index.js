@@ -16,7 +16,7 @@ import ChatList from "./screen/ChatList";
 render(
   <BrowserRouter>
     <Routes>
-      <Route path="/" element={<App />} />
+      <Route path="/" element={<LoginRootComponent />} />
       <Route path="register" element={<Register />} />
       <Route path="verifyEmail" element={<VerifyEmail />} />
       <Route path="finishRegister" element={<FinishRegister />} />

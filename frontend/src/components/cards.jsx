@@ -20,6 +20,7 @@ class Cards extends Component {
               // <EventCard />
               <EventCard
                 key={card.id}
+                id={card.id}
                 imgSource={this.props.srcURL}
                 events={card}
               />
