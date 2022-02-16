@@ -15,16 +15,19 @@ import EditEventComponent from "./components/EditEventComponent";
 import JoinEventFilterModal from "./components/modal/modal.js";
 
 import { useState } from "react";
+import ChatListUser from "./components/ChatListUser";
+
 
 import JoinComponent from "./components/JoinCompo";
-
+import FriendYouMayKnow from "./components/FriendYouMayKnow";
 var hash = require("object-hash");
 
 function App() {
   return (
-    <div className="App">
-      {/* <h1>Welcome to Meetmitr</h1> */}
-      <LoginRootComponent />
+
+    <div>
+      <FriendYouMayKnow />
+
     </div>
   );
 }
