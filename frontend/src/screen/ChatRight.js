@@ -19,6 +19,7 @@ const ChatRight = (props) => {
           alignSelf: "center",
           display: "flex",
           flexDirection: "row",
+          backgroundColor: "#FAF3E7",
         }}
       >
         <input
@@ -44,7 +45,7 @@ const divScroller = {
   overflowY: "scroll",
   width: "100%",
   height: "93%",
-  backgroundColor: "red",
+  backgroundColor: "#FAF3E7",
   display: "flex",
   flexDirection: "column",
 };

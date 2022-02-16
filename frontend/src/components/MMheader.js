@@ -9,7 +9,8 @@ import noti from "../asset/notification.png";
 import drop from "../asset/dropDownSetting.png";
 import { useNavigate } from "react-router-dom";
 
-const MMheader = () => {
+
+const MMheader = (props) => {
   const navigate = useNavigate();
   return (
     //let filterEvent = this.props.events;
@@ -19,7 +20,7 @@ const MMheader = () => {
           <img src={icon} alt="" className="iconImg"></img>
         </Col>
         <Col xs={5} className="feedHead">
-          <h1 className="feedHeader">Event Feed</h1>
+          <h1 className="feedHeader">{props.name}</h1>
         </Col>
         <Col>
           <div className="navButt">
