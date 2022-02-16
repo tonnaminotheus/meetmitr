@@ -7,6 +7,7 @@ import { useLocation } from "react-router-dom"
 const EditEventComponent=(props)=>{
 
     const {eventID} = useLocation();
+    // console.log("eventID :"+eventID)  
     
     return (
         <div className="create-event-container">
