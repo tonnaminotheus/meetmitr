@@ -2,11 +2,53 @@ import "./Register.css";
 import yellowlogo from "../asset/iconyellow.png";
 import { useState } from "react";
 import styled from "styled-components";
+import moment from "moment";
+import { useNavigate } from "react-router-dom";
+import App from "../App";
 
 function Register() {
+  let navigate = useNavigate();
   const [agreeTerm, setAgreeTerm] = useState(false);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [gender, setGender] = useState("M");
+  const [birthDate, setBirthDate] = useState(moment().format("yyyy-MM-DD"));
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const handleAgreeTerm = () => {
     setAgreeTerm(!agreeTerm);
+  };
+  const handleFirstNameChange = (event) => {
+    setFirstName(event.target.value);
+  };
+  const handleLastNameChange = (event) => {
+    setLastName(event.target.value);
+  };
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value);
+  };
+  const handleGenderChange = (event) => {
+    setGender(event.target.value);
+  };
+  const handleBirthDateChange = (event) => {
+    setBirthDate(event.target.value);
+  };
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
+  };
+  const handleConfirmPasswordChange = (event) => {
+    setConfirmPassword(event.target.value);
+  };
+  const submitRegister = () => {
+    console.log("firstName:", firstName);
+    console.log("lastName:", lastName);
+    console.log("email:", email);
+    console.log("gender:", gender);
+    console.log("birthDate:", birthDate);
+    console.log("password:", password);
+    console.log("confirmPassword:", confirmPassword);
+    navigate("/verifyEmail");
   };
   const Button = styled.button`
     background-color: #303b5b;
@@ -46,7 +88,6 @@ function Register() {
       padding: 0px 2px 1px;
     }
   `;
-  const register = () => {};
   return (
     <div className="Register">
       <div className="register-container">
@@ -66,40 +107,75 @@ function Register() {
           <div class="left-register-form">
             <div class="field">
               <p>First Name</p>
-              <input type="text" placeholder="" />
+              <input
+                type="text"
+                placeholder=""
+                value={firstName}
+                onChange={handleFirstNameChange}
+              />
             </div>
             <div class="field">
               <p>Email Address</p>
-              <input type="email" placeholder="" />
+              <input
+                type="email"
+                placeholder=""
+                value={email}
+                onChange={handleEmailChange}
+              />
             </div>
             <div class="field">
               <p>Password</p>
-              <input type="password" placeholder="" />
+              <input
+                type="password"
+                placeholder=""
+                value={password}
+                onChange={handlePasswordChange}
+              />
             </div>
           </div>
           <div class="right-register-form">
             <div class="field">
               <p>Last Name</p>
-              <input type="text" placeholder="" />
+              <input
+                type="text"
+                placeholder=""
+                value={lastName}
+                onChange={handleLastNameChange}
+              />
             </div>
             <div class="gender-field">
               <div class="gender">
                 <p>Gender</p>
-                <Select name="gender" id="gerder">
-                  <option value="male">M</option>
-                  <option value="female">F</option>
+                <Select
+                  name="gender"
+                  id="gerder"
+                  value={gender}
+                  onChange={handleGenderChange}
+                >
+                  <option value="M">M</option>
+                  <option value="F">F</option>
                 </Select>
               </div>
               <div calss="birthdate">
                 <p>Birth Date</p>
                 <div class="birthDateSelect">
-                  <input type="date" placeholder="" />
+                  <input
+                    type="date"
+                    placeholder=""
+                    value={birthDate}
+                    onChange={handleBirthDateChange}
+                  />
                 </div>
               </div>
             </div>
             <div class="field">
               <p>Confirm Password</p>
-              <input type="password" placeholder="" />
+              <input
+                type="password"
+                placeholder=""
+                value={confirmPassword}
+                onChange={handleConfirmPasswordChange}
+              />
             </div>
           </div>
         </div>
@@ -123,8 +199,10 @@ function Register() {
             </p>
           </div>
           <div class="button">
-            <form action={register}>
-              <Button type="submit">Create Account</Button>
+            <form action={submitRegister}>
+              <Button type="Button" onClick={submitRegister}>
+                Create Account
+              </Button>
             </form>
           </div>
         </div>
