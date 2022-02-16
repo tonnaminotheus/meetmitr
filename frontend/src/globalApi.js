@@ -5,9 +5,10 @@ const globalApi = {
   activate: `${url}/api/v1/activate/`, //+:activStr
   joinEvent: `${url}/api/v1/event/join/`, //+:eventId v2022.01 (Auth)
   tagsEvent: `${url}/api/v1/event/tags/`,
-  updateEvent: `${url}/api/v1/event/update/`, //:eventId v2022.01 (Auth)
+  updateEvent: `${url}/api/v1/event/update/`, //+:eventId v2022.01 (Auth)
   eventDescription: `${url}/api/v1/event/descriptions/`, //+:eventId v2022.01
   createEvent: `${url}/api/v1/event/create`, //v2022.01
+  userData: `${url}/api/v1/user/`, //+:userId
 };
 
 export default globalApi;

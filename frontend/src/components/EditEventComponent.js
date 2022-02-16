@@ -1,5 +1,4 @@
-import "./EditEventComponent.css"
-
+import "./EditEventComponent.css";
 import CreateEventPicComponent from "./CreateEventPicComponent"
 import CreateEventInfoComponent from "./CreateEventInfoComponent"
 import { useLocation } from "react-router-dom"

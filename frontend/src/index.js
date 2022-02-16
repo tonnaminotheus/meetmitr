@@ -10,6 +10,7 @@ import JoinComponent from "./components/JoinCompo";
 import Chat from "./screen/Chat";
 import EditEventComponent from "./components/EditEventComponent"
 import LoginRootComponent from "./components/LoginRootComponent"
+import "bootstrap/dist/css/bootstrap.min.css";
 
 render(
   <BrowserRouter>
