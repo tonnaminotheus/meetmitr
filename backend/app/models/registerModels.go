@@ -69,15 +69,19 @@ type Tag struct {
 }
 
 type User struct {
-	UserId      int
-	Email       string
-	Gender      string
-	ProfileName string
-	PhoneName   string
-	Bio         string
-	Birthdate   time.Time
+	UserId          int    `json:"userId"`
+	Email           string `json:"email"`
+	Gender          string `json:"gender"`
+	ProfileName     string `json:"profileName"`
+	Bio             string `json:"bio"`
+	Birthdate       string `json:"birthdate"`
+	Password        string `json:"password,omitempty"`
+	FirstName       string `json:"firstName"`
+	MiddleName      string `json:"middleName"`
+	LastName        string `json:"lastName"`
+	HideGender      bool   `json:"hideGender,omitempty"`
+	NumberOfPenalty int    `json:"numberOfPenalty"`
 }
-
 type Usereventstatus struct {
 	UserId  int
 	EventId int
