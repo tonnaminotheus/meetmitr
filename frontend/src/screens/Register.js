@@ -4,18 +4,24 @@ import { useState } from "react";
 import styled from "styled-components";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
-import App from "../App";
 
 function Register() {
   let navigate = useNavigate();
+  var hash = require("object-hash");
   const [agreeTerm, setAgreeTerm] = useState(false);
   const [firstName, setFirstName] = useState("");
+  const [firstNamePlaceHolder, setFirstNamePlaceHolder] = useState("");
   const [lastName, setLastName] = useState("");
+  const [lastNamePlaceHolder, setLastNamePlaceHolder] = useState("");
   const [email, setEmail] = useState("");
+  const [emailPlaceHolder, setEmailPlaceHolder] = useState("");
   const [gender, setGender] = useState("M");
   const [birthDate, setBirthDate] = useState(moment().format("yyyy-MM-DD"));
   const [password, setPassword] = useState("");
+  const [passwordPlaceHolder, setPasswordPlaceHolder] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [confirmPasswordPlaceHolder, setConfirmPasswordPlaceHolder] =
+    useState("");
   const handleAgreeTerm = () => {
     setAgreeTerm(!agreeTerm);
   };
@@ -41,6 +47,36 @@ function Register() {
     setConfirmPassword(event.target.value);
   };
   const submitRegister = () => {
+    let pass = true;
+    if (firstName === "") {
+      setFirstNamePlaceHolder("First name can’t be blank");
+      setFirstName("");
+      pass = false;
+    }
+    if (lastName === "") {
+      setLastNamePlaceHolder("Last name can’t be blank");
+      setLastName("");
+      pass = false;
+    }
+    if (email === "") {
+      setEmailPlaceHolder("Email can’t be blank");
+      setEmail("");
+      pass = false;
+    }
+    if (password.length < 8) {
+      setPasswordPlaceHolder(
+        "Password too short, at least 8 characters required"
+      );
+      setPassword("");
+      pass = false;
+    }
+    if (password != confirmPassword) {
+      setConfirmPasswordPlaceHolder("Password not matched");
+      setConfirmPassword("");
+      pass = false;
+    }
+    if (pass) {
+    }
     console.log("firstName:", firstName);
     console.log("lastName:", lastName);
     console.log("email:", email);
