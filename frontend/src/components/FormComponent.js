@@ -1,11 +1,17 @@
 import "./FormComponent.css"
 
 import globalApi from "../globalApi";
+import globalVar from "../cookie";
+import { useNavigate } from "react-router-dom";
 
 var axios = require('axios').default;
 var hash = require('object-hash');
 
 const FormComponent=(props)=>{
+    let navigate = useNavigate();
+    const toFeed = () => {
+        navigate("/feed");
+    };
     function togglePassword(){
         let pass_box = document.getElementById("password-input-box")
         console.log("click checkbox")
@@ -34,8 +40,15 @@ const FormComponent=(props)=>{
         })
         .then(function (response) {
             console.log(response);
-            //redirect
-            
+
+            if (response.status == 200) {
+                globalVar.accessToken = response.data["accessToken"]
+                globalVar.refreshToken = response.data["refreshToken"]
+                globalVar.UserID = response.data["UserID"]
+                
+                //redirect
+                toFeed()
+            }
         })
         .catch(function (error) {
             console.log("error!!")
