@@ -3,8 +3,11 @@ import yellowlogo from "../asset/iconyellow.png";
 import { useState } from "react";
 import styled from "styled-components";
 import moment from "moment";
+import { useNavigate } from "react-router-dom";
+import App from "../App";
 
 function Register() {
+  let navigate = useNavigate();
   const [agreeTerm, setAgreeTerm] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -45,6 +48,7 @@ function Register() {
     console.log("birthDate:", birthDate);
     console.log("password:", password);
     console.log("confirmPassword:", confirmPassword);
+    navigate("/verifyEmail");
   };
   const Button = styled.button`
     background-color: #303b5b;
@@ -84,7 +88,6 @@ function Register() {
       padding: 0px 2px 1px;
     }
   `;
-  const register = () => {};
   return (
     <div className="Register">
       <div className="register-container">
