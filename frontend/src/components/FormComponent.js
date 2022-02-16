@@ -1,10 +1,7 @@
 import "./FormComponent.css"
 
-
-
 var axios = require('axios').default;
 var hash = require('object-hash');
-const bcrypt = require('bcrypt');
 
 const FormComponent=(props)=>{
     function togglePassword(){
