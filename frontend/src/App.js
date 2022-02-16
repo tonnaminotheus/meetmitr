@@ -13,6 +13,12 @@ import EditEventComponent from "./components/EditEventComponent";
 
 //modal
 import JoinEventFilterModal from "./components/modal/modal.js";
+<<<<<<< HEAD
+||||||| 98786a8
+import { useState } from "react";
+=======
+
+>>>>>>> cf6d347c4b4a708415d8de9567e8be253a4c674f
 
 import JoinComponent from "./components/JoinCompo";
 

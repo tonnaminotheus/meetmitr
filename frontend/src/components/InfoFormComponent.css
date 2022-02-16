@@ -4,11 +4,25 @@
 }
 
 .info-form-box{
-    margin-top: 1vh;
+    margin: 0.5%;
+}
+
+.province-dropdown{
+    width: 50%;
+}
+
+.text-area{
+    width: 75%;
+    margin-top: 1%;
+    margin-bottom: 1%;
+}
+
+.Dropdown-placeholder{
+    padding: auto;
 }
 
 input{
-    margin: 5px;
+    margin: 1%;
     padding: 5px 10px;
     box-sizing: border-box;
     border: none;
