@@ -29,13 +29,18 @@ function EventCard({ events, id }) {
 
   const handleMouseIn = () => {
     console.log("mouse in");
-    if (display[2]) {
-      setDisplay([false, true, false]);
-      const timer = setTimeout(() => {
-        setDisplay([true, false, true]);
-      }, 3500);
-      return () => clearTimeout(timer);
-    }
+    // if (display[2]) {
+    setDisplay([false, true, false]);
+    //   const timer = setTimeout(() => {
+    //     setDisplay([true, false, true]);
+    //   }, 3500);
+    //   return () => clearTimeout(timer);
+    // }
+  };
+
+  const handleMouseOut = () => {
+    console.log("mouse out");
+    setDisplay([true, false, true]);
   };
 
   return (
@@ -49,6 +54,7 @@ function EventCard({ events, id }) {
       >
         <div
           onMouseEnter={handleMouseIn}
+          onMouseLeave={handleMouseOut}
           // onMouseOut={handleMouseOut}
           className="cardImg"
         >
