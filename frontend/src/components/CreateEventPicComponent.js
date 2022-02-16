@@ -16,7 +16,9 @@ const CreateEventPicComponent=()=>{
             <div className="img-div-container">
                 <CreateEventPicDisplayComponent img_path={img_path}/>
             </div>
-            <CreateEventPicUploadComponent onImgUpload={onImgUpload}/>
+            <div className="upload-div-container">
+                <CreateEventPicUploadComponent onImgUpload={onImgUpload}/>
+            </div>
         </div>
     );
 }

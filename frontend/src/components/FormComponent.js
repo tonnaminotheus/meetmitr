@@ -20,29 +20,27 @@ const FormComponent=(props)=>{
         event.preventDefault()
         
         const data = {
-            "userName": document.getElementById("email-input-box").value,
-            "password": hash(document.getElementById("password-input-box").value)
+            "email": document.getElementById("email-input-box").value,
+            // "password": hash(document.getElementById("password-input-box").value)
+            "password": document.getElementById("password-input-box").value
         }
-        
-        // console.log(data.userName)
-        // console.log(data.password)
-        
-        console.log(data)
 
         axios({
             method: 'post',
-            url: 'http://ec2-54-166-46-110.compute-1.amazonaws.com:8080/api/v1/login',
+            url: 'http://ec2-3-91-230-147.compute-1.amazonaws.com:8080/api/v1/login',
             data: data
         })
         .then(function (response) {
             console.log(response);
+            //redirect
+            
         })
         .catch(function (error) {
+            console.log("error!!")
             console.log(error);
         })
         .then(function () {
             // always executed
-            
         });
     }
     
