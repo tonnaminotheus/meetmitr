@@ -1,6 +1,7 @@
-.login-container{
-    padding: 1%;
-    justify-content: center;
-    display: flex;
-    height: 100vh;
-  }
+.login-container {
+  padding: 1%;
+  justify-content: center;
+  display: flex;
+  height: 100vh;
+  background-image: url("../asset/MeetmitrBgNoHead.png");
+}
