@@ -30,8 +30,12 @@ func GetEventDescHandler(c *gin.Context) {
 		`select Tag.tagName from Tag,EventTag 
 		where Tag.TagId=EventTag.tagId and EventTag.eventId=?`, eventId)
 	if err2 != nil || rows == nil {
+		message := "No tag found"
+		if err != nil {
+			message = err.Error()
+		}
 		c.JSON(500, gin.H{
-			"message": err2.Error(),
+			"message": message,
 		})
 		return
 	}
@@ -49,8 +53,12 @@ func GetEventDescHandler(c *gin.Context) {
 		from User, UserEventStatus
 		where User.userId=UserEventStatus.userId and UserEventStatus.eventId=?`, eventId)
 	if err3 != nil || rows == nil {
+		message := "No user profile found"
+		if err != nil {
+			message = err.Error()
+		}
 		c.JSON(500, gin.H{
-			"message": err2.Error(),
+			"message": message,
 		})
 		return
 	}
@@ -73,9 +81,13 @@ func GetEventTagsHandler(c *gin.Context) {
 
 	if eventId == "" {
 		rows, err := database.Sql.Query(`select tagName from Tag where tagId>=1`)
-		if err != nil {
+		if err != nil || rows == nil {
+			message := "No tag found"
+			if err != nil {
+				message = err.Error()
+			}
 			c.JSON(500, gin.H{
-				"message": err.Error(),
+				"message": message,
 			})
 			return
 		}
@@ -121,8 +133,8 @@ func GetEventTagsHandler(c *gin.Context) {
 }
 
 func UpdateEventHandler(c *gin.Context) {
-	userId, err := c.Get("user_id")
-	if !err {
+	userId, ok := c.Get("user_id")
+	if !ok {
 		c.JSON(401, gin.H{
 			"message": "invalid token",
 		})
@@ -168,8 +180,8 @@ func UpdateEventHandler(c *gin.Context) {
 }
 
 func JoinEventHandler(c *gin.Context) {
-	userId, err := c.Get("user_id")
-	if !err {
+	userId, ok := c.Get("user_id")
+	if !ok {
 		c.JSON(401, gin.H{
 			"message": "invalid token",
 		})
@@ -229,8 +241,8 @@ func JoinEventHandler(c *gin.Context) {
 }
 
 func CreateEventHandler(c *gin.Context) {
-	userId, err := c.Get("user_id")
-	if !err {
+	userId, ok := c.Get("user_id")
+	if !ok {
 		c.JSON(401, gin.H{
 			"message": "invalid token",
 		})
