@@ -14,6 +14,7 @@ function JoinEventDetail() {
   const [show, setShow] = React.useState([true, false, false]);
   const [attendance, setAttendance] = React.useState(0);
   const [progressData, setProgressData] = React.useState("50%");
+  const [joined, setJoined] = React.useState(false);
   const [hostData, setHostData] = React.useState({
     userId: 1,
     email: "test@gmail.com",
@@ -47,6 +48,23 @@ function JoinEventDetail() {
   const JoinOrEditButton = styled.button`
     background-color: #ffc229;
     color: white;
+    border-radius: 15px;
+    outline: 0;
+    border: 0px;
+    cursor: pointer;
+    transition: ease background-color 250ms;
+    height: 77px;
+    width: 246px;
+    margin-right: 10px;
+    margin-left: 0px;
+    font-size: 30px;
+    font-weight: bold;
+    font-family: "Roboto", sans-serif;
+    align-self: flex-end;
+  `;
+  const JoinedButton = styled.button`
+    background-color: #d9d9d9;
+    color: #000000;
     border-radius: 15px;
     outline: 0;
     border: 0px;
@@ -106,8 +124,6 @@ function JoinEventDetail() {
         const attenNum = respond.data.participants.length;
         const percent =
           String((attenNum / respond.data.maxParticipant) * 100) + "%";
-        console.log(attenNum);
-        console.log(percent);
 
         setEventData(respond.data);
         setAttendance(attenNum);
@@ -151,11 +167,23 @@ function JoinEventDetail() {
         <div className="status">
           <div className="joinButton">
             <p>Price : {eventData.price} Coin</p>
-            {globalVar.UserID !== eventData.creatorId && (
-              <JoinOrEditButton type="submit">Join</JoinOrEditButton>
-            )}
-            {globalVar.UserID === eventData.creatorId && (
-              <JoinOrEditButton type="submit">Edit</JoinOrEditButton>
+            {joined && <JoinedButton>Joined</JoinedButton>}
+            {!joined && (
+              <div>
+                {globalVar.UserID !== eventData.creatorId && (
+                  <JoinOrEditButton
+                    type="submit"
+                    onClick={() => {
+                      setJoined(true);
+                    }}
+                  >
+                    Join
+                  </JoinOrEditButton>
+                )}
+                {globalVar.UserID === eventData.creatorId && (
+                  <JoinOrEditButton type="submit">Edit</JoinOrEditButton>
+                )}
+              </div>
             )}
           </div>
           <div className="attendances">
