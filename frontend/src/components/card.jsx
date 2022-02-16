@@ -1,9 +1,15 @@
 import React, { Component } from "react";
 import Card from "react-bootstrap/Card";
 import "./card.css";
+import { useState } from "react";
+import globalApi from "../globalApi";
+import axios from "axios";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 
 class EventCard extends Component {
   state = {
+    eventInfo: {},
+    tagss: {},
     style1: {
       display: "initial",
     },
@@ -12,6 +18,21 @@ class EventCard extends Component {
     },
     busy: 0,
   };
+
+  componentDidMount() {
+    axios.get(globalApi.eventDescription + this.props.id).then((res) => {
+      console.log(res.data);
+      this.setState({ eventInfo: res.data });
+      // this.handleTag(res);
+      var tagData = res.data.tags;
+      var tag = "";
+      var i;
+      for (i = 0; i < tagData.length; i++) {
+        tag += `<li>${tagData[i].name}</li>`;
+      }
+      this.setState({ tagss: tag });
+    });
+  }
 
   handleMouseIn = () => {
     console.log("mouse in");
@@ -31,24 +52,23 @@ class EventCard extends Component {
     }
   };
 
-  // handleMouseOut = () => {
-  //   console.log("mouse out");
-  //   this.setState({ busy: 1 });
-  //   if (this.state.busy === 0)
-  //     setTimeout(() => {
-  //       this.setState({
-  //         style1: { display: "initial" },
-  //         style2: { display: "none" },
-  //       });
-  //     }, 10);
-  // };
-
   render() {
     const im = this.props.events.imgSrc;
+    const { tagLi } = this.state.tagss;
+    const { navigation } = this.props;
+
     return (
       <div>
         {/* <h1>hwllo</h1> */}
-        <Card className="cardTemplate">
+        <Card
+          className="cardTemplate"
+          onClick={() => {
+            console.log("clicked");
+            this.props.navigation.navigate("/joinEvent", {
+              eventId: this.state.eventInfo.eventId,
+            });
+          }}
+        >
           <div
             onMouseEnter={this.handleMouseIn}
             // onMouseOut={this.handleMouseOut}
@@ -65,21 +85,29 @@ class EventCard extends Component {
 
             <div className="cardCate" style={this.state.style2}>
               <h2>Category</h2>
-              <ul className="cardCateLi">
+              <ul
+                className="cardCateLi"
+                dangerouslySetInnerHTML={{ __html: tagLi }}
+              >
+                {/* {this.handleTag()} */}
+                {/* {this.state.eventInfo.tags != null &&
+                  this.state.eventInfo.tags.maps((tag) => {
+                    <li key={"tag-" + tag}>{tag}</li>;
+                  })} */}
+                {/* <li>yare</li>
                 <li>yare</li>
-                <li>yare</li>
-                <li>daze</li>
+                <li>daze</li> */}
               </ul>
             </div>
           </div>
 
-          <span className="cardTitleBg">{this.props.events.title}</span>
+          <span className="cardTitleBg">{this.state.eventInfo.name}</span>
           <Card.Body>
             <Card.Text className="eventDate">
-              {this.props.events.date}
+              {this.state.eventInfo.startTime}
             </Card.Text>
             <Card.Text className="eventPlace">
-              {this.props.events.place}
+              {this.state.eventInfo.province}
             </Card.Text>
           </Card.Body>
         </Card>
@@ -89,3 +117,53 @@ class EventCard extends Component {
 }
 
 export default EventCard;
+
+// handleTag = (res) => {
+//   console.log(this.state.eventInfo.tags);
+//   if (this.state.eventInfo.tags) {
+//     this.state.eventInfo.tags.maps((tag) => {
+//       console.log(tag);
+//     });
+//   } else {
+//     console.log("tag null");
+//   }
+// };
+
+// handleMouseOut = () => {
+//   console.log("mouse out");
+//   this.setState({ busy: 1 });
+//   if (this.state.busy === 0)
+//     setTimeout(() => {
+//       this.setState({
+//         style1: { display: "initial" },
+//         style2: { display: "none" },
+//       });
+//     }, 10);
+// };
+
+// useEffect(() => {
+//   axios({
+//     method: "GET",
+//     url: globalApi.eventDescription + eventId,
+//   })
+//     .then((respond) => {
+//       const attenNum = respond.data.participants.length;
+//       const percent =
+//         String((attenNum / respond.data.maxParticipant) * 100) + "%";
+
+//       setEventData(respond.data);
+//       setAttendance(attenNum);
+//       setProgressData(percent);
+
+//       const hostId = respond.data.creatorId;
+//       axios({
+//         method: "GET",
+//         url: globalApi.userData + hostId,
+//       })
+//         .then((respond) => {
+//           setHostData(respond.data);
+//         })
+//         .catch((error) => {});
+//     })
+//     .catch((error) => {});
+// }, []);
