@@ -1,9 +1,8 @@
-
 import "./FormComponent.css";
 
 import globalApi from "../globalApi";
 import globalVar from "../cookie";
-
+import { useNavigate } from "react-router-dom";
 var axios = require("axios").default;
 var hash = require("object-hash");
 
@@ -20,7 +19,7 @@ const FormComponent = (props) => {
     } else if (pass_box.type === "password") {
       pass_box.type = "text";
     }
-
+  }
   const requestLogin = (event) => {
     event.preventDefault();
 

@@ -141,7 +141,7 @@ function Register() {
           email: email,
           gender: gender,
           birthdate: birthDate,
-          password: hash(password),
+          password: password,
           firstName: firstName,
           lastName: lastName,
         },

@@ -7,9 +7,10 @@ import moment from "moment";
 import axios from "axios";
 import globalApi from "../globalApi";
 import globalVar from "../cookie";
+import { useLocation } from "react-router-dom";
 
 function JoinEventDetail() {
-  const eventId = 2;
+  const { state } = useLocation();
   const [show, setShow] = React.useState([true, false, false]);
   const [attendance, setAttendance] = React.useState(0);
   const [progressData, setProgressData] = React.useState("50%");
@@ -99,7 +100,7 @@ function JoinEventDetail() {
   useEffect(() => {
     axios({
       method: "GET",
-      url: globalApi.eventDescription + eventId,
+      url: globalApi.eventDescription + state.eventId,
     })
       .then((respond) => {
         const attenNum = respond.data.participants.length;
