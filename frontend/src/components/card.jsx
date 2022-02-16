@@ -1,110 +1,72 @@
-import React, { Component } from "react";
+import React, { Component, useEffect } from "react";
 import Card from "react-bootstrap/Card";
 import "./card.css";
 import { useState } from "react";
 import globalApi from "../globalApi";
 import axios from "axios";
-import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-class EventCard extends Component {
-  state = {
-    eventInfo: {},
-    tagss: {},
-    style1: {
-      display: "initial",
-    },
-    style2: {
-      display: "none",
-    },
-    busy: 0,
-  };
+function EventCard({ events, id }) {
+  const navigate = useNavigate();
+  const [eventInfo, setEventInfo] = useState({});
+  const [tagss, setTagss] = useState({});
+  const [display, setDisplay] = useState([true, false, true]);
 
-  componentDidMount() {
-    axios.get(globalApi.eventDescription + this.props.id).then((res) => {
+  useEffect(() => {
+    axios.get(globalApi.eventDescription + id).then((res) => {
       console.log(res.data);
-      this.setState({ eventInfo: res.data });
-      // this.handleTag(res);
-      // var tagData = res.data.tags;
-      // var tag = "";
-      // var i;
-      // for (i = 0; i < tagData.length; i++) {
-      //   tag += `<li>${tagData[i].name}</li>`;
-      // }
-      // this.setState({ tagss: tag });
+      setEventInfo(res.data);
     });
-  }
+  }, []);
 
-  handleMouseIn = () => {
+  const handleMouseIn = () => {
     console.log("mouse in");
-    if (this.state.busy === 0) {
-      this.setState({
-        style2: { display: "initial" },
-        style1: { display: "none" },
-        busy: 1,
-      });
+    if (display[2]) {
+      setDisplay([false, true, false]);
       setTimeout(() => {
-        this.setState({
-          style1: { display: "initial" },
-          style2: { display: "none" },
-          busy: 0,
-        });
+        setDisplay([true, false, true]);
       }, 3500);
     }
   };
 
-  render() {
-    const im = this.props.events.imgSrc;
-    const { tagLi } = this.state.tagss;
-    const { navigation } = this.props;
-
-    return (
-      <div>
-        <Card
-          className="cardTemplate"
-          onClick={() => {
-            console.log("clicked");
-            this.props.navigation.navigate("/joinEvent", {
-              eventId: this.state.eventInfo.eventId,
-            });
-          }}
+  return (
+    <div>
+      <Card
+        className="cardTemplate"
+        onClick={() => {
+          console.log("clicked");
+          navigate("/joinEvent", { state: { eventId: eventInfo.eventId } });
+        }}
+      >
+        <div
+          onMouseEnter={handleMouseIn}
+          // onMouseOut={this.handleMouseOut}
+          className="cardImg"
         >
-          <div
-            onMouseEnter={this.handleMouseIn}
-            // onMouseOut={this.handleMouseOut}
-            className="cardImg"
-          >
-            <div style={this.state.style1}>
-              <Card.Img
-                className="cardImg"
-                variant="top"
-                src={this.props.events.imgSrc}
-                alt=""
-              />
-            </div>
-
-            <div className="cardCate" style={this.state.style2}>
+          {display[0] && (
+            <Card.Img
+              className="cardImg"
+              variant="top"
+              src={events.imgSrc}
+              alt=""
+            />
+          )}
+          {display[1] && (
+            <div className="cardCate">
               <h2>Category</h2>
-              <ul className="cardCateLi">
-                {/* <li>yare</li>
-                <li>yare</li>
-                <li>daze</li> */}
-              </ul>
+              <ul className="cardCateLi"></ul>
             </div>
-          </div>
+          )}
+        </div>
 
-          <span className="cardTitleBg">{this.state.eventInfo.name}</span>
-          <Card.Body>
-            <Card.Text className="eventDate">
-              {this.state.eventInfo.startTime}
-            </Card.Text>
-            <Card.Text className="eventPlace">
-              {this.state.eventInfo.province}
-            </Card.Text>
-          </Card.Body>
-        </Card>
-      </div>
-    );
-  }
+        <span className="cardTitleBg">{eventInfo.name}</span>
+        <Card.Body>
+          <Card.Text className="eventDate">{eventInfo.startTime}</Card.Text>
+          <Card.Text className="eventPlace">{eventInfo.province}</Card.Text>
+        </Card.Body>
+      </Card>
+    </div>
+  );
 }
 
 export default EventCard;
