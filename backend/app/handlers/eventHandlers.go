@@ -44,6 +44,25 @@ func GetEventDescHandler(c *gin.Context) {
 		event.Tags = append(event.Tags, tag)
 	}
 
+	rows, err3 := database.Sql.Query(
+		`select User.profileName
+		from User, UserEventStatus
+		where User.userId=UserEventStatus.userId and UserEventStatus.eventId=?`, eventId)
+	if err3 != nil || rows == nil {
+		c.JSON(500, gin.H{
+			"message": err2.Error(),
+		})
+		return
+	}
+
+	defer rows.Close()
+
+	var participant string
+	for rows.Next() {
+		rows.Scan(&participant)
+		event.Participants = append(event.Participants, participant)
+	}
+
 	c.JSON(http.StatusOK, event)
 }
 
@@ -141,7 +160,7 @@ func UpdateEventHandler(c *gin.Context) {
 		c.JSON(500, gin.H{"message": err3.Error()})
 		return
 	}
-	
+
 	c.JSON(http.StatusOK, gin.H{
 		"message": "OK",
 	})
