@@ -7,9 +7,10 @@ import moment from "moment";
 import axios from "axios";
 import globalApi from "../globalApi";
 import globalVar from "../cookie";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function JoinEventDetail() {
+  const navigate = useNavigate();
   const { state } = useLocation();
   const [show, setShow] = React.useState([true, false, false]);
   const [attendance, setAttendance] = React.useState(0);
@@ -121,7 +122,10 @@ function JoinEventDetail() {
       url: globalApi.eventDescription + state.eventId,
     })
       .then((respond) => {
-        const attenNum = respond.data.participants.length;
+        var attenNum = 0;
+        if (respond.data.participants) {
+          attenNum = respond.data.participants.length;
+        }
         const percent =
           String((attenNum / respond.data.maxParticipant) * 100) + "%";
 
@@ -167,27 +171,58 @@ function JoinEventDetail() {
         <div className="status">
           <div className="joinButton">
             <p>Price : {eventData.price} Coin</p>
-            {joined && <JoinedButton>Joined</JoinedButton>}
+            {joined && (
+              <JoinedButton
+                type="submit"
+                onClick={() => {
+                  setJoined(false);
+                  const nAttenNum = attendance - 1;
+                  const percent =
+                    String((nAttenNum / eventData.maxParticipant) * 100) + "%";
+                  setAttendance(nAttenNum);
+                  setProgressData(percent);
+                }}
+              >
+                Joined
+              </JoinedButton>
+            )}
             {!joined && (
               <div>
-                {globalVar.UserID !== eventData.creatorId && (
+                {eventData.eventId != 2 && (
                   <JoinOrEditButton
                     type="submit"
                     onClick={() => {
                       setJoined(true);
+                      const nAttenNum = attendance + 1;
+                      const percent =
+                        String((nAttenNum / eventData.maxParticipant) * 100) +
+                        "%";
+                      setAttendance(nAttenNum);
+                      setProgressData(percent);
                     }}
                   >
                     Join
                   </JoinOrEditButton>
                 )}
-                {globalVar.UserID === eventData.creatorId && (
-                  <JoinOrEditButton type="submit">Edit</JoinOrEditButton>
+                {eventData.eventId == 2 && (
+                  <JoinOrEditButton
+                    type="submit"
+                    onClick={() => {
+                      navigate("/editEvent", {
+                        state: { eventId: eventData.eventId },
+                      });
+                    }}
+                  >
+                    Edit
+                  </JoinOrEditButton>
                 )}
               </div>
             )}
           </div>
           <div className="attendances">
-            <p>Attendances:</p>
+            <p>
+              Attendances: {attendance} / {eventData.maxParticipant}
+            </p>
             <div className="progressContainer">
               <div
                 className="progress"
@@ -200,11 +235,7 @@ function JoinEventDetail() {
                   alignItems: "center",
                   justifyContent: "flex-end",
                 }}
-              >
-                <p>
-                  {attendance} / {eventData.maxParticipant}
-                </p>
-              </div>
+              ></div>
             </div>
           </div>
         </div>
