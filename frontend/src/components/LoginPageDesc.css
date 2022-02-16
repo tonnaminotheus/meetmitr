@@ -1,25 +1,34 @@
-.login-page-desc{
-    display: flex;
-    flex: 50;
-    justify-content: center;
-    /* border-style:groove;
+.login-page-desc {
+  display: flex;
+  flex: 50;
+  justify-content: center;
+  /* border-style:groove;
     border-color: crimson; */
-    margin: 5px;
+  margin: 5px;
 
-    text-align: center;
-    align-content: center;
-    flex-direction: column;
+  text-align: center;
+  align-content: center;
+  flex-direction: column;
 }
 
+<<<<<<< HEAD
+#loginpagedesc-meetmitr-logo {
+  width: 50%;
+  margin-right: auto;
+  margin-left: auto;
+  margin-bottom: 1%;
+=======
 #loginpagedesc-meetmitr-logo{
     width: 50%;
     margin-right: auto;
     margin-left: auto;
     margin-bottom: 1%;
+    height: 180px;
+>>>>>>> origin/Putt
 }
 
-#meetmitr-desc{
-    display: inline-block;
-    width: 80%;
-    color: brown;
+#meetmitr-desc {
+  display: inline-block;
+  width: 80%;
+  color: brown;
 }

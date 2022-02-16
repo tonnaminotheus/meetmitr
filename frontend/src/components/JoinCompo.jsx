@@ -121,10 +121,9 @@ function JoinComponent() {
   });
 
   return (
-    <div>
+    <div className="backG">
       <MMheader />
       <Form.Group className="Searcher" controlId="exampleForm.ControlInput1">
-        {/* <Form.Label>Search Event Name</Form.Label> */}
         <Row>
           <Col>
             <Form.Control

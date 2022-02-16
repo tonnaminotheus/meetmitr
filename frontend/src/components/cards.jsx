@@ -16,6 +16,8 @@ class Cards extends Component {
           {" "}
           <Row xs={1} md={2} xl={3} xxl={3} className="g-4">
             {this.props.events.map((card) => (
+              // <h1>ayaya</h1>
+              // <EventCard />
               <EventCard
                 key={card.id}
                 imgSource={this.props.srcURL}

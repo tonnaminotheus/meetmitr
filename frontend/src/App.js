@@ -13,7 +13,9 @@ import CreateEventInfoComponent from "./components/CreateEventInfoComponent";
 import JoinEventFilterModal from "./components/modal/modal.js";
 import { useState } from "react";
 
-import Chat from "./screen/Chat";
+
+import JoinComponent from "./components/JoinCompo";
+
 var hash = require("object-hash");
 
 // login page
@@ -24,8 +26,9 @@ var hash = require("object-hash");
 //</div>
 function App() {
   return (
-    <div className="App">
-      <Chat></Chat>
+
+    <div>
+      <JoinComponent />
     </div>
   );
 }
