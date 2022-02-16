@@ -5,7 +5,9 @@ import "./index.css";
 import Register from "./screens/Register";
 import VerifyEmail from "./screens/VerifyEmail";
 import FinishRegister from "./screens/FinishRegister";
-import reportWebVitals from "./reportWebVitals";
+import JoinEvent from "./screens/JoinEventDetail";
+import JoinComponent from "./components/JoinCompo";
+import Chat from "./screen/Chat";
 
 render(
   <BrowserRouter>
@@ -13,6 +15,10 @@ render(
       <Route path="/" element={<App />} />
       <Route path="register" element={<Register />} />
       <Route path="verifyEmail" element={<VerifyEmail />} />
+      <Route path="finishRegister" element={<FinishRegister />} />
+      <Route path="joinEvent" element={<JoinEvent />} />
+      <Route path="feed" element={<JoinComponent />} />
+      <Route path="chat" element={<Chat />} />
     </Routes>
   </BrowserRouter>,
   document.getElementById("root")
