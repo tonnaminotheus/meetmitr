@@ -4,82 +4,71 @@ import (
 	"time"
 )
 
-type admin struct {
-	employeeId int
+type Admin struct {
+	EmployeeId int
 }
 
-type cointransaction struct {
-	transactionId   int
-	coinAmount      int
-	createTimeStamp time.Time
-	userId          int
+type Cointransaction struct {
+	TransactionId   int
+	CoinAmount      int
+	CreateTimeStamp time.Time
+	UserId          int
 }
 
-type displaypic struct {
-	displayPicId  int
-	displayPicURL string
-	userId        int
+type Displaypic struct {
+	DisplayPicId  int
+	DisplayPicURL string
+	UserId        int
 }
 
-type dmchat struct {
-	chatId int
+type DmChat struct {
+	ChatId int
 }
 
-type event struct {
-	eventId          int
-	name             string
-	description      string
-	tags             []int
-	address          string
-	province         string
-	imagUrl          string
-	startTime        string
-	endTime          string
-	onsite           bool
-	maxParticipant   int
-	price            int
-	createdTimeStamp string
-	userID           int
+type EventChat struct {
+	ChatId int
 }
 
-type eventchat struct {
-	chatId int
+type Eventtag struct {
+	TagId   int
+	EventId int
 }
 
-type eventtag struct {
-	tagId   int
-	eventId int
+type Friendwidth struct {
+	UserId1 int
+	UserId2 int
 }
 
-type friendwidth struct {
-	userId1 int
-	userId2 int
+type Has struct {
+	UserId        int
+	PersonalityId int
 }
 
-type has struct {
-	userId        int
-	personalityId int
+type Host struct {
+	UserId     int
+	EmployeeId int
 }
 
-type host struct {
-	userId     int
-	employeeId int
+type Personalities struct {
+	PersonalityId   int
+	PersonalityName string
 }
 
-type personalities struct {
-	personalityId   int
-	personalityName string
+type Report struct {
+	ReportId         int
+	CreatedTimeStamp time.Time
+	ReportedUserId   int
+	Reason           string
+	UserId           int
+	EmployeeId       int
 }
 
-type report struct {
-	reportId         int
-	createdTimeStamp time.Time
-	reportedUserId   int
-	reason           string
-	userId           int
-	employeeId       int
+type Tag struct {
+	TagId   int
+	TagName string
 }
 
+<<<<<<< HEAD
 type tag struct {
 	tagId   int
 	tagName string
@@ -98,10 +87,20 @@ type User struct {
 	LastName        string `json:"lastName"`
 	HideGender      bool   `json:"hideGender,omitempty"`
 	NumberOfPenalty int    `json:"numberOfPenalty"`
+=======
+type User struct {
+	UserId      int
+	Email       string
+	Gender      string
+	ProfileName string
+	PhoneName   string
+	Bio         string
+	Birthdate   time.Time
+>>>>>>> 012b19c3276b3a1d8e21ff7243ce6f0af10ba376
 }
 
-type usereventstatus struct {
-	userId  int
-	eventId int
-	status  string
+type Usereventstatus struct {
+	UserId  int
+	EventId int
+	Status  string
 }
