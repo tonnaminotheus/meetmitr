@@ -44,7 +44,7 @@ const FormComponent=(props)=>{
             if (response.status == 200) {
                 globalVar.accessToken = response.data["accessToken"]
                 globalVar.refreshToken = response.data["refreshToken"]
-                globalVar.UserID = response.data["UserID"]
+                globalVar.UserID = response.data["userId"]
                 
                 //redirect
                 toFeed()

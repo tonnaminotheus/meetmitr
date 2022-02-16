@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 import globalApi from "../globalApi";
-import globalVar from "../cookie";
+import globalVar from "../cookie.js";
 
 //location.replace("/view/drawing.html");
 
@@ -15,6 +15,10 @@ const provinces = ['Chiang Mai', 'Chiang Rai', 'Lampang', 'Lamphun', 'Mae Hong S
 const defaultOption = "Bangkok";
 
 const InfoFormComponent=(props)=>{
+
+    let accessToken = globalVar.accessToken
+    console.log("accessToken "+globalVar.accessToken)
+    console.log(globalVar)
 
     let title = "Edit Event"
     if (props.eventID == undefined) title = "Create Event"
@@ -95,7 +99,7 @@ const InfoFormComponent=(props)=>{
             method: 'post',
             url: globalApi.createEvent,
             headers: {
-                "Authorization" : "Bearer "+globalVar.accessToken,
+                "Authorization" : "Bearer "+accessToken,
             }, 
             data: new_data
         })
@@ -187,7 +191,6 @@ const InfoFormComponent=(props)=>{
         setData(new_data)
 
     }
-    
     // console.log(props.eventID)
     return (
         <div className="info-form-box">
