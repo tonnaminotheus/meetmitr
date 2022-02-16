@@ -4,6 +4,8 @@ import { useState } from "react";
 import styled from "styled-components";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import globalApi from "../globalApi";
 
 function Register() {
   let navigate = useNavigate();
@@ -76,6 +78,22 @@ function Register() {
       pass = false;
     }
     if (pass) {
+      axios({
+        method: "POST",
+        url: globalApi.register,
+        data: {
+          email: email,
+          gender: gender,
+          birthdate: birthDate,
+          password: hash(password),
+          firstName: firstName,
+          lastName: lastName,
+        },
+      })
+        .then((respond) => {
+          navigate("/verifyEmail");
+        })
+        .catch((error) => {});
     }
     console.log("firstName:", firstName);
     console.log("lastName:", lastName);
@@ -145,7 +163,7 @@ function Register() {
               <p>First Name</p>
               <input
                 type="text"
-                placeholder=""
+                placeholder={firstNamePlaceHolder}
                 value={firstName}
                 onChange={handleFirstNameChange}
               />
@@ -154,7 +172,7 @@ function Register() {
               <p>Email Address</p>
               <input
                 type="email"
-                placeholder=""
+                placeholder={emailPlaceHolder}
                 value={email}
                 onChange={handleEmailChange}
               />
@@ -163,7 +181,7 @@ function Register() {
               <p>Password</p>
               <input
                 type="password"
-                placeholder=""
+                placeholder={passwordPlaceHolder}
                 value={password}
                 onChange={handlePasswordChange}
               />
@@ -174,7 +192,7 @@ function Register() {
               <p>Last Name</p>
               <input
                 type="text"
-                placeholder=""
+                placeholder={lastNamePlaceHolder}
                 value={lastName}
                 onChange={handleLastNameChange}
               />
@@ -208,7 +226,7 @@ function Register() {
               <p>Confirm Password</p>
               <input
                 type="password"
-                placeholder=""
+                placeholder={confirmPasswordPlaceHolder}
                 value={confirmPassword}
                 onChange={handleConfirmPasswordChange}
               />
