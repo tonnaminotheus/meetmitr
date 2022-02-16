@@ -13,17 +13,19 @@ import CreateEventInfoComponent from "./components/CreateEventInfoComponent";
 import JoinEventFilterModal from "./components/modal/modal.js";
 import { useState } from "react";
 
+import Chat from "./screen/Chat";
 var hash = require("object-hash");
 
 // login page
+// {/* <h1>Welcome to Meetmitr</h1> */}
+// <div className="login-container">
+//<LoginPageDesc />
+// <LoginComponent />
+//</div>
 function App() {
   return (
     <div className="App">
-      {/* <h1>Welcome to Meetmitr</h1> */}
-      <div className="login-container">
-        <LoginPageDesc />
-        <LoginComponent />
-      </div>
+      <Chat></Chat>
     </div>
   );
 }
