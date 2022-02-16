@@ -13,11 +13,16 @@ function EventCard({ events, id }) {
   const [display, setDisplay] = useState([true, false, true]);
 
   useEffect(() => {
+    let isMounted = true;
     axios.get(globalApi.eventDescription + id).then((res) => {
-      console.log(res.data);
-      setEventInfo(res.data);
-      TagList();
+      if (isMounted) {
+        console.log(res.data);
+        setEventInfo(res.data);
+      }
     });
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   function TagList() {
