@@ -12,10 +12,10 @@ import CreateEventInfoComponent from "./components/CreateEventInfoComponent";
 
 import JoinEventFilterModal from "./components/modal/modal.js";
 import { useState } from "react";
-
+import ChatListUser from "./components/ChatListUser";
 
 import JoinComponent from "./components/JoinCompo";
-
+import FriendYouMayKnow from "./components/FriendYouMayKnow";
 var hash = require("object-hash");
 
 // login page
@@ -26,9 +26,8 @@ var hash = require("object-hash");
 //</div>
 function App() {
   return (
-
     <div>
-      <JoinComponent />
+      <FriendYouMayKnow />
     </div>
   );
 }
