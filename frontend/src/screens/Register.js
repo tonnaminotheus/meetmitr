@@ -82,16 +82,17 @@ function Register() {
         method: "POST",
         url: globalApi.register,
         data: {
-          email: "meetmitr.se2@gmail.com",
-          gender: "Queer",
-          birthdate: "2000-04-30",
-          password:
-            "$2a$10$VZHLHe1Pd8WNGZAo548wquH7sqs.07TveScOxfu1Gc8h3Eii8dWxS",
-          firstName: "Kirk",
-          lastName: "Piromsopee",
+          email: email,
+          gender: gender,
+          birthdate: birthDate,
+          password: hash(password),
+          firstName: firstName,
+          lastName: lastName,
         },
       })
-        .then((respond) => {})
+        .then((respond) => {
+          navigate("/verifyEmail");
+        })
         .catch((error) => {});
     }
     console.log("firstName:", firstName);
