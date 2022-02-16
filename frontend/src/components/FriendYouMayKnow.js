@@ -42,7 +42,7 @@ const FriendYouMayKnow = (props) => {
             <button style={button}>See Profile</button>
           </div>
         </div>
-        <hr size="1" width="458" color="#000000"></hr>
+        <hr size="2" width="458" color="#000000"></hr>
         <div style={friend}>
           <div style={friendProfile}>
             <img src={naem} style={picture}></img>
@@ -56,7 +56,7 @@ const FriendYouMayKnow = (props) => {
             <button style={button}>See Profile</button>
           </div>
         </div>
-        <hr size="1" width="458" color="#000000"></hr>
+        <hr size="2" width="458" color="#000000"></hr>
         <div style={friend}>
           <div style={friendProfile}>
             <img src={naem} style={picture}></img>
@@ -89,7 +89,7 @@ const container = {
 
 const smolContainer = {
   backgroundColor: "white",
-  height: 700,
+  height: 694,
   width: "100%",
   borderBottomLeftRadius: 12,
   borderBottomRightRadius: 12,
@@ -98,6 +98,10 @@ const smolContainer = {
 const friend = {
   display: "flex",
   flexDirection: "column",
+  height: 200,
+  borderColor: "#000000",
+  borderWidth: 1,
+  borderStyle: "solid",
 };
 
 const friendProfile = {
@@ -105,6 +109,7 @@ const friendProfile = {
   flexDirection: "row",
   alignItems: "center",
   marginTop: 16,
+  marginLeft: 24,
 };
 
 const picture = {

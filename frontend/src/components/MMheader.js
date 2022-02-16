@@ -8,7 +8,7 @@ import chat from "../asset/chatList.png";
 import noti from "../asset/notification.png";
 import drop from "../asset/dropDownSetting.png";
 
-const MMheader = () => {
+const MMheader = (props) => {
   return (
     //let filterEvent = this.props.events;
     <div className="MMbar">
@@ -17,7 +17,7 @@ const MMheader = () => {
           <img src={icon} alt="" className="iconImg"></img>
         </Col>
         <Col xs={5} className="feedHead">
-          <h1 className="feedHeader">Event Feed</h1>
+          <h1 className="feedHeader">{props.name}</h1>
         </Col>
         <Col>
           <div className="navButt">

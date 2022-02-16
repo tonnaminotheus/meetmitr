@@ -1,5 +1,7 @@
 import naem from "./../asset/naemblack.jpg";
+import { useNavigate } from "react-router-dom";
 const ChatListUser = (props) => {
+  const navigate = useNavigate();
   return (
     <div style={container}>
       <img src={naem} style={picture}></img>
@@ -7,7 +9,14 @@ const ChatListUser = (props) => {
         <p style={usernameText}>name</p>
         <p style={descriptionText}>description</p>
       </div>
-      <button style={button}>Message</button>
+      <button
+        style={button}
+        onClick={() => {
+          navigate("/chat");
+        }}
+      >
+        Message
+      </button>
       <button style={button}>See Profile</button>
     </div>
   );
@@ -26,6 +35,8 @@ const container = {
   borderWidth: 1,
   borderStyle: "solid",
   alignItems: "center",
+  marginTop: 32,
+  marginBottom: 32,
 };
 
 const picture = {

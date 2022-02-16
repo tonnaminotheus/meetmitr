@@ -173,7 +173,7 @@ function JoinComponent() {
 
   return (
     <div className="backG">
-      <MMheader />
+      <MMheader name="Event Feed" />
       <Form.Group className="Searcher" controlId="exampleForm.ControlInput1">
         <Row>
           <Col>
