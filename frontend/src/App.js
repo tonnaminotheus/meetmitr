@@ -1,6 +1,8 @@
 import logo from "./logo.svg";
 import "./App.css";
 
+import globalVar from "./cookie.js"
+
 //css
 import "./components/css_extensions/btn.css";
 import "./components/css_extensions/page_div_config.css";
@@ -36,7 +38,7 @@ function App() {
 // function App() {
 //   return (
 //     <div className="App">
-//       <EditEventComponent eventID={"2"}/>
+//       <EditEventComponent/>
 //     </div>
 //   );
 // }

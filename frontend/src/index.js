@@ -8,6 +8,8 @@ import FinishRegister from "./screens/FinishRegister";
 import JoinEvent from "./screens/JoinEventDetail";
 import JoinComponent from "./components/JoinCompo";
 import Chat from "./screen/Chat";
+import EditEventComponent from "./components/EditEventComponent"
+import LoginRootComponent from "./components/LoginRootComponent"
 import EditEventComponent from "./components/EditEventComponent";
 import "bootstrap/dist/css/bootstrap.min.css";
 import ChatList from "./screen/ChatList";
