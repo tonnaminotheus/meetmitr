@@ -41,7 +41,8 @@ func GetChatRoomHandler(c *gin.Context) {
 func GetChatPartners(c *gin.Context) {
 	userId := c.GetString("user_id")
 	log.Println("userId", userId)
-	rows, err := database.Sql.Query("Select * From DMChat where UserId1 = ? or UserId2 = ?", userId, userId)
+	rows, err := database.Sql.Query(`Select D.dmChatId, U.profileName, U.UserId  From DMChat D, User U
+	 where (D.UserId1 = ? or D.UserId2 = ?) and ((U.userId = D.UserId1 or U.userId = D.userId2) and U.userId != ?)`, userId, userId, userId)
 	if err != nil || rows == nil {
 		message := "no chat found"
 		if err == nil {
@@ -52,16 +53,13 @@ func GetChatPartners(c *gin.Context) {
 		})
 		return
 	}
-	uid, _ := strconv.Atoi(userId)
 	resp := responses.ChatPartnersResponse{Partners: []responses.Partner{}}
 	defer rows.Close()
 	for rows.Next() {
-		var dm, u1, u2 int
-		rows.Scan(&dm, &u1, &u2)
-		log.Println(dm, u1, u2)
-		partner := responses.Partner{DMId: dm, UserId: u1 + u2 - uid}
-		user, _ := userService.FindUserById(strconv.Itoa(partner.UserId))
-		partner.ProfileName = user.ProfileName
+		var dm, partnerId int
+		var profileName string
+		rows.Scan(&dm, &profileName, &partnerId)
+		partner := responses.Partner{DMId: dm, UserId: partnerId, ProfileName: profileName}
 		partner.ProfilePicUrl = ""
 		resp.Partners = append(resp.Partners, partner)
 	}
