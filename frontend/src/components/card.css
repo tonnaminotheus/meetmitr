@@ -5,8 +5,7 @@
     /* background: linear-gradient(180deg, #000000 67%, #ffffff 30%); */
     box-shadow: 0 5px 10px rgba(0,0,0,.2);
     overflow: hidden;
-    
-    /* background-color: rgb(255, 255, 255); */
+    background-color: #FFFFFF;
 }
 
 .cardTitleBg{

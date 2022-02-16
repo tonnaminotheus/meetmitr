@@ -8,6 +8,7 @@ import FinishRegister from "./screens/FinishRegister";
 import JoinEvent from "./screens/JoinEventDetail";
 import JoinComponent from "./components/JoinCompo";
 import Chat from "./screen/Chat";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 render(
   <BrowserRouter>

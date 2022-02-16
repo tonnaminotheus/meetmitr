@@ -19,10 +19,6 @@ var hash = require("object-hash");
 
 // login page
 function App() {
-  return (
-    <div>
-      <JoinComponent />
-    </div>
-  );
+  return <div>{/* <JoinComponent /> */}</div>;
 }
 export default App;
