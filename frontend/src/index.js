@@ -8,9 +8,9 @@ import FinishRegister from "./screens/FinishRegister";
 import JoinEvent from "./screens/JoinEventDetail";
 import JoinComponent from "./components/JoinCompo";
 import Chat from "./screen/Chat";
-import EditEventComponent from "./components/EditEventComponent"
+import EditEventComponent from "./components/EditEventComponent";
 import "bootstrap/dist/css/bootstrap.min.css";
-
+import ChatList from "./screen/ChatList";
 render(
   <BrowserRouter>
     <Routes>
@@ -23,6 +23,7 @@ render(
       <Route path="chat" element={<Chat />} />
       <Route path="createEvent" element={<EditEventComponent />} />
       <Route path="editEvent" element={<EditEventComponent />} />
+      <Route path="chatList" element={<ChatList />} />
     </Routes>
   </BrowserRouter>,
   document.getElementById("root")
