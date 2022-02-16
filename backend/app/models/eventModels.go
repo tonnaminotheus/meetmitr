@@ -15,4 +15,5 @@ type Event struct {
 	Price            int      `json:"price"`
 	CreatedTimeStamp string   `json:"createdTimeStamp"`
 	UserID           int      `json:"creatorId"`
+	Participants     []string `json:"participants"`
 }
