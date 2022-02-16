@@ -26,10 +26,8 @@ var hash = require("object-hash");
 
 function App() {
   return (
-
     <div>
-      <FriendYouMayKnow />
-
+      
     </div>
   );
 }
