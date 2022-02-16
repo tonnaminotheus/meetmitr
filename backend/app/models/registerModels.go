@@ -26,13 +26,20 @@ type dmchat struct {
 }
 
 type event struct {
-	eventId     int
-	name        string
-	description string
-	address     string
-	district    string
-	province    string
-	zipcode     string
+	eventId          int
+	name             string
+	description      string
+	tags             []int
+	address          string
+	province         string
+	imagUrl          string
+	startTime        string
+	endTime          string
+	onsite           bool
+	maxParticipant   int
+	price            int
+	createdTimeStamp string
+	userID           int
 }
 
 type eventchat struct {
