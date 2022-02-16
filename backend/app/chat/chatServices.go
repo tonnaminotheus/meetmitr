@@ -2,17 +2,18 @@ package chat
 
 import (
 	"backend/database"
-	"backend/utils"
 	"log"
+	"net/http"
+	"strconv"
 )
 
 type ChatServiceImpl struct {
 }
 
 var (
-	chatSvc  *ChatServiceImpl
-	dmRoomId = map[int]string{}
-	dmRoom   = map[string]*Hub{}
+	chatSvc      *ChatServiceImpl
+	dmRoom       = map[int]*Hub{}
+	availableHub = []*Hub{}
 )
 
 func NewChatService() *ChatServiceImpl {
@@ -40,17 +41,21 @@ func (c *ChatServiceImpl) GetChatId(userId, otherId int) (int, error) {
 
 }
 
-func (c *ChatServiceImpl) GetDMRoomId(chatId int) string {
-	if room, ok := dmRoomId[chatId]; ok {
-		return room
-	} else {
-		for {
-			room = utils.RandomStringNumber(30)
-			if _, ok := dmRoom[room]; !ok {
-				break
-			}
+func (c *ChatServiceImpl) ConnectDMRoom(chatId, userId int, w http.ResponseWriter, r *http.Request) {
+	var thisHub *Hub
+	var ok bool
+	if thisHub, ok = dmRoom[chatId]; !ok {
+		if n := len(availableHub); n > 0 {
+			thisHub = availableHub[n-1]
+			availableHub[n-1] = nil
+			availableHub = availableHub[:n-1]
+		} else {
+			thisHub = newHub()
+			go thisHub.run()
 		}
-		dmRoomId[chatId] = room
-		return room
+		dmRoom[chatId] = thisHub
 	}
+	thisHub.roomId = "C" + strconv.Itoa(chatId)
+	serveWs(thisHub, w, r, userId)
+
 }

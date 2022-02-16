@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"backend/app/chat"
-	"backend/app/responses"
+	"log"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -22,6 +22,7 @@ func GetChatRoomHandler(c *gin.Context) {
 	}
 	isDM := (chatType == "dm")
 	userId, _ := strconv.Atoi(c.GetString("user_id"))
+	log.Println(userId, otherId, chatType)
 	if isDM {
 		chatId, err := chatService.GetChatId(userId, otherId)
 		if err != nil {
@@ -30,10 +31,7 @@ func GetChatRoomHandler(c *gin.Context) {
 			})
 			return
 		}
-		roomId := chatService.GetDMRoomId(chatId)
-		c.JSON(200, responses.JoinChatResponse{
-			Message: "ok",
-			RoomId:  roomId,
-		})
+		chatService.ConnectDMRoom(chatId, userId, c.Writer, c.Request)
+
 	}
 }
