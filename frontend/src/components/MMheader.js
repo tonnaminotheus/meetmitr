@@ -7,8 +7,11 @@ import createButt from "../asset/createButton.png";
 import chat from "../asset/chatList.png";
 import noti from "../asset/notification.png";
 import drop from "../asset/dropDownSetting.png";
+import { useNavigate } from "react-router-dom";
 
-const MMheader = () => {
+
+const MMheader = (props) => {
+  const navigate = useNavigate();
   return (
     //let filterEvent = this.props.events;
     <div className="MMbar">
@@ -17,12 +20,28 @@ const MMheader = () => {
           <img src={icon} alt="" className="iconImg"></img>
         </Col>
         <Col xs={5} className="feedHead">
-          <h1 className="feedHeader">Event Feed</h1>
+          <h1 className="feedHeader">{props.name}</h1>
         </Col>
         <Col>
           <div className="navButt">
-            <img src={createButt} alt="create" className="createButt"></img>
-            <img src={chat} alt="chat" className="chatList"></img>
+            <img
+              src={createButt}
+              alt="create"
+              className="createButt"
+              onClick={() => {
+                console.log("clicked");
+                navigate("/createEvent");
+              }}
+            ></img>
+            <img
+              src={chat}
+              alt="chat"
+              className="chatList"
+              onClick={() => {
+                console.log("clicked");
+                navigate("/chat");
+              }}
+            ></img>
             <img src={noti} alt="noti" className="notification"></img>
             <img src={drop} alt="drop" className="dropSetting"></img>
           </div>

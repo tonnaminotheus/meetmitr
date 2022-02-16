@@ -9,32 +9,38 @@ import { useNavigate } from "react-router-dom";
 function EventCard({ events, id }) {
   const navigate = useNavigate();
   const [eventInfo, setEventInfo] = useState({});
-  const [tagss, setTagss] = useState({});
+  // const [tagAvailable, setTagAvailable] = useState({});
   const [display, setDisplay] = useState([true, false, true]);
 
   useEffect(() => {
     axios.get(globalApi.eventDescription + id).then((res) => {
       console.log(res.data);
       setEventInfo(res.data);
-      // this.handleTag(res);
-      var tagData = res.data.tags;
-      var tag = "";
-      var i;
-      for (i = 0; i < tagData.length; i++) {
-        tag += `<li>${tagData[i].name}</li>`;
-      }
-      setTagss(tag);
+      TagList();
     });
   }, []);
 
+  function TagList() {
+    const tags = eventInfo.tags;
+    const ta = eventInfo.tags === null ? false : true;
+    const listTags = ta && tags.map((tag) => <li key={"tag-" + tag}>{tag}</li>);
+    return <ul>{listTags}</ul>;
+  }
+
   const handleMouseIn = () => {
     console.log("mouse in");
-    if (display[2]) {
-      setDisplay([false, true, false]);
-      setTimeout(() => {
-        setDisplay([true, false, true]);
-      }, 3500);
-    }
+    // if (display[2]) {
+    setDisplay([false, true, false]);
+    //   const timer = setTimeout(() => {
+    //     setDisplay([true, false, true]);
+    //   }, 3500);
+    //   return () => clearTimeout(timer);
+    // }
+  };
+
+  const handleMouseOut = () => {
+    console.log("mouse out");
+    setDisplay([true, false, true]);
   };
 
   return (
@@ -48,7 +54,8 @@ function EventCard({ events, id }) {
       >
         <div
           onMouseEnter={handleMouseIn}
-          // onMouseOut={this.handleMouseOut}
+          onMouseLeave={handleMouseOut}
+          // onMouseOut={handleMouseOut}
           className="cardImg"
         >
           {display[0] && (
@@ -62,16 +69,7 @@ function EventCard({ events, id }) {
           {display[1] && (
             <div className="cardCate">
               <h2>Category</h2>
-              <ul className="cardCateLi">
-                {/* {this.handleTag()} */}
-                {/* {this.state.eventInfo.tags != null &&
-                  this.state.eventInfo.tags.maps((tag) => {
-                    <li key={"tag-" + tag}>{tag}</li>;
-                  })} */}
-                {/* <li>yare</li>
-                <li>yare</li>
-                <li>daze</li> */}
-              </ul>
+              <ul className="cardCateLi">{TagList()}</ul>
             </div>
           )}
         </div>
