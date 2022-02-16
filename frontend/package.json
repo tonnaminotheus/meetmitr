@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@react-navigation/native": "^6.0.8",
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
@@ -15,12 +16,7 @@
     "react": "^17.0.2",
     "react-bootstrap": "^2.1.2",
     "react-dom": "^17.0.2",
-<<<<<<< HEAD
-||||||| 98786a8
-    "react-router-dom": "^6.2.1",
-=======
     "react-dropdown": "^1.9.2",
->>>>>>> cf6d347c4b4a708415d8de9567e8be253a4c674f
     "react-modal": "^3.14.4",
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",

@@ -8,12 +8,7 @@ import FinishRegister from "./screens/FinishRegister";
 import JoinEvent from "./screens/JoinEventDetail";
 import JoinComponent from "./components/JoinCompo";
 import Chat from "./screen/Chat";
-<<<<<<< HEAD
-import EditEventComponent from "./components/EditEventComponent";
-||||||| 98786a8
-=======
 import EditEventComponent from "./components/EditEventComponent"
->>>>>>> cf6d347c4b4a708415d8de9567e8be253a4c674f
 import "bootstrap/dist/css/bootstrap.min.css";
 
 render(
