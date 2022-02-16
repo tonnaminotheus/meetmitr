@@ -14,6 +14,7 @@ import EditEventComponent from "./components/EditEventComponent";
 //modal
 import JoinEventFilterModal from "./components/modal/modal.js";
 
+
 import JoinComponent from "./components/JoinCompo";
 
 var hash = require("object-hash");
