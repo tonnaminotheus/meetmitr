@@ -1,26 +1,33 @@
 import { useState } from 'react';
 import Modal from 'react-bootstrap/Modal'
+import { Button } from 'react-bootstrap';
 
 const NotificationModal=(props)=>{
 
-    const isModalShow, setModalShow = useState(false)
+    const isModalShow = props.notificationState
+    const setNotificationModalState = props.setNotificationModalState
+    
+    const hideModal=()=>{
+        console.log("clicked hide modal")
+        setNotificationModalState(false)
+    }
+
+    const showModal=()=>{
+        setNotificationModalState(true)
+    }
+
 
     return (
         <div>
-        <Modal show={show} onHide={handleClose}>
-            <Modal.Header closeButton>
-                <Modal.Title>Modal heading</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
-            <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
-                Close
-                </Button>
-                <Button variant="primary" onClick={handleClose}>
-                Save Changes
-                </Button>
-            </Modal.Footer>
-        </Modal>
+            <Modal show={isModalShow} onHide={hideModal}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Notification</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Might want to Add Something</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="success" onClick={hideModal}>Close</Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 
