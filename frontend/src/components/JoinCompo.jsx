@@ -10,6 +10,9 @@ import { useState } from "react";
 import globalApi from "../globalApi";
 import axios from "axios";
 
+//new
+import Cookies from 'universal-cookie';
+
 import nuke from "../asset/nuclear.png";
 import weed from "../asset/weed.jpg";
 import dota from "../asset/dota2_social.jpg";
@@ -20,6 +23,12 @@ import uno from "../asset/uno.jpg";
 import john from "../asset/John.jpg";
 
 function JoinComponent() {
+
+  //test cookie
+  const cookies = new Cookies();
+  console.log("in feed")
+  console.log(cookies.get("cookie"))
+
   const [cardInfo, setCardInfo] = useState({
     events: [
       {
