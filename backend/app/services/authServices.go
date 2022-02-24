@@ -10,17 +10,17 @@ import (
 	"backend/app/models"
 )
 
-var auth_svc *AuthServiceImpl
+var authSvc *AuthServiceImpl
 
 type AuthServiceImpl struct {
 }
 
 func NewAuthService() *AuthServiceImpl {
 
-	if auth_svc == nil {
-		auth_svc = &AuthServiceImpl{}
+	if authSvc == nil {
+		authSvc = &AuthServiceImpl{}
 	}
-	return auth_svc
+	return authSvc
 
 }
 

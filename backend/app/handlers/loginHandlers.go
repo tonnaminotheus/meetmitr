@@ -35,7 +35,7 @@ func LoginHandler(c *gin.Context) {
 	}
 
 	// token, err := createToken("1") bug
-	access_token, refresh_token, err := CreateToken(userId)
+	accessToken, refreshToken, err := CreateToken(userId)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -45,9 +45,9 @@ func LoginHandler(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"AccessToken":  access_token,
-		"RefreshToken": refresh_token,
-		"UserID":       userId,
+		"accessToken":  accessToken,
+		"refreshToken": refreshToken,
+		"userId":       userId,
 	})
 }
 
@@ -63,7 +63,7 @@ func CreateToken(userID string) (string, string, error) {
 
 	at := jwt.NewWithClaims(jwt.SigningMethodHS256, x)
 
-	access_token, err := at.SignedString([]byte(models.JWTSignedKey))
+	accessToken, err := at.SignedString([]byte(models.JWTSignedKey))
 	if err != nil {
 		return "", "", err
 	}
@@ -77,11 +77,11 @@ func CreateToken(userID string) (string, string, error) {
 	}
 
 	rt := jwt.NewWithClaims(jwt.SigningMethodHS256, y)
-	refresh_token, err := rt.SignedString([]byte(models.JWTSignedKey))
+	refreshToken, err := rt.SignedString([]byte(models.JWTSignedKey))
 
 	if err != nil {
-		return access_token, "", err
+		return accessToken, "", err
 	}
 
-	return access_token, refresh_token, nil
+	return accessToken, refreshToken, nil
 }

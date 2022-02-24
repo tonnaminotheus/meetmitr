@@ -30,8 +30,12 @@ func GetEventDescHandler(c *gin.Context) {
 		`select Tag.tagName from Tag,EventTag 
 		where Tag.TagId=EventTag.tagId and EventTag.eventId=?`, eventId)
 	if err2 != nil || rows == nil {
+		message := "No tag found"
+		if err != nil {
+			message = err.Error()
+		}
 		c.JSON(500, gin.H{
-			"message": err2.Error(),
+			"message": message,
 		})
 		return
 	}
@@ -44,6 +48,29 @@ func GetEventDescHandler(c *gin.Context) {
 		event.Tags = append(event.Tags, tag)
 	}
 
+	rows, err3 := database.Sql.Query(
+		`select User.profileName
+		from User, UserEventStatus
+		where User.userId=UserEventStatus.userId and UserEventStatus.eventId=?`, eventId)
+	if err3 != nil || rows == nil {
+		message := "No user profile found"
+		if err != nil {
+			message = err.Error()
+		}
+		c.JSON(500, gin.H{
+			"message": message,
+		})
+		return
+	}
+
+	defer rows.Close()
+
+	var participant string
+	for rows.Next() {
+		rows.Scan(&participant)
+		event.Participants = append(event.Participants, participant)
+	}
+
 	c.JSON(http.StatusOK, event)
 }
 
@@ -54,9 +81,13 @@ func GetEventTagsHandler(c *gin.Context) {
 
 	if eventId == "" {
 		rows, err := database.Sql.Query(`select tagName from Tag where tagId>=1`)
-		if err != nil {
+		if err != nil || rows == nil {
+			message := "No tag found"
+			if err != nil {
+				message = err.Error()
+			}
 			c.JSON(500, gin.H{
-				"message": err.Error(),
+				"message": message,
 			})
 			return
 		}
@@ -101,9 +132,9 @@ func GetEventTagsHandler(c *gin.Context) {
 	})
 }
 
-func UpdateEventDescHandler(c *gin.Context) {
-	_, err1 := c.Get("user_id")
-	if !err1 {
+func UpdateEventHandler(c *gin.Context) {
+	userId, ok := c.Get("user_id")
+	if !ok {
 		c.JSON(401, gin.H{
 			"message": "invalid token",
 		})
@@ -130,11 +161,9 @@ func UpdateEventDescHandler(c *gin.Context) {
 		return
 	}
 
-func JoinEventHandler(c *gin.Context) {
-	_, err1 := c.Get("user_id")
-	if !err1 {
+	if userId2 != userId.(string) {
 		c.JSON(401, gin.H{
-			"message": "oh shit",
+			"message": "you have no permission to edit this event",
 		})
 		return
 	}
@@ -143,7 +172,7 @@ func JoinEventHandler(c *gin.Context) {
 		c.JSON(500, gin.H{"message": err3.Error()})
 		return
 	}
-	
+
 	c.JSON(http.StatusOK, gin.H{
 		"message": "OK",
 	})
@@ -151,8 +180,8 @@ func JoinEventHandler(c *gin.Context) {
 }
 
 func JoinEventHandler(c *gin.Context) {
-	userId, err := c.Get("user_id")
-	if !err {
+	userId, ok := c.Get("user_id")
+	if !ok {
 		c.JSON(401, gin.H{
 			"message": "invalid token",
 		})
@@ -212,8 +241,8 @@ func JoinEventHandler(c *gin.Context) {
 }
 
 func CreateEventHandler(c *gin.Context) {
-	userId, err := c.Get("user_id")
-	if !err {
+	userId, ok := c.Get("user_id")
+	if !ok {
 		c.JSON(401, gin.H{
 			"message": "invalid token",
 		})
@@ -229,7 +258,7 @@ func CreateEventHandler(c *gin.Context) {
 		return
 	}
 
-	_, err2 := database.Sql.Exec(
+	stmt, err2 := database.Sql.Exec(
 		`INSERT INTO Event 
 		VALUES (null, ?, ?, ?,?,?,?,?,?,?,?,CURRENT_TIMESTAMP,?)`,
 		req.Name, req.Description, req.Address, req.Province, req.ImagUrl, req.StartTime,
@@ -242,9 +271,7 @@ func CreateEventHandler(c *gin.Context) {
 		return
 	}
 
-	var eventId int
-	err3 := database.Sql.QueryRow(`SELECT LAST_INSERT_ID();`).Scan(&eventId)
-
+	eventId, err3 := stmt.LastInsertId()
 	if err3 != nil {
 		c.JSON(500, gin.H{
 			"message": err3.Error(),
@@ -269,6 +296,7 @@ func CreateEventHandler(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "create success",
+		"eventId": eventId,
 	})
 
 }
