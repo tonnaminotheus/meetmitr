@@ -2,22 +2,37 @@ import "./FormComponent.css";
 
 import globalApi from "../globalApi";
 import globalVar from "../cookie";
+
+import Cookies from 'universal-cookie';
+
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+
 var axios = require("axios").default;
 var hash = require("object-hash");
 
 const FormComponent = (props) => {
+
+  //cookies
+  const cookies = new Cookies();
+  cookies.set("cookie", {"userID" : "", "accessToken" : "", "refreshToken": ""}, {path:"/"})
+
+  const [pwdType,setpwdType] = useState("password")
+
   let navigate = useNavigate();
   const toFeed = () => {
     navigate("/feed");
   };
-  function togglePassword() {
-    let pass_box = document.getElementById("password-input-box");
-    console.log("click checkbox");
-    if (pass_box.type === "text") {
-      pass_box.type = "password";
-    } else if (pass_box.type === "password") {
-      pass_box.type = "text";
+  const getCheckboxStatus=()=>{
+    return pwdType === "text"
+    // document.getElementById("pwd-checkbox").checked
+  }
+  function togglePassword(event) {
+    console.log(event.target.checked)
+    if (pwdType === "text") {
+      setpwdType("password")
+    } else if (pwdType === "password") {
+      setpwdType("text");
     }
   }
   const requestLogin = (event) => {
@@ -40,8 +55,13 @@ const FormComponent = (props) => {
             if (response.status == 200) {
                 globalVar.accessToken = response.data["accessToken"]
                 globalVar.refreshToken = response.data["refreshToken"]
-                globalVar.UserID = response.data["userId"]
-                
+                globalVar.userID = response.data["userId"]
+
+                //set(name, value, [options])
+                cookies.set("cookie", {"userID" : response.data["userId"], "accessToken" : response.data["accessToken"], "refreshToken": response.data["refreshToken"]}, {path:"/"})
+                // cookies.set("cookie", response.data["userId"], {path:"/"})
+                console.log(cookies)
+                console.log(cookies.get("cookie"))
                 //redirect
                 toFeed()
             }
@@ -54,7 +74,6 @@ const FormComponent = (props) => {
             // always executed
         });
   }
-
   return (
     <div className="login-form">
       <h2>Hi Mitr!</h2>
@@ -71,7 +90,7 @@ const FormComponent = (props) => {
         </div>
         <div className="Form-control">
           <input
-            type="password"
+            type={pwdType}
             placeholder="Password"
             className="input-box"
             id="password-input-box"
@@ -81,7 +100,7 @@ const FormComponent = (props) => {
           />
         </div>
         <div className="Form-control">
-          <input type="checkbox" onClick={togglePassword} />
+          <input type="checkbox" id="pwd-checkbox" onClick={togglePassword} checked={getCheckboxStatus()}/>
           Show Password
         </div>
 
