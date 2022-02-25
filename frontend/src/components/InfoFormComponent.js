@@ -1,4 +1,5 @@
 import "./InfoFormComponent.css"
+import "../components/css_extensions/form_control.css"
 import { useEffect, useState } from "react";
 
 import Dropdown from 'react-dropdown';
@@ -16,6 +17,8 @@ const provinces = ['Chiang Mai', 'Chiang Rai', 'Lampang', 'Lamphun', 'Mae Hong S
 const defaultOption = "Bangkok";
 
 const InfoFormComponent=(props)=>{
+
+    const [tags, setTags] = useState([])
 
     let accessToken = globalVar.accessToken
     console.log("accessToken "+globalVar.accessToken)
@@ -176,21 +179,45 @@ const InfoFormComponent=(props)=>{
         })
         .then((res)=>{
             if (res.status == 200) {
-                console.log(res.data)
-                res.data["startDate"] = res.data["startTime"].split(" ")[0]
-                res.data["endDate"] = res.data["startTime"].split(" ")[0]
-                res.data["startTime"] = res.data["startTime"].split(" ")[1].slice(0,5)
-                res.data["endTime"] = res.data["endTime"].split(" ")[1].slice(0,5)
-                console.log(res.data)
-                setData(res.data)
+                // console.log(res.data)
+                // res.data["startDate"] = res.data["startTime"].split(" ")[0]
+                // res.data["endDate"] = res.data["startTime"].split(" ")[0]
+                // res.data["startTime"] = res.data["startTime"].split(" ")[1].slice(0,5)
+                // res.data["endTime"] = res.data["endTime"].split(" ")[1].slice(0,5)
+                // console.log(res.data)
+                // setData(res.data)
+
+                axios({
+                    method: 'get',
+                    url: globalApi.tagsEvent,
+                    timeout: 8000
+                })
+                .then((tag_res)=>{
+                    if (tag_res.status == 200) {
+                        res.data["startDate"] = res.data["startTime"].split(" ")[0]
+                        res.data["endDate"] = res.data["startTime"].split(" ")[0]
+                        res.data["startTime"] = res.data["startTime"].split(" ")[1].slice(0,5)
+                        res.data["endTime"] = res.data["endTime"].split(" ")[1].slice(0,5)
+                        setData(res.data)
+                        setTags(tag_res.data["tagList"])
+                    }
+                })
+                .catch(error2 => {
+                    console.log("error2!!")
+                    console.log(error2)
+                })
             }
         })
         .catch(error => {
             console.log("error!!")
             console.log(error)
-            }
-        )
+        })        
     },[]);
+
+    useEffect(()=>{
+        
+    },[]);
+
 
     const setParticularField=(value, field_name)=>{
         let new_data = {...data} //beware copying onj
@@ -210,7 +237,7 @@ const InfoFormComponent=(props)=>{
                 {/* Eventname */}
                 <div className="info-form-box">
                     <label htmlFor="event-name-form">Event Name :</label>
-                    <input type={"text"} id="event-name-form" value={data.name} required onChange={(event)=>{
+                    <input type={"text"} className={"edit-event-input"} id="event-name-form" value={data.name} required onChange={(event)=>{
                         console.log(event.target.value)
                         setParticularField(event.target.value, "name")
                     }}/>
@@ -219,7 +246,7 @@ const InfoFormComponent=(props)=>{
                 {/* max_atten */}
                 <div className="info-form-box">
                     <label htmlFor="max-atten">Max Attendance :</label>
-                    <input type="number" min={1} id={"max-atten"} value={data.maxParticipant} required onChange={(event)=>{
+                    <input type="number" className={"edit-event-input"} min={1} id={"max-atten"} value={data.maxParticipant} required onChange={(event)=>{
                         console.log(event.target.value)
                         setParticularField(event.target.value, "maxParticipant")
                     }}/><span>participants</span>
@@ -228,7 +255,7 @@ const InfoFormComponent=(props)=>{
                 {/* price */}
                 <div className="info-form-box">
                     <label htmlFor="event-price">Price :</label>
-                    <input type="number" min={0} id={"event-price"} value={data.price} required onChange={(event)=>{
+                    <input type="number" className={"edit-event-input"} min={0} id={"event-price"} value={data.price} required onChange={(event)=>{
                         console.log(event.target.value)
                         setParticularField(event.target.value, "price")
                     }}/><span>coins</span>
@@ -245,14 +272,14 @@ const InfoFormComponent=(props)=>{
 
                 {/* date start - end */}
                 <div className="info-form-box">
-                    <label htmlFor="event-date-start">Date Start :</label>
-                    <input type={"date"} id={"event-date-start"} min={getTodayDate()} value={data.startDate} onChange={(event)=>{
+                    <label htmlFor="event-date-start">Date Start : </label>
+                    <input type={"date"} id={"event-date-start"} className={"date-time-editevent-input"} min={getTodayDate()} value={data.startDate} onChange={(event)=>{
                         console.log(event.target.value)
                         setParticularField(event.target.value, "startDate")
                     }}></input>
 
                     <label htmlFor="event-date-end">Date End :</label>
-                    <input type={"date"} id={"event-date-end"} min={getTodayDate()} value={data.endDate} onChange={(event)=>{
+                    <input type={"date"} id={"event-date-end"} className={"date-time-editevent-input"} min={getTodayDate()} value={data.endDate} onChange={(event)=>{
                         console.log(event.target.value)
                         setParticularField(event.target.value, "endDate")
                         
@@ -262,12 +289,12 @@ const InfoFormComponent=(props)=>{
                 {/* time start end*/}
                 <div className="info-form-box">
                     <label htmlFor="event-time-start">Time Start :</label>
-                    <input type={"time"} id={"event-time-start"} value={data.startTime} onChange={(event)=>{
+                    <input type={"time"} id={"event-time-start"} className={"date-time-editevent-input"} value={data.startTime} onChange={(event)=>{
                         console.log(event.target.value)
                         setParticularField(event.target.value, "startTime")
                     }}/>
                     <label htmlFor="event-time-end">Time End :</label>
-                    <input type={"time"} id={"event-time-end"} value={data.endTime} onChange={(event)=>{
+                    <input type={"time"} id={"event-time-end"} className={"date-time-editevent-input"} value={data.endTime} onChange={(event)=>{
                         console.log(event.target.value)
                         setParticularField(event.target.value, "endTime")
                     }}/>
@@ -282,7 +309,7 @@ const InfoFormComponent=(props)=>{
                 {/* address */}
                 <div className="info-form-box">
                     <label htmlFor="address-input" style={{display: "block"}}>Address :</label>
-                    <textarea id="address-input" className="address-input text-area" rows={5} placeholder="Please Enter Address of this Event" htmlFor="create-event-info-form" value={data.address} onChange={(event)=>{
+                    <textarea id="address-input" className="text-area" rows={2} placeholder="Please Enter Address of this Event" htmlFor="create-event-info-form" value={data.address} onChange={(event)=>{
                         console.log(event.target.value)
                         setParticularField(event.target.value, "address")
                     }}></textarea>
@@ -295,11 +322,22 @@ const InfoFormComponent=(props)=>{
                         console.log(event.target.value)
                         setData({province: event.target.value})
                     }}/> */}
-                    <Dropdown className="province-dropdown" id="event-province" options={provinces} value={data.province} placeholder="Select an option" onChange={(event)=>{
+                    <Dropdown className="edit-event-dropdown" id="event-province" options={provinces} value={data.province} placeholder="Select an option" onChange={(event)=>{
                         console.log(event)
                         // console.log(provinces)
-                        setData({province: event.value})
+                        // setData({province: event.value})
                         setParticularField(event.value, "province")
+                    }}/>
+                </div>
+
+                {/* tags */}
+                <div className="info-form-box">
+                    <label htmlFor="event-tag">Tag :</label>
+                    <Dropdown className="edit-event-dropdown" id="event-tag" options={tags} value={data.tags} placeholder="Select an option" onChange={(event)=>{
+                        console.log(event.data)
+                        // console.log(provinces)
+                        // setData({province: event.value})
+                        setParticularField(event.value, "tags")
                     }}/>
                 </div>
                 
@@ -308,16 +346,16 @@ const InfoFormComponent=(props)=>{
                 {/* about */}
                 <div className="info-form-box">
                     <label htmlFor="about-input" style={{display: "block"}}>About :</label>
-                    <textarea id="about-input" className="text-area" rows={5} placeholder="Please Enter More Info about this Event" value={data.description} form="create-event-info-form" onChange={(event)=>{
+                    <textarea id="about-input" className="text-area" rows={2} placeholder="Please Enter More Info about this Event" value={data.description} form="create-event-info-form" onChange={(event)=>{
                         console.log(event.target.value)
-                        setData({description: event.target.value})
+                        // setData({description: event.target.value})
                         setParticularField(event.target.value, "description")
                     }}></textarea>
                 </div>
 
                 {/* btn */}
                 <div className="info-form-box">
-                    <button className="custom-button create-event-btn" style={{padding: "5px", margin: "10px", float: "right"}} onClick={onBtnClicked} >
+                    <button className="custom-button create-event-btn btn btn-success" style={{padding: "5px", margin: "10px", float: "right"}} onClick={onBtnClicked} >
                         <span>{title}</span>
                     </button>
                 </div>
