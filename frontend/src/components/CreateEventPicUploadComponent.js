@@ -35,8 +35,8 @@ const CreateEventPicUploadComponent=(props)=>{
         <div className="form-box">
             <form onSubmit={uploadImage}>
                 <h3>Image Upload</h3>
-                <input type="file" id="create_event_img_upload" className="btn" name="create_event_img_upload" accept="image/png, image/jpg" value={img_path} onChange={inputImg}/>
-                <button type="submit" className="btn" id="upload-pic-btn">Upload</button>
+                <input type="file" id="create_event_img_upload" className="custom-button" name="create_event_img_upload" accept="image/png, image/jpg" value={img_path} onChange={inputImg}/>
+                <button type="submit" className="custom-button" id="upload-pic-btn">Upload</button>
             </form>
         </div>
     );
