@@ -31,5 +31,5 @@ func RandomStringNumber(numberOfDigits int) string {
 }
 
 func GetFilePath(fileName string) string {
-	return "https://firebasestorage.googleapis.com/v0/b/" + BucketName + "/o/" + fileName
+	return "https://firebasestorage.googleapis.com/v0/b/" + BucketName + "/o/" + fileName + "?alt=media"
 }

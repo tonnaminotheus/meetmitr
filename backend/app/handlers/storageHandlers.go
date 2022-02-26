@@ -13,8 +13,8 @@ func UploadFileHandler(c *gin.Context) {
 	userId := c.GetString("user_id")
 	f, uploadedFile, err := c.Request.FormFile("file")
 	if err != nil {
-		c.JSON(401, gin.H{
-			"message": "unauthorized",
+		c.JSON(400, gin.H{
+			"message": "invalid file",
 		})
 		return
 	}
