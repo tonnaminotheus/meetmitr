@@ -1,6 +1,7 @@
 package router
 
 import (
+	"backend/app/handlers"
 	"io/ioutil"
 	"os"
 	"time"
@@ -35,5 +36,24 @@ func GenerateRouter() *gin.Engine {
 		c.JSON(404, gin.H{"message": "Page not found."})
 	})
 
+	router.POST("/api/v1/register", handlers.RegisterHandler)
+	router.POST("/api/v1/activate/:activStr", handlers.ActivateUserHandler)
+	router.POST("/api/v1/login", handlers.LoginHandler)
+
+	// EventHandler
+	v1Event := router.Group("/api/v1/event")
+	{
+		v1Event.GET("/descriptions/:eventId", handlers.GetEventDescHandler)
+		v1Event.GET("/tags", handlers.GetEventTagsHandler)
+
+		v1Event.PUT("/update/:eventId", AttractAuthMiddleware(ABORT), handlers.UpdateEventHandler)
+
+		v1Event.POST("/join/:eventId", AttractAuthMiddleware(ABORT), handlers.JoinEventHandler)
+		v1Event.POST("/create", AttractAuthMiddleware(ABORT), handlers.CreateEventHandler)
+	}
+	router.GET("/api/v1/chat/room/:chatType/:otherId", AttractAuthMiddleware(ABORT), handlers.GetChatRoomHandler)
+	router.GET("/api/v1/user/:userId", handlers.GetUserHandler)
+	router.GET("/api/v1/chat/partners", AttractAuthMiddleware(ABORT), handlers.GetChatPartners)
+	router.POST("/api/v1/upload", AttractAuthMiddleware(ABORT), handlers.UploadFileHandler)
 	return router
 }
