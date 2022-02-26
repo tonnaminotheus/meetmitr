@@ -57,5 +57,7 @@ func GenerateRouter() *gin.Engine {
 
 	router.POST("/api/v1/rate", AttractAuthMiddleware(ABORT), handlers.RateHandler)
 	router.GET("/api/v1/rate", AttractAuthMiddleware(ABORT), handlers.GetRateHandler)
+	
+	router.POST("/api/v1/upload", AttractAuthMiddleware(ABORT), handlers.UploadFileHandler)
 	return router
 }
