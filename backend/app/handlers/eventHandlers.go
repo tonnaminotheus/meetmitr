@@ -278,7 +278,7 @@ func CreateEventHandler(c *gin.Context) {
 		})
 		return
 	}
-	
+
 	for _, tag := range req.Tags {
 
 		_, err4 := database.Sql.Exec(

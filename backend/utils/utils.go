@@ -12,6 +12,8 @@ var (
 	MainEmail     = "meetmitr.se2@gmail.com"
 	EmailPassword = "MeetMitrSE2"
 	ActivatePath  = "localhost:8080/api/v1/activate/"
+	StoragePath   = "gs://meetmitr-se2.appspot.com/"
+	BucketName    = "meetmitr-se2.appspot.com"
 )
 
 func init() {
@@ -26,4 +28,8 @@ func RandomStringNumber(numberOfDigits int) string {
 	}
 
 	return numberString
+}
+
+func GetFilePath(fileName string) string {
+	return "https://firebasestorage.googleapis.com/v0/b/" + BucketName + "/o/" + fileName
 }

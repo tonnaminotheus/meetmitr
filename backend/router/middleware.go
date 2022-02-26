@@ -3,10 +3,11 @@ package router
 import (
 	"net/http"
 
+	"backend/app/models"
+	"backend/app/services"
+
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
-	"backend/app/services"
-	"backend/app/models"
 )
 
 const (
