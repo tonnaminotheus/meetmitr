@@ -18,6 +18,7 @@ function EventCard({ events, id }) {
       if (isMounted) {
         console.log(res.data);
         setEventInfo(res.data);
+        TagList();
       }
     });
     return () => {

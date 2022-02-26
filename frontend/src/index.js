@@ -12,6 +12,7 @@ import EditEventComponent from "./components/EditEventComponent";
 import LoginRootComponent from "./components/LoginRootComponent";
 import "bootstrap/dist/css/bootstrap.min.css";
 import ChatList from "./screen/ChatList";
+import RateQuiz from "./components/PersonalityQuizRateForm.js";
 
 render(
   <BrowserRouter>
@@ -26,6 +27,7 @@ render(
       <Route path="createEvent" element={<EditEventComponent />} />
       <Route path="editEvent" element={<EditEventComponent />} />
       <Route path="chatList" element={<ChatList />} />
+      <Route path="PersonalityQuiz2" element={<RateQuiz />} />
     </Routes>
   </BrowserRouter>,
   document.getElementById("root")
