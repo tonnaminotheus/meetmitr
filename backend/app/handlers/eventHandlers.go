@@ -300,3 +300,28 @@ func CreateEventHandler(c *gin.Context) {
 	})
 
 }
+
+func UnjoinEventHandler(c *gin.Context) {
+	userId, ok := c.Get("user_id")
+	if !ok {
+		c.JSON(401, gin.H{
+			"message": "invalid token",
+		})
+		return
+	}
+	eventId := c.Param("eventId")
+
+	_, err := database.Sql.Query(`DELETE FROM UserEventStatus WHERE userId=? and eventId=?`, userId, eventId)
+
+	if err != nil {
+		c.JSON(500, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "OK",
+	})
+
+}
