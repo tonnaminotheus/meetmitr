@@ -17,3 +17,13 @@ type Event struct {
 	UserID           int      `json:"creatorId"`
 	Participants     []string `json:"participants"`
 }
+
+type EventHome struct {
+	EventId   int      `json:"eventId"`
+	Name      string   `json:"name"`
+	Tags      []string `json:"tags"`
+	Address   string   `json:"address"`
+	Province  string   `json:"province"`
+	StartTime string   `json:"startTime"`
+	ImagUrl   string   `json:"imagUrl"`
+}

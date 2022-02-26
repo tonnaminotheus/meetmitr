@@ -60,5 +60,7 @@ func GenerateRouter() *gin.Engine {
 	//CoinTransactionHandler
 	router.POST("/api/v1/transaction/:amount", AttractAuthMiddleware(ABORT), handlers.TransactionHandler)
 
+	//HomeHandler
+	router.GET("/api/v1/home/:numPage", AttractAuthMiddleware(ABORT), handlers.HomeHandler)
 	return router
 }
