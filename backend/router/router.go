@@ -43,7 +43,7 @@ func GenerateRouter() *gin.Engine {
 	// EventHandler
 	v1Event := router.Group("/api/v1/event")
 	{
-		v1Event.GET("/descriptions/:eventId", handlers.GetEventDescHandler)
+		v1Event.GET("/descriptions/:eventId", AttractAuthMiddleware(ABORT), handlers.GetEventDescHandler)
 		v1Event.GET("/tags", handlers.GetEventTagsHandler)
 
 		v1Event.PUT("/update/:eventId", AttractAuthMiddleware(ABORT), handlers.UpdateEventHandler)
@@ -62,5 +62,9 @@ func GenerateRouter() *gin.Engine {
 
 	//HomeHandler
 	router.GET("/api/v1/home/:numPage", AttractAuthMiddleware(ABORT), handlers.HomeHandler)
+	router.POST("/api/v1/rate", AttractAuthMiddleware(ABORT), handlers.RateHandler)
+	router.GET("/api/v1/rate", AttractAuthMiddleware(ABORT), handlers.GetRateHandler)
+	
+	router.POST("/api/v1/upload", AttractAuthMiddleware(ABORT), handlers.UploadFileHandler)
 	return router
 }

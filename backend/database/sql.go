@@ -2,6 +2,7 @@ package database
 
 import (
 	"database/sql"
+	"log"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -22,8 +23,10 @@ func GetConnString() string {
 	return user + ":" + password + "@" + protocal + "(" + address + ")/" + dbName
 }
 
-func Init() error {
+func InitMySql() {
 	var err error
 	Sql, err = sql.Open("mysql", GetConnString())
-	return err
+	if err != nil {
+		log.Fatal(err)
+	}
 }
