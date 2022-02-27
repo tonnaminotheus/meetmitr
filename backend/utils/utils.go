@@ -33,3 +33,7 @@ func RandomStringNumber(numberOfDigits int) string {
 func GetFilePath(fileName string) string {
 	return "https://firebasestorage.googleapis.com/v0/b/" + BucketName + "/o/" + fileName + "?alt=media"
 }
+
+func FormatTime(t time.Time) string {
+	return t.Local().Format("2006-01-02 15:04:05")
+}

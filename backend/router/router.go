@@ -51,9 +51,16 @@ func GenerateRouter() *gin.Engine {
 		v1Event.POST("/join/:eventId", AttractAuthMiddleware(ABORT), handlers.JoinEventHandler)
 		v1Event.POST("/create", AttractAuthMiddleware(ABORT), handlers.CreateEventHandler)
 	}
-	router.GET("/api/v1/chat/room/:chatType/:otherId", AttractAuthMiddleware(ABORT), handlers.GetChatRoomHandler)
+	// ChatHandler
+	v1Chat := router.Group("/api/v1/chat")
+	{
+		v1Chat.GET("/room/:chatType/:otherId", AttractAuthMiddleware(ABORT), handlers.GetChatRoomHandler)
+		v1Chat.GET("/partners", AttractAuthMiddleware(ABORT), handlers.GetChatPartners)
+		v1Chat.GET("/history/dm/:chatId", AttractAuthMiddleware(ABORT), handlers.GetDMHistoryHandlers)
+	}
 	router.GET("/api/v1/user/:userId", handlers.GetUserHandler)
-	router.GET("/api/v1/chat/partners", AttractAuthMiddleware(ABORT), handlers.GetChatPartners)
+
 	router.POST("/api/v1/upload", AttractAuthMiddleware(ABORT), handlers.UploadFileHandler)
+
 	return router
 }

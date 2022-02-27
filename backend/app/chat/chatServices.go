@@ -1,7 +1,9 @@
 package chat
 
 import (
+	"backend/app/models"
 	"backend/database"
+	"context"
 	"log"
 	"net/http"
 	"strconv"
@@ -21,6 +23,15 @@ func NewChatService() *ChatServiceImpl {
 		chatSvc = &ChatServiceImpl{}
 	}
 	return chatSvc
+}
+
+func (c *ChatServiceImpl) DMAuthorityCheck(userId, chatId int) bool {
+	var userId1, userId2 int
+	err := database.Sql.QueryRow("Select UserId1, UserId2 from DMChat where dmChatId = ?", chatId).Scan(&userId1, &userId2)
+	if err != nil || (userId1 != userId && userId2 != userId) {
+		return false
+	}
+	return true
 }
 
 func (c *ChatServiceImpl) GetChatId(userId, otherId int) (int, error) {
@@ -55,7 +66,15 @@ func (c *ChatServiceImpl) ConnectDMRoom(chatId, userId int, w http.ResponseWrite
 		}
 		dmRoom[chatId] = thisHub
 	}
-	thisHub.roomId = "C" + strconv.Itoa(chatId)
+	thisHub.roomId = "DM" + strconv.Itoa(chatId)
 	serveWs(thisHub, w, r, userId)
+
+}
+
+func saveMessage(roomId string, message models.Message) {
+	_, _, err := database.Firestore.Collection(roomId).Add(context.Background(), message)
+	if err != nil {
+		log.Println(err)
+	}
 
 }
