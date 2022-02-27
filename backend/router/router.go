@@ -53,9 +53,13 @@ func GenerateRouter() *gin.Engine {
 
 		v1Event.PUT("/unjoin/:eventId", AttractAuthMiddleware(ABORT), handlers.UnjoinEventHandler)
 	}
-	router.GET("/api/v1/chat/room/:chatType/:otherId", AttractAuthMiddleware(ABORT), handlers.GetChatRoomHandler)
-	router.GET("/api/v1/user/:userId", handlers.GetUserHandler)
-	router.GET("/api/v1/chat/partners", AttractAuthMiddleware(ABORT), handlers.GetChatPartners)
+	// ChatHandler
+	v1Chat := router.Group("/api/v1/chat")
+	{
+		v1Chat.GET("/room/:chatType/:otherId", AttractAuthMiddleware(ABORT), handlers.GetChatRoomHandler)
+		v1Chat.GET("/partners", AttractAuthMiddleware(ABORT), handlers.GetChatPartners)
+		v1Chat.GET("/history/dm/:chatId", AttractAuthMiddleware(ABORT), handlers.GetDMHistoryHandlers)
+	}
 
 	//CoinTransactionHandler
 	router.POST("/api/v1/transaction/:amount", AttractAuthMiddleware(ABORT), handlers.TransactionHandler)
@@ -64,7 +68,8 @@ func GenerateRouter() *gin.Engine {
 	router.GET("/api/v1/home/:numPage", AttractAuthMiddleware(ABORT), handlers.HomeHandler)
 	router.POST("/api/v1/rate", AttractAuthMiddleware(ABORT), handlers.RateHandler)
 	router.GET("/api/v1/rate", AttractAuthMiddleware(ABORT), handlers.GetRateHandler)
-	
+
 	router.POST("/api/v1/upload", AttractAuthMiddleware(ABORT), handlers.UploadFileHandler)
+
 	return router
 }
