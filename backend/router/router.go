@@ -39,6 +39,7 @@ func GenerateRouter() *gin.Engine {
 	router.POST("/api/v1/register", handlers.RegisterHandler)
 	router.POST("/api/v1/activate/:activStr", handlers.ActivateUserHandler)
 	router.POST("/api/v1/login", handlers.LoginHandler)
+	router.GET("/api/v1/user/:userId", handlers.GetUserHandler)
 
 	// EventHandler
 	v1Event := router.Group("/api/v1/event")
@@ -51,7 +52,7 @@ func GenerateRouter() *gin.Engine {
 		v1Event.POST("/join/:eventId", AttractAuthMiddleware(ABORT), handlers.JoinEventHandler)
 		v1Event.POST("/create", AttractAuthMiddleware(ABORT), handlers.CreateEventHandler)
 
-		v1Event.PUT("/unjoin/:eventId", AttractAuthMiddleware(ABORT), handlers.UnjoinEventHandler)
+		v1Event.DELETE("/unjoin/:eventId", AttractAuthMiddleware(ABORT), handlers.UnjoinEventHandler)
 	}
 	// ChatHandler
 	v1Chat := router.Group("/api/v1/chat")
