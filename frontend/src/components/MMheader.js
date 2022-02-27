@@ -9,9 +9,15 @@ import noti from "../asset/notification.png";
 import drop from "../asset/dropDownSetting.png";
 import { useNavigate } from "react-router-dom";
 
-
 const MMheader = (props) => {
   const navigate = useNavigate();
+
+  const notificationState = props.notificationState
+  const setNotificationModalState = props.setNotificationModalState
+  const openNotification=()=>{
+    setNotificationModalState(true)
+  }
+
   return (
     //let filterEvent = this.props.events;
     <div className="MMbar">
@@ -39,10 +45,17 @@ const MMheader = (props) => {
               className="chatList"
               onClick={() => {
                 console.log("clicked");
-                navigate("/chat");
+                navigate("/chatList");
               }}
             ></img>
-            <img src={noti} alt="noti" className="notification"></img>
+            <img src={noti} 
+              alt="noti" 
+              className="notification"
+              onClick={(event)=>{
+                console.log("clicked noti")
+                openNotification()
+              }}  
+            ></img>
             <img src={drop} alt="drop" className="dropSetting"></img>
           </div>
         </Col>
