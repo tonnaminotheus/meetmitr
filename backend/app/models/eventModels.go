@@ -16,4 +16,5 @@ type Event struct {
 	CreatedTimeStamp string   `json:"createdTimeStamp"`
 	UserID           int      `json:"creatorId"`
 	Participants     []string `json:"participants"`
+	IsJoin           bool     `json:"isJoin"`
 }

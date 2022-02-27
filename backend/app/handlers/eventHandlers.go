@@ -11,6 +11,14 @@ import (
 )
 
 func GetEventDescHandler(c *gin.Context) {
+	userId, ok := c.Get("user_id")
+	if !ok {
+		c.JSON(401, gin.H{
+			"message": "invalid token",
+		})
+		return
+	}
+
 	eventId := c.Param("eventId")
 
 	event := models.Event{}
@@ -69,6 +77,14 @@ func GetEventDescHandler(c *gin.Context) {
 	for rows.Next() {
 		rows.Scan(&participant)
 		event.Participants = append(event.Participants, participant)
+	}
+
+	var isJoin bool
+	err4 := database.Sql.QueryRow(`SELECT status FROM UserEventStatus WHERE userId=? and eventId=?`, userId, eventId).Scan(&isJoin)
+	if err4 != nil {
+		event.IsJoin = false
+	} else {
+		event.IsJoin = true
 	}
 
 	c.JSON(http.StatusOK, event)
