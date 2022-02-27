@@ -16,6 +16,6 @@ type Partner struct {
 }
 
 type ChatHistoryResponse struct {
-	Messages []models.Message `json:"messages"`
+	Messages []models.Message `json:"chatHistory"`
 	LastId   string           `json:"lastId"`
 }
