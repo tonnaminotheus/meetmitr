@@ -7,6 +7,7 @@ import 'react-dropdown/style.css';
 import globalApi from "../globalApi";
 import globalVar from "../cookie.js";
 import { useNavigate } from "react-router-dom";
+import Multiselect from 'multiselect-react-dropdown';
 
 //location.replace("/view/drawing.html");
 
@@ -38,8 +39,31 @@ const InfoFormComponent=(props)=>{
         "endTime" : "23.59",
         "onSite" : true,
         "maxParticipant" : 1,
-        "price" : 0
+        "price" : 0,
+        "tags" : []
     });
+
+    const getTagsIdx=()=>{
+        let res = {}
+        for (let i=0;i<tags.length;i++) {
+            res[tags[i]] = i+1
+        }
+        return res
+    }
+    
+    const mapTagsToIDs=(arr)=>{
+        let res = []
+        let idMap = getTagsIdx()
+        console.log(idMap)
+        for (let i=0; i<arr.length;i++) {
+            res.push(idMap[arr[i]])
+        }
+        console.log(res)
+        return res.sort(function(a, b){
+            //lower
+            return a-b
+        })
+    }
 
     const getRadio=()=>{
         let x = document.getElementById("Online-radio");
@@ -101,7 +125,11 @@ const InfoFormComponent=(props)=>{
             // "onSite" : document.getElementById("event-date-end").value  document.getElementById("event-time-end").value,
             "onSite" : getRadio(),
             "maxParticipant" : parseInt(document.getElementById("max-atten").value),
-            "price" : parseInt(document.getElementById("event-price").value)
+            "price" : parseInt(document.getElementById("event-price").value),
+
+            //tags to tagsID
+            "tags" : mapTagsToIDs(data["tags"])
+
         }
 
         axios({
@@ -143,7 +171,9 @@ const InfoFormComponent=(props)=>{
             // "onSite" : document.getElementById("event-date-end").value  document.getElementById("event-time-end").value,
             "onSite" : getRadio(),
             "maxParticipant" : parseInt(document.getElementById("max-atten").value),
-            "price" : parseInt(document.getElementById("event-price").value)
+            "price" : parseInt(document.getElementById("event-price").value),
+            //tags to tagsID
+            "tags" : mapTagsToIDs(data["tags"])
         }
         console.log(new_data)
         axios({
@@ -175,6 +205,9 @@ const InfoFormComponent=(props)=>{
         axios({
             method: 'get',
             url: globalApi.eventDescription + `${props.eventID}`,
+            headers: {
+                "Authorization" : "Bearer "+accessToken,
+            },
             timeout: 8000
         })
         .then((res)=>{
@@ -184,12 +217,15 @@ const InfoFormComponent=(props)=>{
                 // res.data["endDate"] = res.data["startTime"].split(" ")[0]
                 // res.data["startTime"] = res.data["startTime"].split(" ")[1].slice(0,5)
                 // res.data["endTime"] = res.data["endTime"].split(" ")[1].slice(0,5)
-                // console.log(res.data)
+                console.log(res.data)
                 // setData(res.data)
 
                 axios({
                     method: 'get',
                     url: globalApi.tagsEvent,
+                    headers: {
+                        "Authorization" : "Bearer "+accessToken,
+                    },
                     timeout: 8000
                 })
                 .then((tag_res)=>{
@@ -200,6 +236,7 @@ const InfoFormComponent=(props)=>{
                         res.data["endTime"] = res.data["endTime"].split(" ")[1].slice(0,5)
                         setData(res.data)
                         setTags(tag_res.data["tagList"])
+                        console.log(tag_res.data["tagList"])
                     }
                 })
                 .catch(error2 => {
@@ -333,12 +370,42 @@ const InfoFormComponent=(props)=>{
                 {/* tags */}
                 <div className="info-form-box">
                     <label htmlFor="event-tag">Tag :</label>
-                    <Dropdown className="edit-event-dropdown" id="event-tag" options={tags} value={data.tags} placeholder="Select an option" onChange={(event)=>{
+                    {/* <Dropdown className="edit-event-dropdown" id="event-tag" options={tags} value={data.tags} placeholder="Select an option" onChange={(event)=>{
                         console.log(event.data)
                         // console.log(provinces)
                         // setData({province: event.value})
                         setParticularField(event.value, "tags")
-                    }}/>
+                    }}/> */}
+                    {/* <Multiselect
+                        options={tags}
+                        value={data.tags}
+                        placeholder="Select an option"
+                    /> */}
+                    <Multiselect id="tags-slct"
+                        options={tags} // Options to display in the dropdown
+                        isObject={false}
+                        showArrow={true}
+                        showCheckbox={true}
+                        placeholder={"Select event's categories"}
+                        closeOnSelect={false}
+                        selectedValues={data.tags}
+                        onSelect={(selectedList, selectedItem)=>{
+                            console.log(selectedList)
+                            console.log(selectedItem)
+                            console.log(document.getElementById("tags-slct"))
+                            setParticularField(selectedList, "tags")
+                            console.log(mapTagsToIDs(data["tags"]))
+
+                        }} // Function will trigger on select event
+                        onRemove={(selectedList, selectedItem)=>{
+                            console.log(selectedList)
+                            console.log(selectedItem)
+                            console.log(document.getElementById("tags-slct"))
+                            setParticularField(selectedList, "tags")
+                            console.log(mapTagsToIDs(data["tags"]))
+                        }} // Function will trigger on remove event
+                        displayValue="name" // Property name to display in the dropdown options
+                    />
                 </div>
                 
 
