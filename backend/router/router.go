@@ -43,13 +43,15 @@ func GenerateRouter() *gin.Engine {
 	// EventHandler
 	v1Event := router.Group("/api/v1/event")
 	{
-		v1Event.GET("/descriptions/:eventId", handlers.GetEventDescHandler)
+		v1Event.GET("/descriptions/:eventId", AttractAuthMiddleware(ABORT), handlers.GetEventDescHandler)
 		v1Event.GET("/tags", handlers.GetEventTagsHandler)
 
 		v1Event.PUT("/update/:eventId", AttractAuthMiddleware(ABORT), handlers.UpdateEventHandler)
 
 		v1Event.POST("/join/:eventId", AttractAuthMiddleware(ABORT), handlers.JoinEventHandler)
 		v1Event.POST("/create", AttractAuthMiddleware(ABORT), handlers.CreateEventHandler)
+
+		v1Event.PUT("/unjoin/:eventId", AttractAuthMiddleware(ABORT), handlers.UnjoinEventHandler)
 	}
 	// ChatHandler
 	v1Chat := router.Group("/api/v1/chat")
@@ -58,7 +60,14 @@ func GenerateRouter() *gin.Engine {
 		v1Chat.GET("/partners", AttractAuthMiddleware(ABORT), handlers.GetChatPartners)
 		v1Chat.GET("/history/dm/:chatId", AttractAuthMiddleware(ABORT), handlers.GetDMHistoryHandlers)
 	}
-	router.GET("/api/v1/user/:userId", handlers.GetUserHandler)
+
+	//CoinTransactionHandler
+	router.POST("/api/v1/transaction/:amount", AttractAuthMiddleware(ABORT), handlers.TransactionHandler)
+
+	//HomeHandler
+	router.GET("/api/v1/home/:numPage", AttractAuthMiddleware(ABORT), handlers.HomeHandler)
+	router.POST("/api/v1/rate", AttractAuthMiddleware(ABORT), handlers.RateHandler)
+	router.GET("/api/v1/rate", AttractAuthMiddleware(ABORT), handlers.GetRateHandler)
 
 	router.POST("/api/v1/upload", AttractAuthMiddleware(ABORT), handlers.UploadFileHandler)
 

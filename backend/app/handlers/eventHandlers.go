@@ -11,6 +11,14 @@ import (
 )
 
 func GetEventDescHandler(c *gin.Context) {
+	userId, ok := c.Get("user_id")
+	if !ok {
+		c.JSON(401, gin.H{
+			"message": "invalid token",
+		})
+		return
+	}
+
 	eventId := c.Param("eventId")
 
 	event := models.Event{}
@@ -69,6 +77,14 @@ func GetEventDescHandler(c *gin.Context) {
 	for rows.Next() {
 		rows.Scan(&participant)
 		event.Participants = append(event.Participants, participant)
+	}
+
+	var isJoin bool
+	err4 := database.Sql.QueryRow(`SELECT status FROM UserEventStatus WHERE userId=? and eventId=?`, userId, eventId).Scan(&isJoin)
+	if err4 != nil {
+		event.IsJoin = false
+	} else {
+		event.IsJoin = true
 	}
 
 	c.JSON(http.StatusOK, event)
@@ -297,6 +313,31 @@ func CreateEventHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message": "create success",
 		"eventId": eventId,
+	})
+
+}
+
+func UnjoinEventHandler(c *gin.Context) {
+	userId, ok := c.Get("user_id")
+	if !ok {
+		c.JSON(401, gin.H{
+			"message": "invalid token",
+		})
+		return
+	}
+	eventId := c.Param("eventId")
+
+	_, err := database.Sql.Query(`DELETE FROM UserEventStatus WHERE userId=? and eventId=?`, userId, eventId)
+
+	if err != nil {
+		c.JSON(500, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "OK",
 	})
 
 }
