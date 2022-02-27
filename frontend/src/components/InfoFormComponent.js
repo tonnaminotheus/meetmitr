@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 import globalApi from "../globalApi";
+import globalVar from "../cookie.js";
+import { useNavigate } from "react-router-dom";
 
 //location.replace("/view/drawing.html");
 
@@ -14,6 +16,10 @@ const provinces = ['Chiang Mai', 'Chiang Rai', 'Lampang', 'Lamphun', 'Mae Hong S
 const defaultOption = "Bangkok";
 
 const InfoFormComponent=(props)=>{
+
+    let accessToken = globalVar.accessToken
+    console.log("accessToken "+globalVar.accessToken)
+    console.log(globalVar)
 
     let title = "Edit Event"
     if (props.eventID == undefined) title = "Create Event"
@@ -71,6 +77,11 @@ const InfoFormComponent=(props)=>{
         }
     }
 
+    let navigate = useNavigate();
+    const toFeed = () => {
+        navigate("/feed");
+    };
+
     const requestCreateEvent=(event)=>{
 
         //****might error if some fields is missing
@@ -93,11 +104,15 @@ const InfoFormComponent=(props)=>{
         axios({
             method: 'post',
             url: globalApi.createEvent,
+            headers: {
+                "Authorization" : "Bearer "+accessToken,
+            }, 
             data: new_data
         })
         .then(function (response) {
             console.log(response);
             //redirect
+            toFeed()
             
         })
         .catch(function (error) {
@@ -132,13 +147,14 @@ const InfoFormComponent=(props)=>{
             method: 'PUT',
             url: globalApi.updateEvent+props.eventID,
             headers: {
-                "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxIiwiYXV0aG9yaXplZCI6dHJ1ZSwiZXhwIjoxNjUzNjI3NDc2fQ.9ZoVhVFMYxfweHRAu4B8J4naN7GMgRI69oP9gUpnbgg",
+                "Authorization" : "Bearer "+globalVar.accessToken,
             }, 
             data: new_data
         })
         .then(function (response) {
             console.log(response);
             //redirect
+            toFeed()
             
         })
         .catch(function (error) {
@@ -181,9 +197,7 @@ const InfoFormComponent=(props)=>{
         new_data[field_name] = value
         console.log(new_data)
         setData(new_data)
-
     }
-    
     // console.log(props.eventID)
     return (
         <div className="info-form-box">
@@ -303,7 +317,7 @@ const InfoFormComponent=(props)=>{
 
                 {/* btn */}
                 <div className="info-form-box">
-                    <button className="btn create-event-btn" style={{padding: "5px", margin: "10px", float: "right"}} onClick={onBtnClicked} >
+                    <button className="custom-button create-event-btn" style={{padding: "5px", margin: "10px", float: "right"}} onClick={onBtnClicked} >
                         <span>{title}</span>
                     </button>
                 </div>

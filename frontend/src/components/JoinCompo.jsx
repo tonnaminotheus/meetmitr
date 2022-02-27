@@ -10,6 +10,10 @@ import { useState } from "react";
 import globalApi from "../globalApi";
 import axios from "axios";
 
+//new
+import Cookies from 'universal-cookie';
+import NotificationModal from "./modal/NotificationModal";
+
 import nuke from "../asset/nuclear.png";
 import weed from "../asset/weed.jpg";
 import dota from "../asset/dota2_social.jpg";
@@ -20,6 +24,18 @@ import uno from "../asset/uno.jpg";
 import john from "../asset/John.jpg";
 
 function JoinComponent() {
+
+  //test cookie
+  const cookies = new Cookies();
+  console.log("in feed")
+  console.log(cookies.get("cookie"))
+
+  //noti modal state
+  const [notificationState, setNotificationModalState] = useState(false)
+
+
+
+
   const [cardInfo, setCardInfo] = useState({
     events: [
       {
@@ -125,7 +141,11 @@ function JoinComponent() {
 
   return (
     <div className="backG">
-      <MMheader name="Event Feed" />
+      <MMheader 
+        name="Event Feed" 
+        notificationState={notificationState}
+        setNotificationModalState={setNotificationModalState}
+      />
       <Form.Group className="Searcher" controlId="exampleForm.ControlInput1">
         <Row>
           <Col>
@@ -152,6 +172,12 @@ function JoinComponent() {
         mState={modalstate}
         onClose={setModalClose}
       />
+
+      <NotificationModal 
+        notificationState={notificationState}
+        setNotificationModalState={setNotificationModalState}
+      />
+
       {/* <input
           type="text"
           value={this.state.search}

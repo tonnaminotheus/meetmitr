@@ -47,7 +47,7 @@ const FriendYouMayKnow = (props) => {
           <div style={friendProfile}>
             <img src={naem} style={picture}></img>
             <div style={{ marginLeft: 24 }}>
-              <p style={profileText}>Phet Putt</p>
+              <p style={profileText}>LIL IO</p>
               <p>69 mutual friends</p>
             </div>
           </div>
@@ -61,7 +61,7 @@ const FriendYouMayKnow = (props) => {
           <div style={friendProfile}>
             <img src={naem} style={picture}></img>
             <div style={{ marginLeft: 24 }}>
-              <p style={profileText}>Phet Putt</p>
+              <p style={profileText}>ALEX SONG</p>
               <p>69 mutual friends</p>
             </div>
           </div>
