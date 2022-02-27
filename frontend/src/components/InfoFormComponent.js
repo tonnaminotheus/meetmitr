@@ -8,6 +8,7 @@ import globalApi from "../globalApi";
 import globalVar from "../cookie.js";
 import { useNavigate } from "react-router-dom";
 import Multiselect from 'multiselect-react-dropdown';
+import Cookies from "universal-cookie";
 
 //location.replace("/view/drawing.html");
 
@@ -20,10 +21,22 @@ const defaultOption = "Bangkok";
 const InfoFormComponent=(props)=>{
 
     const [tags, setTags] = useState([])
-
+    
+    const getEventId=()=>{
+        if (props.eventID == undefined) {
+            return ""
+        }
+        else return props.eventID
+    }
     let accessToken = globalVar.accessToken
     console.log("accessToken "+globalVar.accessToken)
     console.log(globalVar)
+
+    //test cookie
+    const cookies = new Cookies();
+    console.log("in feed")
+    console.log(cookies.get("cookie"))
+    let user
 
     let title = "Edit Event"
     if (props.eventID == undefined) title = "Create Event"
@@ -178,7 +191,7 @@ const InfoFormComponent=(props)=>{
         console.log(new_data)
         axios({
             method: 'PUT',
-            url: globalApi.updateEvent+props.eventID,
+            url: globalApi.updateEvent+getEventId(),
             headers: {
                 "Authorization" : "Bearer "+globalVar.accessToken,
             }, 
@@ -204,7 +217,7 @@ const InfoFormComponent=(props)=>{
     useEffect(()=>{
         axios({
             method: 'get',
-            url: globalApi.eventDescription + `${props.eventID}`,
+            url: globalApi.eventDescription + getEventId(),
             headers: {
                 "Authorization" : "Bearer "+accessToken,
             },
@@ -212,43 +225,38 @@ const InfoFormComponent=(props)=>{
         })
         .then((res)=>{
             if (res.status == 200) {
-                // console.log(res.data)
-                // res.data["startDate"] = res.data["startTime"].split(" ")[0]
-                // res.data["endDate"] = res.data["startTime"].split(" ")[0]
-                // res.data["startTime"] = res.data["startTime"].split(" ")[1].slice(0,5)
-                // res.data["endTime"] = res.data["endTime"].split(" ")[1].slice(0,5)
+                res.data["startDate"] = res.data["startTime"].split(" ")[0]
+                res.data["endDate"] = res.data["startTime"].split(" ")[0]
+                res.data["startTime"] = res.data["startTime"].split(" ")[1].slice(0,5)
+                res.data["endTime"] = res.data["endTime"].split(" ")[1].slice(0,5)
+                setData(res.data)
                 console.log(res.data)
-                // setData(res.data)
-
-                axios({
-                    method: 'get',
-                    url: globalApi.tagsEvent,
-                    headers: {
-                        "Authorization" : "Bearer "+accessToken,
-                    },
-                    timeout: 8000
-                })
-                .then((tag_res)=>{
-                    if (tag_res.status == 200) {
-                        res.data["startDate"] = res.data["startTime"].split(" ")[0]
-                        res.data["endDate"] = res.data["startTime"].split(" ")[0]
-                        res.data["startTime"] = res.data["startTime"].split(" ")[1].slice(0,5)
-                        res.data["endTime"] = res.data["endTime"].split(" ")[1].slice(0,5)
-                        setData(res.data)
-                        setTags(tag_res.data["tagList"])
-                        console.log(tag_res.data["tagList"])
-                    }
-                })
-                .catch(error2 => {
-                    console.log("error2!!")
-                    console.log(error2)
-                })
             }
         })
         .catch(error => {
             console.log("error!!")
             console.log(error)
-        })        
+        })
+        
+        //get all tag must be outside
+        axios({
+            method: 'get',
+            url: globalApi.tagsEvent,
+            headers: {
+                "Authorization" : "Bearer "+accessToken,
+            },
+            timeout: 8000
+        })
+        .then((tag_res)=>{
+            if (tag_res.status == 200) {
+                setTags(tag_res.data["tagList"])
+                console.log(tag_res.data["tagList"])
+            }
+        })
+        .catch(error2 => {
+            console.log("error2!!")
+            console.log(error2)
+        })    
     },[]);
 
     useEffect(()=>{

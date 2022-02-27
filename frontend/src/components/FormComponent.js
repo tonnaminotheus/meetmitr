@@ -16,7 +16,9 @@ const FormComponent = (props) => {
 
   //cookies
   const cookies = new Cookies();
+  cookies.remove("cookie")
   cookies.set("cookie", {"userID" : "", "accessToken" : "", "refreshToken": ""}, {path:"/"})
+  console.log(cookies.get("cookie"))
 
   const [pwdType,setpwdType] = useState("password")
 
