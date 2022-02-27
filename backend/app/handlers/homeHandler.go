@@ -3,7 +3,6 @@ package handlers
 import (
 	"backend/app/models"
 	"backend/database"
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -66,7 +65,6 @@ func HomeHandler(c *gin.Context) {
 		rows.Scan(&eventHome.EventId, &eventHome.Name, &eventHome.Address,
 			&eventHome.Province, &eventHome.StartTime, &eventHome.ImagUrl, &tag)
 		counterIdx, ok := mp[eventHome.EventId]
-		fmt.Println(eventHome.EventId)
 		if ok {
 			eventHomes[counterIdx].Tags = append(eventHomes[counterIdx].Tags, tag)
 		} else {
