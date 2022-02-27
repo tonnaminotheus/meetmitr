@@ -50,11 +50,18 @@ func GenerateRouter() *gin.Engine {
 
 		v1Event.POST("/join/:eventId", AttractAuthMiddleware(ABORT), handlers.JoinEventHandler)
 		v1Event.POST("/create", AttractAuthMiddleware(ABORT), handlers.CreateEventHandler)
+
+		v1Event.PUT("/unjoin/:eventId", AttractAuthMiddleware(ABORT), handlers.UnjoinEventHandler)
 	}
 	router.GET("/api/v1/chat/room/:chatType/:otherId", AttractAuthMiddleware(ABORT), handlers.GetChatRoomHandler)
 	router.GET("/api/v1/user/:userId", handlers.GetUserHandler)
 	router.GET("/api/v1/chat/partners", AttractAuthMiddleware(ABORT), handlers.GetChatPartners)
 
+	//CoinTransactionHandler
+	router.POST("/api/v1/transaction/:amount", AttractAuthMiddleware(ABORT), handlers.TransactionHandler)
+
+	//HomeHandler
+	router.GET("/api/v1/home/:numPage", AttractAuthMiddleware(ABORT), handlers.HomeHandler)
 	router.POST("/api/v1/rate", AttractAuthMiddleware(ABORT), handlers.RateHandler)
 	router.GET("/api/v1/rate", AttractAuthMiddleware(ABORT), handlers.GetRateHandler)
 	
