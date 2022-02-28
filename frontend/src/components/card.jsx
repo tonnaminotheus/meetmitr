@@ -5,6 +5,7 @@ import { useState } from "react";
 import globalApi from "../globalApi";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Cookies from "universal-cookie";
 
 function EventCard({ events, id }) {
   const navigate = useNavigate();
@@ -12,8 +13,20 @@ function EventCard({ events, id }) {
   // const [tagAvailable, setTagAvailable] = useState({});
   const [display, setDisplay] = useState([true, false, true]);
 
+  const cookies = new Cookies();
+  let user_cookie = cookies.get("cookie")
+  let accessToken = user_cookie["accessToken"]
+  
+
   useEffect(() => {
-    axios.get(globalApi.eventDescription + id).then((res) => {
+    axios.get(
+      globalApi.eventDescription + id,
+      {
+        headers: {
+          "Authorization" : "Bearer "+accessToken,
+        }
+      }
+    ).then((res) => {
       console.log(res.data);
       setEventInfo(res.data);
       TagList();

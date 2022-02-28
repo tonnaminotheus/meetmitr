@@ -16,6 +16,10 @@ const CreateEventPicUploadComponent=(props)=>{
     const inputImg=(event)=>{
         console.log(event.target.value)
         setImgPath(event.target.value)
+        toBase64(document.getElementById("create_event_img_upload").files[0]).then((img_src)=>{
+            onImgUpload(img_src)
+            console.log(img_src)
+        })
     }
 
     const {onImgUpload} = props
@@ -27,6 +31,7 @@ const CreateEventPicUploadComponent=(props)=>{
         // img_path = img_input.value
         toBase64(document.getElementById("create_event_img_upload").files[0]).then((img_src)=>{
             onImgUpload(img_src)
+            console.log(img_src)
             setImgPath("")
         })
     }

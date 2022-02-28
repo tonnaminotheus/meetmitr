@@ -238,6 +238,9 @@ const InfoFormComponent=(props)=>{
             console.log(error)
         })
         
+    },[]);
+
+    useEffect(()=>{
         //get all tag must be outside
         axios({
             method: 'get',
@@ -256,11 +259,7 @@ const InfoFormComponent=(props)=>{
         .catch(error2 => {
             console.log("error2!!")
             console.log(error2)
-        })    
-    },[]);
-
-    useEffect(()=>{
-        
+        })
     },[]);
 
 
