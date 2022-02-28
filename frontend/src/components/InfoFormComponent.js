@@ -20,6 +20,8 @@ const defaultOption = "Bangkok";
 
 const InfoFormComponent=(props)=>{
 
+    let img_src = props.img_src
+
     const [tags, setTags] = useState([])
     
     const getEventId=()=>{
@@ -28,6 +30,7 @@ const InfoFormComponent=(props)=>{
         }
         else return props.eventID
     }
+
     let accessToken = globalVar.accessToken
     console.log("accessToken "+globalVar.accessToken)
     console.log(globalVar)
