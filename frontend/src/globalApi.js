@@ -10,6 +10,7 @@ const globalApi = {
   createEvent: `${url}/api/v1/event/create`, //v2022.01
   userData: `${url}/api/v1/user/`, //+:userId
   rate: `${url}/api/v1/rate/`,
+  recommendFeed: `${url}/api/v1/home/`, //+:numPage v2022.01
 };
 
 export default globalApi;
