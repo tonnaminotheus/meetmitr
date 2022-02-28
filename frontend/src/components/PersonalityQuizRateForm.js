@@ -5,6 +5,9 @@ import "./PersonalityQuizRateForm.css";
 import styled from "styled-components";
 import axios from "axios";
 
+import globalVar from "../cookie";
+import Cookies from "universal-cookie";
+
 import { Button } from "react-bootstrap";
 import { Row } from "react-bootstrap";
 import { Col } from "react-bootstrap";
@@ -12,9 +15,13 @@ import "./JoinCompo.css";
 // import InputRange from "react-input-range";
 
 const RateQuiz = (props) => {
+  const cookies = new Cookies();
   let navigate = useNavigate();
+  let accessToken = globalVar.accessToken;
+  // console.log("accessToken " + globalVar.accessToken);
+
   const [tags, setTags] = useState([
-    "Anime",
+    "anime",
     "charity",
     "doujin",
     "game",
@@ -22,13 +29,25 @@ const RateQuiz = (props) => {
     "sport",
   ]);
   const numbers = [1, 2, 3, 4, 5, 6];
+
+  //*** use this tagValue when select is disable*/
+  // const [tagValue, setTagValue] = useState({
+  //   1: "None",
+  //   2: "None",
+  //   3: "None",
+  //   4: "None",
+  //   5: "None",
+  //   6: "None",
+  // });
+
+  //*** use this tagValue when select is enable*/
   const [tagValue, setTagValue] = useState({
-    1: "None",
-    2: "None",
-    3: "None",
-    4: "None",
-    5: "None",
-    6: "None",
+    1: "game",
+    2: "anime",
+    3: "charity",
+    4: "meme",
+    5: "doujin",
+    6: "sport",
   });
 
   const [tagRate, setTagRate] = useState({
@@ -40,41 +59,86 @@ const RateQuiz = (props) => {
     6: 5,
   });
 
-  //   useEffect(() => {
-  //     let isMounted = true;
-  //     axios.get(globalApi.tagsEvent).then((res) => {
-  //       if (isMounted) {
-  //         console.log(res.data);
-  //         setTags(res.data);
-  //       }
-  //     });
-  //     return () => {
-  //       isMounted = false;
-  //     };
-  //   }, []);
+  const [tagScore, setTagScore] = useState({
+    "game": "0",
+    "anime": "0",
+    "charity": "0",
+    "meme": "0",
+    "doujin": "0",
+    "sport": "0",
+  });
+
+  function prepData() {
+    for (let key in tagValue) {
+      setTagScore((prevState) => {
+        return {
+          ...prevState,
+          [tagValue[key]]: tagRate[key],
+        };
+      });
+    }
+    console.log("show tagScore");
+    console.log(tagScore);
+  }
+
+  const requestQuizRate = (event) => {
+    event.preventDefault();
+    // prepData();
+    const finalRating = {
+      "game": parseInt(tagScore["game"]),
+      "anime": parseInt(tagScore["anime"]),
+      "charity": parseInt(tagScore["charity"]),
+      "meme": parseInt(tagScore["meme"]),
+      "doujin": parseInt(tagScore["doujin"]),
+      "sport": parseInt(tagScore["sport"]),
+    };
+
+    axios({
+      method: "post",
+      url: globalApi.rate,
+      headers: {
+        "Authorization": "Bearer " + accessToken,
+      },
+      data: finalRating,
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          console.log("200");
+          navigate("/feed");
+        } else {
+          console.log(response.status);
+        }
+      })
+      .catch(function (error) {
+        console.log("error!!");
+        console.log(error);
+      });
+  };
 
   const handleTagChange = (event) => {
     const { name, value } = event.target;
-    // console.log(name);
     setTagValue((prevState) => {
       return {
         ...prevState,
         [name]: event.target.value,
       };
     });
-    // console.log(tagValue);
+    prepData();
+    console.log("show tagValue");
+    console.log(tagValue);
   };
 
   const handleRangeChange = (event) => {
     const { name, value } = event.target;
-    // console.log(name);
     setTagRate((prevState) => {
       return {
         ...prevState,
         [name]: event.target.value,
       };
     });
-    // console.log(tagRate);
+    prepData();
+    console.log("show tagRate");
+    console.log(tagRate);
   };
 
   function getSelect() {
@@ -96,6 +160,8 @@ const RateQuiz = (props) => {
               name={num}
               onChange={handleTagChange}
               className="selectInput"
+              aria-label="Disabled select example"
+              disabled
             >
               <option value="None">None</option>
               {getSelect()}
@@ -130,7 +196,7 @@ const RateQuiz = (props) => {
         <span className="rateText">
           Rate your preferred categories (Max 6 categories)
         </span>
-        <form id="rating">
+        <form id="rating" onSubmit={requestQuizRate}>
           {sixCate()}
 
           <button
@@ -139,7 +205,12 @@ const RateQuiz = (props) => {
             onClick={() => {
               console.log(tagValue);
               console.log(tagRate);
-              navigate("/feed");
+              prepData();
+            }}
+            onMouseEnter={() => {
+              console.log(tagValue);
+              console.log(tagRate);
+              prepData();
             }}
           >
             Submit

@@ -27,7 +27,7 @@ render(
       <Route path="createEvent" element={<EditEventComponent />} />
       <Route path="editEvent" element={<EditEventComponent />} />
       <Route path="chatList" element={<ChatList />} />
-      <Route path="PersonalityQuiz2" element={<RateQuiz />} />
+      <Route path="quiz2" element={<RateQuiz />} />
     </Routes>
   </BrowserRouter>,
   document.getElementById("root")
