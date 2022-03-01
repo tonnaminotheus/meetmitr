@@ -25,7 +25,7 @@ func GetEventDescHandler(c *gin.Context) {
 
 	err := database.Sql.QueryRow(`SELECT * FROM Event WHERE eventId=?`, eventId).Scan(
 		&event.EventId, &event.Name, &event.Description, &event.Address, &event.Province,
-		&event.ImagUrl, &event.StartTime, &event.EndTime, &event.Onsite, &event.MaxParticipant,
+		&event.StartTime, &event.EndTime, &event.Onsite, &event.MaxParticipant,
 		&event.Price, &event.CreatedTimeStamp, &event.UserID)
 	if err != nil {
 		c.JSON(500, gin.H{
@@ -39,7 +39,7 @@ func GetEventDescHandler(c *gin.Context) {
 		where Tag.TagId=EventTag.tagId and EventTag.eventId=?`, eventId)
 	if err2 != nil || rows == nil {
 		message := "No tag found"
-		if err != nil {
+		if err2 != nil {
 			message = err.Error()
 		}
 		c.JSON(500, gin.H{
@@ -54,6 +54,26 @@ func GetEventDescHandler(c *gin.Context) {
 	for rows.Next() {
 		rows.Scan(&tag)
 		event.Tags = append(event.Tags, tag)
+	}
+
+	rows, err5 := database.Sql.Query(`select imgURL from EventImage where eventId=?`, eventId)
+	if err5 != nil || rows == nil {
+		message := "No imgURL found"
+		if err5 != nil {
+			message = err5.Error()
+		}
+		c.JSON(500, gin.H{
+			"message": message,
+		})
+		return
+	}
+
+	defer rows.Close()
+
+	var img string
+	for rows.Next() {
+		rows.Scan(&img)
+		event.ImagUrl = append(event.ImagUrl, img)
 	}
 
 	rows, err3 := database.Sql.Query(
@@ -276,8 +296,8 @@ func CreateEventHandler(c *gin.Context) {
 
 	stmt, err2 := database.Sql.Exec(
 		`INSERT INTO Event 
-		VALUES (null, ?, ?, ?,?,?,?,?,?,?,?,CURRENT_TIMESTAMP,?)`,
-		req.Name, req.Description, req.Address, req.Province, req.ImagUrl, req.StartTime,
+		VALUES (null, ?, ?, ?,?,?,?,?,?,?,CURRENT_TIMESTAMP,?)`,
+		req.Name, req.Description, req.Address, req.Province, req.StartTime,
 		req.EndTime, req.Onsite, req.MaxParticipant, *req.Price, userId)
 
 	if err2 != nil {
@@ -301,6 +321,21 @@ func CreateEventHandler(c *gin.Context) {
 			`INSERT INTO EventTag
 			VALUES (?,?);`,
 			tag, eventId)
+
+		if err4 != nil {
+			c.JSON(500, gin.H{
+				"message": err4.Error(),
+			})
+			return
+		}
+	}
+
+	for _, img := range req.ImagUrl {
+
+		_, err4 := database.Sql.Exec(
+			`INSERT INTO EventImage
+			VALUES (?,?);`,
+			img, eventId)
 
 		if err4 != nil {
 			c.JSON(500, gin.H{
