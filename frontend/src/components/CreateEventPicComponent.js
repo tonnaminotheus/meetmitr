@@ -4,7 +4,9 @@ import CreateEventPicDisplayComponent from "./CreateEventPicDisplayComponent"
 import CreateEventPicUploadComponent from "./CreateEventPicUploadComponent"
 
 const CreateEventPicComponent=(props)=>{
-    const [img_path,setPicURL] = useState("")
+    // const [img_path,setPicURL] = useState("")
+    const img_path = props.img_path
+    const setPicURL = props.setPicURL
 
     const onImgUpload=(img_path)=>{
         console.log("img path :",img_path)
