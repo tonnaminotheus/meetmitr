@@ -72,5 +72,9 @@ func GenerateRouter() *gin.Engine {
 
 	router.POST("/api/v1/upload", AttractAuthMiddleware(ABORT), handlers.UploadFileHandler)
 
+	//Noti
+	router.GET("/api/v1/noti/getAll", AttractAuthMiddleware(ABORT), handlers.NotiHandler)
+	router.GET("/api/v1/noti/getCount", AttractAuthMiddleware(ABORT), handlers.NotiCountHandler)
+
 	return router
 }
