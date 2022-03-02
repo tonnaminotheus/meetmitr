@@ -6,6 +6,7 @@ import React, { useEffect } from "react";
 import moment from "moment";
 import axios from "axios";
 import globalApi from "../globalApi";
+
 import { useLocation, useNavigate } from "react-router-dom";
 import Cookie from "universal-cookie";
 
@@ -120,6 +121,7 @@ function JoinEventDetail(props) {
     font-family: "Roboto", sans-serif;
   `;
   useEffect(() => {
+
     console.log(cookies.get("cookie"));
     //   axios({
     //     method: "GET",
@@ -169,6 +171,7 @@ function JoinEventDetail(props) {
         Authorization: "Bearer " + accessToken,
       },
       data: joinData,
+
     })
       .then((response) => {
         if (response.status === 200) {
@@ -211,7 +214,9 @@ function JoinEventDetail(props) {
         console.log("error from unjoin!!");
         console.log(error);
       });
-  };
+
+  }, []);
+
 
   return (
     <div className="joinContainer">
@@ -238,48 +243,47 @@ function JoinEventDetail(props) {
           <div className="joinButton">
             <p>Price : {eventData.price} Coin</p>
             {joined && (
-              <form id="requestToQuiz" onSubmit={requestUnjoinEvent}>
-                <JoinedButton
-                  type="submit"
-                  onClick={() => {
-                    setJoined(false);
-                    const nAttenNum = attendance - 1;
-                    const percent =
-                      String((nAttenNum / eventData.maxParticipant) * 100) +
-                      "%";
-                    setAttendance(nAttenNum);
-                    setProgressData(percent);
-                  }}
-                  onMouseEnter={() => {
-                    console.log("eventId is " + eventId);
-                  }}
-                >
-                  Joined
-                </JoinedButton>
-              </form>
+
+              <JoinedButton
+                type="submit"
+                onClick={() => {
+                  setJoined(false);
+                  const nAttenNum = attendance - 1;
+                  const percent =
+                    String((nAttenNum / eventData.maxParticipant) * 100) + "%";
+                  setAttendance(nAttenNum);
+                  setProgressData(percent);
+                }}
+                onMouseEnter={() => {
+                  console.log("eventId is " + eventId);
+                }}
+              >
+                Joined
+              </JoinedButton>
+
             )}
             {!joined && (
               <div>
                 {eventData.eventId != 2 && (
-                  <form id="requestToJoin" onSubmit={requestJoinEvent}>
-                    <JoinOrEditButton
-                      type="submit"
-                      onClick={() => {
-                        setJoined(true);
-                        const nAttenNum = attendance + 1;
-                        const percent =
-                          String((nAttenNum / eventData.maxParticipant) * 100) +
-                          "%";
-                        setAttendance(nAttenNum);
-                        setProgressData(percent);
-                      }}
-                      onMouseEnter={() => {
-                        console.log("eventId is " + eventId);
-                      }}
-                    >
-                      Join
-                    </JoinOrEditButton>
-                  </form>
+
+                  <JoinOrEditButton
+                    type="submit"
+                    onClick={() => {
+                      setJoined(true);
+                      const nAttenNum = attendance + 1;
+                      const percent =
+                        String((nAttenNum / eventData.maxParticipant) * 100) +
+                        "%";
+                      setAttendance(nAttenNum);
+                      setProgressData(percent);
+                    }}
+                    onMouseEnter={() => {
+                      console.log("eventId is " + eventId);
+                    }}
+                  >
+                    Join
+                  </JoinOrEditButton>
+
                 )}
                 {eventData.eventId == 2 && (
                   <JoinOrEditButton
