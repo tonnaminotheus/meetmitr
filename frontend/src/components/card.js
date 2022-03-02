@@ -69,7 +69,7 @@ const EventCard = (props) => {
             <Card.Img
               className="cardImg"
               variant="top"
-              src={eventInfo.imgSrc}
+              src={eventInfo.images[0]}
               alt=""
             />
           )}
