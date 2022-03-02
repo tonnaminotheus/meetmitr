@@ -6,23 +6,30 @@ import globalApi from "../globalApi";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-function EventCard({ events, id }) {
+const EventCard = (props) => {
   const navigate = useNavigate();
-  const [eventInfo, setEventInfo] = useState({});
+  const [eventInfo, setEventInfo] = useState(props.events);
   // const [tagAvailable, setTagAvailable] = useState({});
   const [display, setDisplay] = useState([true, false, true]);
 
-  useEffect(() => {
-    axios.get(globalApi.eventDescription + id).then((res) => {
-      console.log(res.data);
-      setEventInfo(res.data);
-      TagList();
-    });
-  }, []);
+  // useEffect(() => {
+  //   let isMounted = true;
+  //   axios.get(globalApi.eventDescription + id).then((res) => {
+  //     if (isMounted) {
+  //       console.log(res.data);
+  //       setEventInfo(res.data);
+  //       TagList();
+  //     }
+  //   });
+  //   return () => {
+  //     isMounted = false;
+  //   };
+  // }, []);
 
   function TagList() {
+    console.log(eventInfo.tags.length);
     const tags = eventInfo.tags;
-    const ta = eventInfo.tags === null ? false : true;
+    const ta = eventInfo.length !== 0;
     const listTags = ta && tags.map((tag) => <li key={"tag-" + tag}>{tag}</li>);
     return <ul>{listTags}</ul>;
   }
@@ -62,7 +69,7 @@ function EventCard({ events, id }) {
             <Card.Img
               className="cardImg"
               variant="top"
-              src={events.imgSrc}
+              src={eventInfo.images[0]}
               alt=""
             />
           )}
@@ -82,7 +89,7 @@ function EventCard({ events, id }) {
       </Card>
     </div>
   );
-}
+};
 
 export default EventCard;
 

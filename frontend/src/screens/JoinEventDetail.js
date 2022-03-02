@@ -7,15 +7,17 @@ import moment from "moment";
 import axios from "axios";
 import globalApi from "../globalApi";
 import globalVar from "../cookie";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
-function JoinEventDetail() {
+function JoinEventDetail(props) {
   const navigate = useNavigate();
+  let accessToken = globalVar.accessToken;
   const { state } = useLocation();
   const [show, setShow] = React.useState([true, false, false]);
   const [attendance, setAttendance] = React.useState(0);
   const [progressData, setProgressData] = React.useState("50%");
   const [joined, setJoined] = React.useState(false);
+  const [eventId, setEventId] = React.useState(0);
   const [hostData, setHostData] = React.useState({
     userId: 1,
     email: "test@gmail.com",
@@ -117,9 +119,13 @@ function JoinEventDetail() {
     font-family: "Roboto", sans-serif;
   `;
   useEffect(() => {
+    setEventId(state.eventId);
     axios({
       method: "GET",
       url: globalApi.eventDescription + state.eventId,
+      headers: {
+        "Authorization": "Bearer " + accessToken,
+      },
     })
       .then((respond) => {
         var attenNum = 0;
@@ -147,6 +153,7 @@ function JoinEventDetail() {
         console.log(error);
       });
   }, []);
+
   return (
     <div className="joinContainer">
       <div className="pic">
@@ -182,6 +189,9 @@ function JoinEventDetail() {
                   setAttendance(nAttenNum);
                   setProgressData(percent);
                 }}
+                onMouseEnter={() => {
+                  console.log("eventId is " + eventId);
+                }}
               >
                 Joined
               </JoinedButton>
@@ -199,6 +209,9 @@ function JoinEventDetail() {
                         "%";
                       setAttendance(nAttenNum);
                       setProgressData(percent);
+                    }}
+                    onMouseEnter={() => {
+                      console.log("eventId is " + eventId);
                     }}
                   >
                     Join
