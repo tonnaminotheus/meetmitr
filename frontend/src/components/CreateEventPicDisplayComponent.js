@@ -4,10 +4,12 @@ import "./CreateEventPicDisplayComponent.css"
 
 const CreateEventPicDisplayComponent=(props)=>{
     // img_path = props.img_path
-    var img_path = "C:\\Users\\phet6\\Downloads\\COOP_Program_1.jpg"
-    console.log("var :"+img_path)
+    // var img_path = "C:\\Users\\phet6\\Downloads\\COOP_Program_1.jpg"
+    // console.log("var :"+img_path)
     
     // var img_path = "https://cdn.discordapp.com/attachments/686804648664891518/930458525434515486/unknown.png"
+
+    console.log(props.img_path)
 
     return (
         <div id="display_img" style={{ backgroundImage: `url(${props.img_path})`}}>

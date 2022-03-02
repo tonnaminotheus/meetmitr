@@ -6,13 +6,14 @@ import React, { useEffect } from "react";
 import moment from "moment";
 import axios from "axios";
 import globalApi from "../globalApi";
-import globalVar from "../cookie";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import Cookie from "universal-cookie";
 
 function JoinEventDetail(props) {
   const navigate = useNavigate();
   let accessToken = globalVar.accessToken;
   const { state } = useLocation();
+  var cookies = new Cookie();
   const [show, setShow] = React.useState([true, false, false]);
   const [attendance, setAttendance] = React.useState(0);
   const [progressData, setProgressData] = React.useState("50%");
@@ -119,39 +120,39 @@ function JoinEventDetail(props) {
     font-family: "Roboto", sans-serif;
   `;
   useEffect(() => {
-    setEventId(state.eventId);
-    axios({
-      method: "GET",
-      url: globalApi.eventDescription + state.eventId,
-      headers: {
-        "Authorization": "Bearer " + accessToken,
-      },
-    })
-      .then((respond) => {
-        var attenNum = 0;
-        if (respond.data.participants) {
-          attenNum = respond.data.participants.length;
-        }
-        const percent =
-          String((attenNum / respond.data.maxParticipant) * 100) + "%";
+    console.log(cookies.get("cookie"));
+    //   axios({
+    //     method: "GET",
+    //     url: globalApi.eventDescription + state.eventId,
+    //     headers: {
+    //       authorization: cookies.get("cookie"),
+    //     },
+    //   })
+    //     .then((respond) => {
+    //       var attenNum = 0;
+    //       if (respond.data.participants) {
+    //         attenNum = respond.data.participants.length;
+    //       }
+    //       const percent =
+    //         String((attenNum / respond.data.maxParticipant) * 100) + "%";
 
-        setEventData(respond.data);
-        setAttendance(attenNum);
-        setProgressData(percent);
+    //       setEventData(respond.data);
+    //       setAttendance(attenNum);
+    //       setProgressData(percent);
 
-        const hostId = respond.data.creatorId;
-        axios({
-          method: "GET",
-          url: globalApi.userData + hostId,
-        })
-          .then((respond) => {
-            setHostData(respond.data);
-          })
-          .catch((error) => {});
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    //       const hostId = respond.data.creatorId;
+    //       axios({
+    //         method: "GET",
+    //         url: globalApi.userData + hostId,
+    //       })
+    //         .then((respond) => {
+    //           setHostData(respond.data);
+    //         })
+    //         .catch((error) => {});
+    //     })
+    //     .catch((error) => {
+    //       console.log(error);
+    //     });
   }, []);
 
   const requestJoinEvent = (event) => {
@@ -159,13 +160,13 @@ function JoinEventDetail(props) {
     console.log("run join");
 
     const joinData = {
-      "eventId": state.eventId,
+      eventId: state.eventId,
     };
     axios({
       method: "post",
       url: globalApi.joinEvent + state.eventId,
       headers: {
-        "Authorization": "Bearer " + accessToken,
+        Authorization: "Bearer " + accessToken,
       },
       data: joinData,
     })
@@ -188,13 +189,13 @@ function JoinEventDetail(props) {
 
     console.log("run unjoin");
     const unjoinData = {
-      "eventId": state.eventId,
+      eventId: state.eventId,
     };
     axios({
       method: "delete",
       url: globalApi.unJoinEvent + state.eventId,
       headers: {
-        "Authorization": "Bearer " + accessToken,
+        Authorization: "Bearer " + accessToken,
       },
       data: unjoinData,
     })

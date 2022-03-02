@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Modal from 'react-bootstrap/Modal'
 import { Button } from 'react-bootstrap';
+import "./NotificationModal.css"
 
 const NotificationModal=(props)=>{
 
@@ -19,7 +20,7 @@ const NotificationModal=(props)=>{
 
     return (
         <div>
-            <Modal show={isModalShow} onHide={hideModal}>
+            <Modal id="noti-modal" show={isModalShow} onHide={hideModal}>
                 <Modal.Header closeButton>
                     <Modal.Title>Notification</Modal.Title>
                 </Modal.Header>
