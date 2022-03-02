@@ -6,6 +6,7 @@ import axios from "axios";
 import globalApi from "../globalApi";
 import bg from "../asset/MeetmitrBgNoHead.png";
 import Cookie from "universal-cookie";
+
 const SkipButton = styled.button`
   background-color: #ffc229;
   color: white;
@@ -23,6 +24,7 @@ const SkipButton = styled.button`
   font-family: "Roboto", sans-serif;
   align-self: flex-end;
 `;
+
 const Select = styled.select`
   width: 400px;
   height: 60px;
@@ -45,6 +47,7 @@ const Select = styled.select`
     padding: 0px 2px 1px;
   }
 `;
+
 function PersonalQuiz() {
   let navigate = useNavigate();
 
@@ -92,7 +95,9 @@ function PersonalQuiz() {
       .then((respond) => {
         navigate("/quiz2");
       })
-      .catch((error) => {});
+      .catch((error) => {
+        navigate("/quiz2");
+      });
   };
   return (
     <div
