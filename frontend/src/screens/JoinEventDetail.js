@@ -123,6 +123,7 @@ function JoinEventDetail(props) {
     creatorId: 1,
     participants: ["PRyuSudHod", "PRyuSudTae"],
   });
+
   const joinEvent = () => {
     axios({
       method: "POST",

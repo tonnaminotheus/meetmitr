@@ -13,9 +13,12 @@ const globalApi = {
   upload: `${url}/api/v1/upload`,
   rate: `${url}/api/v1/rate/`,
   recommendFeed: `${url}/api/v1/home/`, //+:numPage v2022.01
+  chatPartner: `${url}/api/v1/chat/partners`,
+  chatHistory: `${url}/api/v1/chat/history/dm/`, // /DMId
+  chatSocket: `ws://${url.slice(6)}/api/v1/chat/room/`, //+ chatType/ + userId
   postQuiz: `${url}/api/v1/quiz`,
-  chatPartner: `${url}/api/v1/chat/partners/`,
   getAllNoti: `${url}/api/v1/noti/getAll`
+
 };
 
 export default globalApi;
