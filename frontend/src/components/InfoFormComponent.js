@@ -292,68 +292,72 @@ const InfoFormComponent = (props) => {
         // always executed
       });
   };
+  
+////////
+    useEffect(()=>{
+        axios({
+            method: 'get',
+            url: globalApi.eventDescription + getEventId(),
+            headers: {
+                "Authorization" : "Bearer "+accessToken,
+            },
+            timeout: 8000
+        })
+        .then((res)=>{
+            if (res.status == 200) {
+                res.data["startDate"] = res.data["startTime"].split(" ")[0]
+                res.data["endDate"] = res.data["startTime"].split(" ")[0]
+                res.data["startTime"] = res.data["startTime"].split(" ")[1].slice(0,5)
+                res.data["endTime"] = res.data["endTime"].split(" ")[1].slice(0,5)
+                setData(res.data)
+                console.log(res.data)
+                if (res.data["imagUrl"]) {
+                    setPicURL(res.data["imagUrl"])
+                    props.setPicPtr(res.data["imagUrl"].length-1)
+                    console.log(res.data["imagUrl"])
+                }
+            }
+        })
+        .catch(error => {
+            console.log("error!!")
+            console.log(error)
+        })
+        
+    },[]);
 
-  useEffect(() => {
-    axios({
-      method: "get",
-      url: globalApi.eventDescription + getEventId(),
-      headers: {
-        Authorization: "Bearer " + accessToken,
-      },
-      timeout: 8000,
-    })
-      .then((res) => {
-        if (res.status == 200) {
-          res.data["startDate"] = res.data["startTime"].split(" ")[0];
-          res.data["endDate"] = res.data["startTime"].split(" ")[0];
-          res.data["startTime"] = res.data["startTime"]
-            .split(" ")[1]
-            .slice(0, 5);
-          res.data["endTime"] = res.data["endTime"].split(" ")[1].slice(0, 5);
-          setData(res.data);
-          console.log(res.data);
-          if (res.data["imagUrl"]) {
-            setPicURL(res.data["imagUrl"]);
-            console.log(res.data["imagUrl"]);
-          }
-        }
-      })
-      .catch((error) => {
-        console.log("error!!");
-        console.log(error);
-      });
-  }, []);
+    useEffect(()=>{
+        //get all tag must be outside
+        axios({
+            method: 'get',
+            url: globalApi.tagsEvent,
+            headers: {
+                "Authorization" : "Bearer "+accessToken,
+            },
+            timeout: 8000
+        })
+        .then((tag_res)=>{
+            if (tag_res.status == 200) {
+                setTags(tag_res.data["tagList"])
+                console.log(tag_res.data["tagList"])
+            }
+        })
+        .catch(error2 => {
+            console.log("error2!!")
+            console.log(error2)
+        })
+    },[]);
 
-  useEffect(() => {
-    //get all tag must be outside
-    axios({
-      method: "get",
-      url: globalApi.tagsEvent,
-      headers: {
-        Authorization: "Bearer " + accessToken,
-      },
-      timeout: 8000,
-    })
-      .then((tag_res) => {
-        if (tag_res.status == 200) {
-          setTags(tag_res.data["tagList"]);
-          console.log(tag_res.data["tagList"]);
-        }
-      })
-      .catch((error2) => {
-        console.log("error2!!");
-        console.log(error2);
-      });
-  }, []);
 
-  const setParticularField = (value, field_name) => {
-    let new_data = { ...data }; //beware copying onj
-    new_data[field_name] = value;
-    console.log(new_data);
-    setData(new_data);
-  };
-  // console.log(props.eventID)
-  return (
+    const setParticularField=(value, field_name)=>{
+        let new_data = {...data} //beware copying onj
+        new_data[field_name] = value
+        console.log(new_data)
+        setData(new_data)
+    }
+    // console.log(props.eventID)
+    
+    /////
+    return (
     <div className="info-form-box">
       <div className="info-form-box">
         <h1>
@@ -433,7 +437,7 @@ const InfoFormComponent = (props) => {
             className="radio-eventtype"
           />
         </div>
-
+        
         {/* date start - end */}
         <div className="info-form-box">
           <label htmlFor="event-date-start">Date Start : </label>
