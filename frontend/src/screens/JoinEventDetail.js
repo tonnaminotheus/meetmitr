@@ -6,16 +6,19 @@ import React, { useEffect } from "react";
 import moment from "moment";
 import axios from "axios";
 import globalApi from "../globalApi";
-import globalVar from "../cookie";
 import { useLocation, useNavigate } from "react-router-dom";
+import Cookie from "universal-cookie";
 
-function JoinEventDetail() {
+function JoinEventDetail(props) {
   const navigate = useNavigate();
+  let accessToken = globalVar.accessToken;
   const { state } = useLocation();
+  var cookies = new Cookie();
   const [show, setShow] = React.useState([true, false, false]);
   const [attendance, setAttendance] = React.useState(0);
   const [progressData, setProgressData] = React.useState("50%");
   const [joined, setJoined] = React.useState(false);
+  const [eventId, setEventId] = React.useState(0);
   const [hostData, setHostData] = React.useState({
     userId: 1,
     email: "test@gmail.com",
@@ -117,36 +120,99 @@ function JoinEventDetail() {
     font-family: "Roboto", sans-serif;
   `;
   useEffect(() => {
+    console.log(cookies.get("cookie"));
+    //   axios({
+    //     method: "GET",
+    //     url: globalApi.eventDescription + state.eventId,
+    //     headers: {
+    //       authorization: cookies.get("cookie"),
+    //     },
+    //   })
+    //     .then((respond) => {
+    //       var attenNum = 0;
+    //       if (respond.data.participants) {
+    //         attenNum = respond.data.participants.length;
+    //       }
+    //       const percent =
+    //         String((attenNum / respond.data.maxParticipant) * 100) + "%";
+
+    //       setEventData(respond.data);
+    //       setAttendance(attenNum);
+    //       setProgressData(percent);
+
+    //       const hostId = respond.data.creatorId;
+    //       axios({
+    //         method: "GET",
+    //         url: globalApi.userData + hostId,
+    //       })
+    //         .then((respond) => {
+    //           setHostData(respond.data);
+    //         })
+    //         .catch((error) => {});
+    //     })
+    //     .catch((error) => {
+    //       console.log(error);
+    //     });
+  }, []);
+
+  const requestJoinEvent = (event) => {
+    event.preventDefault();
+    console.log("run join");
+
+    const joinData = {
+      eventId: state.eventId,
+    };
     axios({
-      method: "GET",
-      url: globalApi.eventDescription + state.eventId,
+      method: "post",
+      url: globalApi.joinEvent + state.eventId,
+      headers: {
+        Authorization: "Bearer " + accessToken,
+      },
+      data: joinData,
     })
-      .then((respond) => {
-        var attenNum = 0;
-        if (respond.data.participants) {
-          attenNum = respond.data.participants.length;
+      .then((response) => {
+        if (response.status === 200) {
+          console.log("200 on join");
+          setJoined(true);
+        } else {
+          console.log(response.status);
         }
-        const percent =
-          String((attenNum / respond.data.maxParticipant) * 100) + "%";
-
-        setEventData(respond.data);
-        setAttendance(attenNum);
-        setProgressData(percent);
-
-        const hostId = respond.data.creatorId;
-        axios({
-          method: "GET",
-          url: globalApi.userData + hostId,
-        })
-          .then((respond) => {
-            setHostData(respond.data);
-          })
-          .catch((error) => {});
       })
-      .catch((error) => {
+      .catch(function (error) {
+        console.log("error from join!!");
         console.log(error);
       });
-  }, []);
+  };
+
+  const requestUnjoinEvent = (event) => {
+    event.preventDefault();
+
+    console.log("run unjoin");
+    const unjoinData = {
+      eventId: state.eventId,
+    };
+    axios({
+      method: "delete",
+      url: globalApi.unJoinEvent + state.eventId,
+      headers: {
+        Authorization: "Bearer " + accessToken,
+      },
+      data: unjoinData,
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          console.log("200 on unjoin");
+          setJoined(false);
+        } else {
+          console.log(response.status);
+        }
+      })
+      .catch(function (error) {
+        console.log("error from unjoin!!");
+        console.log(error);
+      });
+  };
+
   return (
     <div className="joinContainer">
       <div className="pic">
@@ -172,37 +238,48 @@ function JoinEventDetail() {
           <div className="joinButton">
             <p>Price : {eventData.price} Coin</p>
             {joined && (
-              <JoinedButton
-                type="submit"
-                onClick={() => {
-                  setJoined(false);
-                  const nAttenNum = attendance - 1;
-                  const percent =
-                    String((nAttenNum / eventData.maxParticipant) * 100) + "%";
-                  setAttendance(nAttenNum);
-                  setProgressData(percent);
-                }}
-              >
-                Joined
-              </JoinedButton>
+              <form id="requestToQuiz" onSubmit={requestUnjoinEvent}>
+                <JoinedButton
+                  type="submit"
+                  onClick={() => {
+                    setJoined(false);
+                    const nAttenNum = attendance - 1;
+                    const percent =
+                      String((nAttenNum / eventData.maxParticipant) * 100) +
+                      "%";
+                    setAttendance(nAttenNum);
+                    setProgressData(percent);
+                  }}
+                  onMouseEnter={() => {
+                    console.log("eventId is " + eventId);
+                  }}
+                >
+                  Joined
+                </JoinedButton>
+              </form>
             )}
             {!joined && (
               <div>
                 {eventData.eventId != 2 && (
-                  <JoinOrEditButton
-                    type="submit"
-                    onClick={() => {
-                      setJoined(true);
-                      const nAttenNum = attendance + 1;
-                      const percent =
-                        String((nAttenNum / eventData.maxParticipant) * 100) +
-                        "%";
-                      setAttendance(nAttenNum);
-                      setProgressData(percent);
-                    }}
-                  >
-                    Join
-                  </JoinOrEditButton>
+                  <form id="requestToJoin" onSubmit={requestJoinEvent}>
+                    <JoinOrEditButton
+                      type="submit"
+                      onClick={() => {
+                        setJoined(true);
+                        const nAttenNum = attendance + 1;
+                        const percent =
+                          String((nAttenNum / eventData.maxParticipant) * 100) +
+                          "%";
+                        setAttendance(nAttenNum);
+                        setProgressData(percent);
+                      }}
+                      onMouseEnter={() => {
+                        console.log("eventId is " + eventId);
+                      }}
+                    >
+                      Join
+                    </JoinOrEditButton>
+                  </form>
                 )}
                 {eventData.eventId == 2 && (
                   <JoinOrEditButton

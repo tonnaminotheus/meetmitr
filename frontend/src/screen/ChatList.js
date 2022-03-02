@@ -16,9 +16,9 @@ const ChatList = (props) => {
       >
         <div style={{ marginLeft: 60, marginRight: 120 }}>
           <div style={{ overflowY: "scroll", height: "90%", width: "60vw" }}>
-            <ChatListUser />
-            <ChatListUser />
-            <ChatListUser />
+            <ChatListUser name="VIRGIL" desc="motivated approaching storm" />
+            <ChatListUser name="TTV WRAITH" desc="Insta D/C" />
+            <ChatListUser name="KYLIAN MBAPPE" desc="Turtle Ninja" />
           </div>
           <button style={button}>Back</button>
         </div>
