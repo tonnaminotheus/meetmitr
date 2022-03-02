@@ -31,12 +31,6 @@ func UpdateEvent(body *requests.UpdateEventReq, eventId string) error {
 			return err
 		}
 	}
-	if body.ImagUrl != "" {
-		_, err := database.Sql.Query("UPDATE Event SET Event.imagURL=? WHERE Event.eventId=?", body.ImagUrl, eventId)
-		if err != nil {
-			return err
-		}
-	}
 	if body.StartTime != "" {
 		_, err := database.Sql.Query("UPDATE Event SET Event.startTime=? WHERE Event.eventId=?", body.StartTime, eventId)
 		if err != nil {
@@ -61,6 +55,23 @@ func UpdateEvent(body *requests.UpdateEventReq, eventId string) error {
 				`INSERT INTO EventTag
 				VALUES (?,?);`,
 				tag, eventId)
+			if err2 != nil {
+				return err2
+			}
+		}
+	}
+	if body.ImagUrl != nil {
+		//delete old
+		_, err := database.Sql.Query("DELETE FROM EventImage WHERE eventId = ?", eventId)
+		if err != nil {
+			return err
+		}
+		//add new
+		for _, img := range body.ImagUrl {
+			_, err2 := database.Sql.Exec(
+				`INSERT INTO EventImage
+				VALUES (?,?);`,
+				img, eventId)
 			if err2 != nil {
 				return err2
 			}

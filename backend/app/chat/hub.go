@@ -5,6 +5,7 @@
 package chat
 
 import (
+	"backend/app/models"
 	"strconv"
 )
 
@@ -15,7 +16,7 @@ type Hub struct {
 	clients map[*Client]bool
 
 	// Inbound messages from the clients.
-	broadcast chan Message
+	broadcast chan models.Message
 
 	// Register requests from the clients.
 	register chan *Client
@@ -28,7 +29,7 @@ type Hub struct {
 
 func newHub() *Hub {
 	return &Hub{
-		broadcast:  make(chan Message),
+		broadcast:  make(chan models.Message),
 		register:   make(chan *Client),
 		unregister: make(chan *Client),
 		clients:    make(map[*Client]bool),
@@ -45,7 +46,7 @@ func (h *Hub) run() {
 				delete(h.clients, client)
 				close(client.send)
 				if len(h.clients) == 0 {
-					if h.roomId[0] == 'C' {
+					if h.roomId[:2] == "DM" {
 						chatId, _ := strconv.Atoi(h.roomId[1:])
 						delete(dmRoom, chatId)
 					}
@@ -55,6 +56,7 @@ func (h *Hub) run() {
 				}
 			}
 		case message := <-h.broadcast:
+			go saveMessage(h.roomId, message)
 			for client := range h.clients {
 				select {
 				case client.send <- message:
