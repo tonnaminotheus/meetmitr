@@ -1,3 +1,5 @@
+@import "~react-image-gallery/styles/css/image-gallery.css";
+
 .joinContainer {
   display: flex;
   height: 100%;
@@ -9,15 +11,13 @@
 .pic {
   display: flex;
   background-image: linear-gradient(
-      to right,
-      transparent,
-      100px,
-      transparent,
-      70%,
-      #faf3e7
-    ),
-    url("../asset/event_sample.png");
-  background-color: blue;
+    to right,
+    transparent,
+    100px,
+    transparent,
+    70%,
+    #faf3e7
+  );
   background-size: cover;
   flex: 4;
 }

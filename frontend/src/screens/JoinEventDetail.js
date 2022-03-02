@@ -6,7 +6,7 @@ import React, { useEffect } from "react";
 import moment from "moment";
 import axios from "axios";
 import globalApi from "../globalApi";
-
+import ImageGallery from "react-image-gallery";
 import { useLocation, useNavigate } from "react-router-dom";
 import Cookie from "universal-cookie";
 
@@ -90,7 +90,9 @@ function JoinEventDetail(props) {
   const [attendance, setAttendance] = React.useState(0);
   const [progressData, setProgressData] = React.useState("50%");
   const [joined, setJoined] = React.useState(false);
+  const [owner, setOwner] = React.useState(false);
   const [eventId, setEventId] = React.useState(0);
+  const [images, setImages] = React.useState([]);
   const [hostData, setHostData] = React.useState({
     userId: 1,
     email: "test@gmail.com",
@@ -148,10 +150,11 @@ function JoinEventDetail(props) {
       method: "GET",
       url: globalApi.eventDescription + state.eventId,
       headers: {
-        authorization: userData.accessToken,
+        authorization: "Bearer " + userData.accessToken,
       },
     })
       .then((respond) => {
+        setOwner(respond.data.creatorId === userData.userID);
         var attenNum = 0;
         if (respond.data.participants) {
           attenNum = respond.data.participants.length;
@@ -164,6 +167,17 @@ function JoinEventDetail(props) {
         setProgressData(percent);
         setJoined(respond.data.isJoin);
         const hostId = respond.data.creatorId;
+        var imageList = [];
+        console.log(respond.data.imagUrl);
+        for (const image of respond.data.imagUrl) {
+          imageList.push({
+            original: image,
+            originalHeight: "1000px",
+          });
+        }
+        setImages(imageList);
+        console.log(imageList);
+        console.log(respond.data);
         axios({
           method: "GET",
           url: globalApi.userData + hostId,
@@ -181,7 +195,24 @@ function JoinEventDetail(props) {
   return (
     <div className="joinContainer">
       <div className="pic">
-        <img className="logo" src={logo} alt="" />
+        <ImageGallery
+          items={images}
+          showPlayButton={false}
+          showFullscreenButton={false}
+          useBrowserFullscreen={false}
+          showThumbnails={false}
+          autoPlay={true}
+          showBullets={true}
+          showNav={true}
+          useTranslate3D={false}
+          style={{
+            display: "flex",
+            backgroundImage:
+              "linear-gradient(to right,transparent,100px,transparent,70%,#faf3e7)",
+            backgroundSize: "cover",
+            flex: "4",
+          }}
+        />
       </div>
       <div className="detail">
         <div className="header">
@@ -202,27 +233,41 @@ function JoinEventDetail(props) {
         <div className="status">
           <div className="joinButton">
             <p>Price : {eventData.price} Coin</p>
-            {joined && (
-              <JoinedButton
+
+            {owner && (
+              <JoinOrEditButton
                 type="submit"
                 onClick={() => {
-                  setJoined(false);
-                  const nAttenNum = attendance - 1;
-                  const percent =
-                    String((nAttenNum / eventData.maxParticipant) * 100) + "%";
-                  setAttendance(nAttenNum);
-                  setProgressData(percent);
-                }}
-                onMouseEnter={() => {
-                  console.log("eventId is " + eventId);
+                  navigate("/editEvent", {
+                    state: { eventId: eventData.eventId },
+                  });
                 }}
               >
-                Joined
-              </JoinedButton>
+                Edit
+              </JoinOrEditButton>
             )}
-            {!joined && (
+            {!owner && (
               <div>
-                {eventData.creatorId != userData.userID && (
+                {joined && (
+                  <JoinedButton
+                    type="submit"
+                    onClick={() => {
+                      setJoined(false);
+                      const nAttenNum = attendance - 1;
+                      const percent =
+                        String((nAttenNum / eventData.maxParticipant) * 100) +
+                        "%";
+                      setAttendance(nAttenNum);
+                      setProgressData(percent);
+                    }}
+                    onMouseEnter={() => {
+                      console.log("eventId is " + eventId);
+                    }}
+                  >
+                    Joined
+                  </JoinedButton>
+                )}
+                {!joined && (
                   <JoinOrEditButton
                     type="submit"
                     onClick={joinEvent}
@@ -231,18 +276,6 @@ function JoinEventDetail(props) {
                     }}
                   >
                     Join
-                  </JoinOrEditButton>
-                )}
-                {eventData.creatorId == userData.userID && (
-                  <JoinOrEditButton
-                    type="submit"
-                    onClick={() => {
-                      navigate("/editEvent", {
-                        state: { eventId: eventData.eventId },
-                      });
-                    }}
-                  >
-                    Edit
                   </JoinOrEditButton>
                 )}
               </div>
