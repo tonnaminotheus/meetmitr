@@ -6,11 +6,15 @@ import globalApi from "../globalApi";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+import Cookies from "universal-cookie";
+
+
 const EventCard = (props) => {
   const navigate = useNavigate();
   const [eventInfo, setEventInfo] = useState(props.events);
   // const [tagAvailable, setTagAvailable] = useState({});
   const [display, setDisplay] = useState([true, false, true]);
+
 
   // useEffect(() => {
   //   let isMounted = true;
@@ -25,6 +29,25 @@ const EventCard = (props) => {
   //     isMounted = false;
   //   };
   // }, []);
+
+  const cookies = new Cookies();
+  let user_cookie = cookies.get("cookie");
+  let accessToken = user_cookie["accessToken"];
+
+  useEffect(() => {
+    axios
+      .get(globalApi.eventDescription + props.id, {
+        headers: {
+          Authorization: "Bearer " + accessToken,
+        },
+      })
+      .then((res) => {
+        console.log(res.data);
+        setEventInfo(res.data);
+        TagList();
+      });
+  }, []);
+
 
   function TagList() {
     console.log(eventInfo.tags.length);
@@ -69,7 +92,9 @@ const EventCard = (props) => {
             <Card.Img
               className="cardImg"
               variant="top"
+
               src={eventInfo.images[0]}
+
               alt=""
             />
           )}
