@@ -8,17 +8,24 @@ import FinishRegister from "./screens/FinishRegister";
 import JoinEvent from "./screens/JoinEventDetail";
 import JoinComponent from "./components/JoinCompo";
 import Chat from "./screen/Chat";
+import EditEventComponent from "./components/EditEventComponent";
+import LoginRootComponent from "./components/LoginRootComponent";
+import "bootstrap/dist/css/bootstrap.min.css";
+import ChatList from "./screen/ChatList";
 
 render(
   <BrowserRouter>
     <Routes>
-      <Route path="/" element={<App />} />
+      <Route path="/" element={<LoginRootComponent />} />
       <Route path="register" element={<Register />} />
       <Route path="verifyEmail" element={<VerifyEmail />} />
       <Route path="finishRegister" element={<FinishRegister />} />
       <Route path="joinEvent" element={<JoinEvent />} />
       <Route path="feed" element={<JoinComponent />} />
       <Route path="chat" element={<Chat />} />
+      <Route path="createEvent" element={<EditEventComponent />} />
+      <Route path="editEvent" element={<EditEventComponent />} />
+      <Route path="chatList" element={<ChatList />} />
     </Routes>
   </BrowserRouter>,
   document.getElementById("root")

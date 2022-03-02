@@ -1,9 +1,13 @@
 import "./VerifyEmail.css";
 import styled from "styled-components";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function VerifyEmail() {
-  const email = "";
-  const goToLogin = () => {};
+  let navigate = useNavigate();
+  const { email } = useLocation();
+  const goToLogin = () => {
+    navigate("/");
+  };
   const Button = styled.button`
     background-color: #303b5b;
     color: white;

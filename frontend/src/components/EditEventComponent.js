@@ -1,15 +1,23 @@
-import "./EditEventComponent.css"
-
+import "./EditEventComponent.css";
 import CreateEventPicComponent from "./CreateEventPicComponent"
 import CreateEventInfoComponent from "./CreateEventInfoComponent"
+import { useLocation } from "react-router-dom"
+import { useState } from "react";
 
-const editEventComponent=(props)=>{
+const EditEventComponent=(props)=>{
+
+    const {state} = useLocation();
+    // console.log("eventID :"+eventID)  
+    
+    const [img_path,setPicURL] = useState("")
+    
     return (
         <div className="create-event-container">
-            <CreateEventPicComponent/>
-            <CreateEventInfoComponent eventID={props.eventID}/>
+            <CreateEventPicComponent setImgSrc={setImgSrc}/>
+            {state&&<CreateEventInfoComponent eventID={state.eventId} img_src={img_path}/>}
+            {!state&&<CreateEventInfoComponent/>}
         </div>
     );
 }
 
-export default editEventComponent;
+export default EditEventComponent;

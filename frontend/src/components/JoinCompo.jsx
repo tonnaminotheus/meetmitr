@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useEffect } from "react";
 import Cards from "./cards";
 import MMheader from "./MMheader";
 import Form from "react-bootstrap/Form";
@@ -7,6 +7,12 @@ import Row from "react-bootstrap/Row";
 import JoinEventFilterModal from "./modal";
 import "./JoinCompo.css";
 import { useState } from "react";
+import globalApi from "../globalApi";
+import axios from "axios";
+
+//new
+import Cookies from 'universal-cookie';
+import NotificationModal from "./modal/NotificationModal";
 
 import nuke from "../asset/nuclear.png";
 import weed from "../asset/weed.jpg";
@@ -18,10 +24,22 @@ import uno from "../asset/uno.jpg";
 import john from "../asset/John.jpg";
 
 function JoinComponent() {
+
+  //test cookie
+  const cookies = new Cookies();
+  console.log("in feed")
+  console.log(cookies.get("cookie"))
+
+  //noti modal state
+  const [notificationState, setNotificationModalState] = useState(false)
+
+
+
+
   const [cardInfo, setCardInfo] = useState({
     events: [
       {
-        id: 1,
+        id: 9,
         title: "Nuclear Discuss",
         date: "Mon 28 February",
         place: "Pathumwan99, Bangkok",
@@ -82,6 +100,7 @@ function JoinComponent() {
       },
     ],
   });
+
   const [search, setSearch] = useState("");
   const [modalstate, setModalstate] = useState(false);
   const [joinEventFilterProps, setJoinEventFilterProps] = useState({});
@@ -122,7 +141,11 @@ function JoinComponent() {
 
   return (
     <div className="backG">
-      <MMheader />
+      <MMheader 
+        name="Event Feed" 
+        notificationState={notificationState}
+        setNotificationModalState={setNotificationModalState}
+      />
       <Form.Group className="Searcher" controlId="exampleForm.ControlInput1">
         <Row>
           <Col>
@@ -149,6 +172,12 @@ function JoinComponent() {
         mState={modalstate}
         onClose={setModalClose}
       />
+
+      <NotificationModal 
+        notificationState={notificationState}
+        setNotificationModalState={setNotificationModalState}
+      />
+
       {/* <input
           type="text"
           value={this.state.search}

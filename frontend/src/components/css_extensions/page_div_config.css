@@ -9,16 +9,10 @@
     background-size: cover;
   }
   
-  
-  
-
-
-  
-  
   /* -------- global css ------------ */
   a {
     text-decoration: none;
-    color: black;
+    color: rgb(0, 255, 170);
   }
   a:hover{
     /* font-size: larger; */
