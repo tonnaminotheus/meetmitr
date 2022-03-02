@@ -5,8 +5,6 @@ import { useLocation } from "react-router-dom";
 import { useState } from "react";
 
 const EditEventComponent = (props) => {
-  const { state } = useLocation();
-  // console.log("eventID :"+eventID)
 
     const {state} = useLocation();
     // console.log("eventID :"+eventID)  
