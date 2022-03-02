@@ -9,7 +9,6 @@ const ChatList = (props) => {
   const requestFriendList = () => {
     //****might error if some fields is missing
 
-    event.preventDefault();
 
     axios({
       method: "get",

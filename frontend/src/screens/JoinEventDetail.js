@@ -6,6 +6,7 @@ import React, { useEffect } from "react";
 import moment from "moment";
 import axios from "axios";
 import globalApi from "../globalApi";
+
 import { useLocation, useNavigate } from "react-router-dom";
 import Cookie from "universal-cookie";
 
@@ -120,7 +121,6 @@ function JoinEventDetail(props) {
     creatorId: 1,
     participants: ["PRyuSudHod", "PRyuSudTae"],
   });
-
   const joinEvent = () => {
     axios({
       method: "POST",
