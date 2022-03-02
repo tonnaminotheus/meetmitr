@@ -61,12 +61,10 @@ function JoinComponent() {
           //   };
           // });
         }
-
       })
       .catch(function (error) {
         console.log(error);
         console.log(error.response);
-
       });
     return () => {
       isMounted = false;
