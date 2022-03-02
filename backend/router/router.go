@@ -57,9 +57,10 @@ func GenerateRouter() *gin.Engine {
 	// ChatHandler
 	v1Chat := router.Group("/api/v1/chat")
 	{
-		v1Chat.GET("/room/:chatType/:otherId", AttractAuthMiddleware(ABORT), handlers.GetChatRoomHandler)
+		v1Chat.GET("/token/:chatType/:otherId", AttractAuthMiddleware(ABORT), handlers.GetChatTokenHandler)
 		v1Chat.GET("/partners", AttractAuthMiddleware(ABORT), handlers.GetChatPartners)
 		v1Chat.GET("/history/dm/:chatId", AttractAuthMiddleware(ABORT), handlers.GetDMHistoryHandlers)
+		v1Chat.GET("/room/:token", handlers.GetChatRoomHandler)
 	}
 
 	//CoinTransactionHandler

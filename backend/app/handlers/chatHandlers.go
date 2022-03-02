@@ -19,6 +19,16 @@ import (
 var chatService = chat.NewChatService()
 
 func GetChatRoomHandler(c *gin.Context) {
+	chatId, userId, err := chatService.CheckToken(c.Param("token"))
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": err,
+		})
+		return
+	}
+	chatService.ConnectDMRoom(chatId, userId, c.Writer, c.Request)
+}
+func GetChatTokenHandler(c *gin.Context) {
 	otherIdStr := c.Param("otherId")
 	chatType := c.Param("chatType")
 	otherId, err := strconv.Atoi(otherIdStr)
@@ -39,14 +49,18 @@ func GetChatRoomHandler(c *gin.Context) {
 			})
 			return
 		}
-		chatService.ConnectDMRoom(chatId, userId, c.Writer, c.Request)
+		token := chatService.CreateToken(chatId, userId)
+		c.JSON(200, gin.H{
+			"message": "ok",
+			"token":   token,
+		})
 
 	}
 }
 
 func GetChatPartners(c *gin.Context) {
 	userId := c.GetString("user_id")
-	log.Println("userId", userId)
+	//log.Println("userId", userId)
 	rows, err := database.Sql.Query(`Select D.dmChatId, U.profileName, U.UserId  From DMChat D, User U
 	 where (D.UserId1 = ? or D.UserId2 = ?) and ((U.userId = D.UserId1 or U.userId = D.userId2) and U.userId != ?)`, userId, userId, userId)
 	if err != nil || rows == nil {
@@ -146,7 +160,7 @@ func GetDMHistoryHandlers(c *gin.Context) {
 		}
 		response.LastId = doc.Ref.ID
 		data := doc.Data()
-		log.Println(data)
+		//log.Println(data)
 		response.Messages = append(response.Messages, models.Message{SenderId: (int)(data["SenderId"].(int64)),
 			Message:  data["Message"].(string),
 			DateTime: utils.FormatTime(data["DateTime"].(time.Time))})

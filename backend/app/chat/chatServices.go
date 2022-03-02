@@ -3,19 +3,28 @@ package chat
 import (
 	"backend/app/models"
 	"backend/database"
+	"backend/utils"
 	"context"
+	"errors"
 	"log"
 	"net/http"
 	"strconv"
+	"time"
 )
 
 type ChatServiceImpl struct {
+}
+
+type pair struct {
+	chatId int
+	userId int
 }
 
 var (
 	chatSvc      *ChatServiceImpl
 	dmRoom       = map[int]*Hub{}
 	availableHub = []*Hub{}
+	tokens       = map[string]pair{}
 )
 
 func NewChatService() *ChatServiceImpl {
@@ -72,9 +81,33 @@ func (c *ChatServiceImpl) ConnectDMRoom(chatId, userId int, w http.ResponseWrite
 }
 
 func saveMessage(roomId string, message models.Message) {
-	_, _, err := database.Firestore.Collection(roomId).Add(context.Background(), message)
+	t, _ := time.Parse("2006-01-02 15:04:05", message.DateTime)
+	t = t.Add(time.Hour * -7)
+	msg := map[string]interface{}{"SenderId": message.SenderId, "Message": message.Message, "DateTime": t}
+	_, _, err := database.Firestore.Collection(roomId).Add(context.Background(), msg)
 	if err != nil {
 		log.Println(err)
 	}
 
+}
+
+func (c *ChatServiceImpl) CheckToken(token string) (int, int, error) {
+	if _, ok := tokens[token]; !ok {
+		return -1, -1, errors.New("invalid token")
+	}
+	id := tokens[token]
+	delete(tokens, token)
+	return id.chatId, id.userId, nil
+}
+
+func (c *ChatServiceImpl) CreateToken(chatId, userId int) string {
+	token := utils.RandomStringNumber(30)
+	for {
+		if _, ok := tokens[token]; !ok {
+			break
+		}
+		token = utils.RandomStringNumber(30)
+	}
+	tokens[token] = pair{chatId: chatId, userId: userId}
+	return token
 }
