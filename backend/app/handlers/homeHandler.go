@@ -68,6 +68,7 @@ func HomeHandler(c *gin.Context) {
 			eventHomes[counterIdx].Tags = append(eventHomes[counterIdx].Tags, tag)
 		} else {
 			eventHome.Tags = []string{}
+			eventHome.Images = []string{}
 			eventHome.Tags = append(eventHome.Tags, tag)
 			eventHomes = append(eventHomes, eventHome)
 			mp[eventHome.EventId] = counter
