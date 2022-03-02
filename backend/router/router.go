@@ -54,5 +54,8 @@ func GenerateRouter() *gin.Engine {
 	router.GET("/api/v1/chat/room/:chatType/:otherId", AttractAuthMiddleware(ABORT), handlers.GetChatRoomHandler)
 	router.GET("/api/v1/user/:userId", handlers.GetUserHandler)
 	router.GET("/api/v1/chat/partners", AttractAuthMiddleware(ABORT), handlers.GetChatPartners)
+
+	router.GET("/api/v1/quiz", AttractAuthMiddleware(ABORT), handlers.GetQuizHandler)
+	router.POST("/api/v1/quiz", AttractAuthMiddleware(ABORT), handlers.SendQuizHandler)
 	return router
 }
