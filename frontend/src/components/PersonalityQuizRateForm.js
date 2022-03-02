@@ -5,7 +5,6 @@ import "./PersonalityQuizRateForm.css";
 import styled from "styled-components";
 import axios from "axios";
 
-import globalVar from "../cookie";
 import Cookies from "universal-cookie";
 
 import { Button } from "react-bootstrap";
@@ -17,7 +16,7 @@ import "./JoinCompo.css";
 const RateQuiz = (props) => {
   const cookies = new Cookies();
   let navigate = useNavigate();
-  let accessToken = globalVar.accessToken;
+  let accessToken = cookies.get("cookie").accessToken;
   // console.log("accessToken " + globalVar.accessToken);
 
   const [tags, setTags] = useState([
@@ -60,12 +59,12 @@ const RateQuiz = (props) => {
   });
 
   const [tagScore, setTagScore] = useState({
-    "game": "0",
-    "anime": "0",
-    "charity": "0",
-    "meme": "0",
-    "doujin": "0",
-    "sport": "0",
+    game: "0",
+    anime: "0",
+    charity: "0",
+    meme: "0",
+    doujin: "0",
+    sport: "0",
   });
 
   function prepData() {
@@ -85,19 +84,19 @@ const RateQuiz = (props) => {
     event.preventDefault();
     // prepData();
     const finalRating = {
-      "game": parseInt(tagScore["game"]),
-      "anime": parseInt(tagScore["anime"]),
-      "charity": parseInt(tagScore["charity"]),
-      "meme": parseInt(tagScore["meme"]),
-      "doujin": parseInt(tagScore["doujin"]),
-      "sport": parseInt(tagScore["sport"]),
+      game: parseInt(tagScore["game"]),
+      anime: parseInt(tagScore["anime"]),
+      charity: parseInt(tagScore["charity"]),
+      meme: parseInt(tagScore["meme"]),
+      doujin: parseInt(tagScore["doujin"]),
+      sport: parseInt(tagScore["sport"]),
     };
 
     axios({
       method: "post",
       url: globalApi.rate,
       headers: {
-        "Authorization": "Bearer " + accessToken,
+        Authorization: "Bearer " + accessToken,
       },
       data: finalRating,
     })
@@ -113,7 +112,6 @@ const RateQuiz = (props) => {
       .catch(function (error) {
         console.log("error!!");
         console.log(error);
-
       });
   };
 
@@ -162,7 +160,6 @@ const RateQuiz = (props) => {
               name={num}
               onChange={handleTagChange}
               className="selectInput"
-
               disabled
             >
               <option value="None">None</option>
@@ -205,7 +202,6 @@ const RateQuiz = (props) => {
             type="submit"
             className="subButt btn btn-primary btn-lg"
             onClick={() => {
-
               // console.log(tagValue);
               // console.log(tagRate);
               prepData();
