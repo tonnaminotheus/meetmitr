@@ -14,6 +14,7 @@ const globalApi = {
   rate: `${url}/api/v1/rate/`,
   recommendFeed: `${url}/api/v1/home/`, //+:numPage v2022.01
   postQuiz: `${url}/api/v1/quiz`,
+  chatPartner: `${url}/api/v1/chat/partners/`,
 };
 
 export default globalApi;
