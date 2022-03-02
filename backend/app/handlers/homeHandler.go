@@ -26,7 +26,7 @@ func HomeHandler(c *gin.Context) {
 		})
 		return
 	}
-	EventPerPage := 5
+	EventPerPage := 6
 	startRow := (intNumPage-1)*EventPerPage + 1
 	endRow := intNumPage * EventPerPage
 	rows, err := database.Sql.Query(
