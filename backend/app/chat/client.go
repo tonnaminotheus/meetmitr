@@ -37,6 +37,10 @@ var (
 var upgrader = websocket.Upgrader{
 	ReadBufferSize:  1024,
 	WriteBufferSize: 1024,
+	// Resolve cross-domain problems
+	CheckOrigin: func(r *http.Request) bool {
+		return true
+	},
 }
 
 // Client is a middleman between the websocket connection and the hub.
@@ -72,7 +76,8 @@ func (c *Client) readPump() {
 			break
 		}
 		message = bytes.TrimSpace(bytes.Replace(message, newline, space, -1))
-		c.hub.broadcast <- models.Message{Message: string(message), SenderId: c.userId, DateTime: utils.FormatTime(time.Now())}
+		formatMessage := models.Message{Message: string(message), SenderId: c.userId, DateTime: utils.FormatTime(time.Now())}
+		c.hub.broadcast <- formatMessage
 	}
 }
 
