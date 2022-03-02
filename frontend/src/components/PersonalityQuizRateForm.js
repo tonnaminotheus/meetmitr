@@ -104,7 +104,7 @@ const RateQuiz = (props) => {
       .then((response) => {
         if (response.status === 200) {
           console.log("200");
-          console.log(tagScore);
+
           navigate("/feed");
         } else {
           console.log(response.status);
@@ -113,7 +113,7 @@ const RateQuiz = (props) => {
       .catch(function (error) {
         console.log("error!!");
         console.log(error);
-        console.log(tagScore);
+
       });
   };
 
@@ -162,6 +162,7 @@ const RateQuiz = (props) => {
               name={num}
               onChange={handleTagChange}
               className="selectInput"
+
               disabled
             >
               <option value="None">None</option>
@@ -204,6 +205,7 @@ const RateQuiz = (props) => {
             type="submit"
             className="subButt btn btn-primary btn-lg"
             onClick={() => {
+
               // console.log(tagValue);
               // console.log(tagRate);
               prepData();
@@ -211,6 +213,7 @@ const RateQuiz = (props) => {
             onMouseEnter={() => {
               // console.log(tagValue);
               // console.log(tagRate);
+
               prepData();
             }}
           >

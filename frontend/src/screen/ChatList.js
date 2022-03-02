@@ -9,6 +9,7 @@ const ChatList = (props) => {
   const requestFriendList = () => {
     //****might error if some fields is missing
 
+
     axios({
       method: "get",
       url: globalApi.chatPartner,

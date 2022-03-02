@@ -1,4 +1,5 @@
-import "./FormComponent.css";
+// import "./FormComponent.css";
+import "../components/css_extensions/form_control.css"
 
 import globalApi from "../globalApi";
 import globalVar from "../cookie";
@@ -15,7 +16,9 @@ const FormComponent = (props) => {
 
   //cookies
   const cookies = new Cookies();
+  cookies.remove("cookie")
   cookies.set("cookie", {"userID" : "", "accessToken" : "", "refreshToken": ""}, {path:"/"})
+  console.log(cookies.get("cookie"))
 
   const [pwdType,setpwdType] = useState("password")
 
@@ -76,7 +79,7 @@ const FormComponent = (props) => {
   }
   return (
     <div className="login-form">
-      <h2>Hi Mitr!</h2>
+      <h2 className="login-title">Hi Mitr!</h2>
       <form>
         <div className="Form-control">
           <input
