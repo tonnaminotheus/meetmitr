@@ -14,7 +14,6 @@ class Cards extends Component {
   }
 
   render() {
-    console.log(this.props.events);
     return (
       <div>
         <Container>

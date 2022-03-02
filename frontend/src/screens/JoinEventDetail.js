@@ -154,64 +154,6 @@ function JoinEventDetail(props) {
       });
   }, []);
 
-  const requestJoinEvent = (event) => {
-    event.preventDefault();
-    console.log("run join");
-
-    const joinData = {
-      "eventId": state.eventId,
-    };
-    axios({
-      method: "post",
-      url: globalApi.joinEvent + state.eventId,
-      headers: {
-        "Authorization": "Bearer " + accessToken,
-      },
-      data: joinData,
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          console.log("200 on join");
-          setJoined(true);
-        } else {
-          console.log(response.status);
-        }
-      })
-      .catch(function (error) {
-        console.log("error from join!!");
-        console.log(error);
-      });
-  };
-
-  const requestUnjoinEvent = (event) => {
-    event.preventDefault();
-
-    console.log("run unjoin");
-    const unjoinData = {
-      "eventId": state.eventId,
-    };
-    axios({
-      method: "delete",
-      url: globalApi.unJoinEvent + state.eventId,
-      headers: {
-        "Authorization": "Bearer " + accessToken,
-      },
-      data: unjoinData,
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          console.log("200 on unjoin");
-          setJoined(false);
-        } else {
-          console.log(response.status);
-        }
-      })
-      .catch(function (error) {
-        console.log("error from unjoin!!");
-        console.log(error);
-      });
-  };
-
   return (
     <div className="joinContainer">
       <div className="pic">
@@ -237,48 +179,43 @@ function JoinEventDetail(props) {
           <div className="joinButton">
             <p>Price : {eventData.price} Coin</p>
             {joined && (
-              <form id="requestToQuiz" onSubmit={requestUnjoinEvent}>
-                <JoinedButton
-                  type="submit"
-                  onClick={() => {
-                    setJoined(false);
-                    const nAttenNum = attendance - 1;
-                    const percent =
-                      String((nAttenNum / eventData.maxParticipant) * 100) +
-                      "%";
-                    setAttendance(nAttenNum);
-                    setProgressData(percent);
-                  }}
-                  onMouseEnter={() => {
-                    console.log("eventId is " + eventId);
-                  }}
-                >
-                  Joined
-                </JoinedButton>
-              </form>
+              <JoinedButton
+                type="submit"
+                onClick={() => {
+                  setJoined(false);
+                  const nAttenNum = attendance - 1;
+                  const percent =
+                    String((nAttenNum / eventData.maxParticipant) * 100) + "%";
+                  setAttendance(nAttenNum);
+                  setProgressData(percent);
+                }}
+                onMouseEnter={() => {
+                  console.log("eventId is " + eventId);
+                }}
+              >
+                Joined
+              </JoinedButton>
             )}
             {!joined && (
               <div>
                 {eventData.eventId != 2 && (
-                  <form id="requestToJoin" onSubmit={requestJoinEvent}>
-                    <JoinOrEditButton
-                      type="submit"
-                      onClick={() => {
-                        setJoined(true);
-                        const nAttenNum = attendance + 1;
-                        const percent =
-                          String((nAttenNum / eventData.maxParticipant) * 100) +
-                          "%";
-                        setAttendance(nAttenNum);
-                        setProgressData(percent);
-                      }}
-                      onMouseEnter={() => {
-                        console.log("eventId is " + eventId);
-                      }}
-                    >
-                      Join
-                    </JoinOrEditButton>
-                  </form>
+                  <JoinOrEditButton
+                    type="submit"
+                    onClick={() => {
+                      setJoined(true);
+                      const nAttenNum = attendance + 1;
+                      const percent =
+                        String((nAttenNum / eventData.maxParticipant) * 100) +
+                        "%";
+                      setAttendance(nAttenNum);
+                      setProgressData(percent);
+                    }}
+                    onMouseEnter={() => {
+                      console.log("eventId is " + eventId);
+                    }}
+                  >
+                    Join
+                  </JoinOrEditButton>
                 )}
                 {eventData.eventId == 2 && (
                   <JoinOrEditButton
