@@ -61,7 +61,7 @@ const FormComponent = (props) => {
                 globalVar.userID = response.data["userId"]
 
                 //set(name, value, [options])
-                cookies.set("cookie", {"userID" : response.data["userId"], "accessToken" : response.data["accessToken"], "refreshToken": response.data["refreshToken"]}, {path:"/"})
+                cookies.set("cookie", {"userID" : parseInt(response.data["userId"]), "accessToken" : response.data["accessToken"], "refreshToken": response.data["refreshToken"]}, {path:"/"})
                 // cookies.set("cookie", response.data["userId"], {path:"/"})
                 console.log(cookies)
                 console.log(cookies.get("cookie"))
