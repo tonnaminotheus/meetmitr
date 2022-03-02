@@ -3,7 +3,7 @@ import ChatListUser from "../components/ChatListUser";
 import FriendYouMayKnow from "../components/FriendYouMayKnow";
 import globalApi from "../globalApi";
 import Cookies from "universal-cookie";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 var axios = require("axios").default;
 const ChatList = (props) => {
@@ -30,13 +30,15 @@ const ChatList = (props) => {
       })
       .catch(function (error) {
         console.log("error!!");
-        console.log(error);
+        console.log(error.response);
       })
       .then(function () {
         // always executed
       });
   }
-  requestFriendList();
+  useEffect(() => {
+    requestFriendList();
+  }, []);
 
   const friendList = partners.map((partners) => {
     return (
