@@ -6,7 +6,8 @@ import axios from "axios";
 
 const CreateEventPicUploadComponent=(props)=>{
 
-    const {onImgUpload} = props
+    // const global_img_path = props.img_path
+    const setPicURL = props.setPicURL
 
     const cookies = new Cookies();
     let user_cookie = cookies.get("cookie")
@@ -27,7 +28,7 @@ const CreateEventPicUploadComponent=(props)=>{
     const inputImg=(event)=>{
         setImgPath(event.target.value)
         toBase64(event.target.files[0]).then((img_src)=>{
-            onImgUpload(img_src)
+            // setPicURL(img_src)
             setSelectedFile(event.target.files[0])
         })
     }
@@ -35,6 +36,11 @@ const CreateEventPicUploadComponent=(props)=>{
 
     const uploadImage=(event)=>{
         event.preventDefault();
+
+        //disable button upload
+        let uploadBtn = document.getElementById("upload-pic-btn")
+        uploadBtn.disabled = true;
+        uploadBtn.innerText = "Uploading...";
 
         const formData = new FormData();
         formData.append(
@@ -46,20 +52,27 @@ const CreateEventPicUploadComponent=(props)=>{
                 "Authorization" : "Bearer "+user_cookie["accessToken"],
             }
         }).then((res)=>{
-            console.log("ok")
-            console.log(res.data)
-            onImgUpload(res.data.url)
+            let new_img_path = props.img_path
+            new_img_path.push(res.data.url)
+            setPicURL(new_img_path)
+            alert("Upload Successfully!!")
         }).catch((error)=>{
             console.log("error")
             console.log(error.response)
+            alert("Upload not successful!!")
+        })
+        .finally(()=>{
+            //enable button upload
+            uploadBtn.disabled = false;
+            uploadBtn.innerText = "Upload"
         })
     }
     
     return (
         <div className="form-box">
             <form onSubmit={uploadImage}>
-                <h3>Image Upload</h3>
-                <input type="file" id="create_event_img_upload" className="custom-button" name="create_event_img_upload" accept="image/png, image/jpg" value={img_path} onChange={inputImg}/>
+                <div><h3>Image Upload</h3></div>
+                <input type="file" id="create_event_img_upload" className="custom-button" name="create_event_img_upload" value={img_path} accept="image/png, image/jpg" onChange={inputImg}/>
                 <button type="submit" className="custom-button" id="upload-pic-btn">Upload</button>
             </form>
         </div>
