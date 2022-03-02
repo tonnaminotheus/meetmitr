@@ -26,5 +26,5 @@ type EventHome struct {
 	Address   string   `json:"address"`
 	Province  string   `json:"province"`
 	StartTime string   `json:"startTime"`
-	ImagUrl   string   `json:"imagUrl"`
+	Images    []string `json:"images"`
 }
