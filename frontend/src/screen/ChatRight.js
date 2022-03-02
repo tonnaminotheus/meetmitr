@@ -1,4 +1,69 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import globalVar from "../cookie";
+import globalApi from "../globalApi";
+let currentUserId = globalVar.userID;
+
+const textChat = {
+  maxWidth: 500,
+  fontFamily: "Roboto",
+  fontSize: 36,
+  color: "black",
+  backgroundColor: "#CAEDE9",
+  borderStyle: "solid",
+  borderColor: "#000000",
+  borderWidth: 1,
+  margin: 16,
+};
+
+const chatItem = (props) => {
+  if (props.isUser) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "flex-end",
+          marginTop: 16,
+          marginBottom: 16,
+        }}
+      >
+        <text style={{ fontFamily: "Roboto", fontSize: 36, color: "black" }}>
+          {props.time}
+        </text>
+        <text style={textChat}>{props.message}</text>
+      </div>
+    );
+  }
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "flex-start",
+      }}
+    >
+      <text
+        style={{
+          maxWidth: 500,
+          fontFamily: "Roboto",
+          fontSize: 36,
+          color: "black",
+          backgroundColor: "#CAEDE9",
+          borderStyle: "solid",
+          borderColor: "#000000",
+          borderWidth: 1,
+          margin: 16,
+        }}
+      >
+        {props.message}
+      </text>
+      <text style={{ fontFamily: "Roboto", fontSize: 36, color: "black" }}>
+        {props.time}
+      </text>
+    </div>
+  );
+};
+
 const ChatRight = (props) => {
   const [chatArray, setChatArray] = useState([]);
   const [text, setText] = useState("");
@@ -7,9 +72,16 @@ const ChatRight = (props) => {
     setText(newText);
     console.log(newText);
   };
+
+  useEffect(() => {
+    console.log(text);
+  });
+
   return (
     <div style={container}>
-      <div style={divScroller}></div>
+      <div style={divScroller}>
+        <chatItem time={"04:20"} message={"TEST"} isUser={true}></chatItem>
+      </div>
       <div
         style={{
           width: "100%",

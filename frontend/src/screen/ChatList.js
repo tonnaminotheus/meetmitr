@@ -3,13 +3,13 @@ import ChatListUser from "../components/ChatListUser";
 import FriendYouMayKnow from "../components/FriendYouMayKnow";
 import globalApi from "../globalApi";
 import globalVar from "../cookie";
+import { useState } from "react";
 var axios = require("axios").default;
 const ChatList = (props) => {
   let accessToken = globalVar.accessToken;
-  const requestFriendList = () => {
+  const [partners, setPartners] = useState([]);
+  function requestFriendList() {
     //****might error if some fields is missing
-
-    event.preventDefault();
 
     axios({
       method: "get",
@@ -19,7 +19,8 @@ const ChatList = (props) => {
       },
     })
       .then(function (response) {
-        console.log(response);
+        console.log(response.data.partners);
+        setPartners(response.data.partners);
         //redirect
       })
       .catch(function (error) {
@@ -29,16 +30,17 @@ const ChatList = (props) => {
       .then(function () {
         // always executed
       });
-  };
-  const a = requestFriendList();
-  const friendList = a.map((a) => {
+  }
+  requestFriendList();
+
+  const friendList = partners.map((partners) => {
     return (
       <ChatListUser
-        name={a.profileName}
-        imgUrl={a.profilePicUrl}
-        lastMessage={a.lastMessage}
-        friendId={a.userId}
-        dmId={a.DMId}
+        name={partners.profileName}
+        imgUrl={partners.profilePicUrl}
+        lastMessage={partners.lastMessage}
+        dmId={partners.DMId}
+        userId={partners.userId}
       ></ChatListUser>
     );
   });
