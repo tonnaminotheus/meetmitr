@@ -1,4 +1,4 @@
-const url = "http://52.91.79.60:8080";
+const url = "http://44.202.18.143:8080";
 const globalApi = {
   register: `${url}/api/v1/register`,
   login: `${url}/api/v1/login`,

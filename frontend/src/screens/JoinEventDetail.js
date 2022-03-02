@@ -6,12 +6,13 @@ import React, { useEffect } from "react";
 import moment from "moment";
 import axios from "axios";
 import globalApi from "../globalApi";
-import globalVar from "../cookie";
 import { useLocation, useNavigate } from "react-router-dom";
+import Cookie from "universal-cookie";
 
 function JoinEventDetail() {
   const navigate = useNavigate();
   const { state } = useLocation();
+  var cookies = new Cookie();
   const [show, setShow] = React.useState([true, false, false]);
   const [attendance, setAttendance] = React.useState(0);
   const [progressData, setProgressData] = React.useState("50%");
@@ -117,35 +118,39 @@ function JoinEventDetail() {
     font-family: "Roboto", sans-serif;
   `;
   useEffect(() => {
-    axios({
-      method: "GET",
-      url: globalApi.eventDescription + state.eventId,
-    })
-      .then((respond) => {
-        var attenNum = 0;
-        if (respond.data.participants) {
-          attenNum = respond.data.participants.length;
-        }
-        const percent =
-          String((attenNum / respond.data.maxParticipant) * 100) + "%";
+    console.log(cookies.get("cookie"));
+    //   axios({
+    //     method: "GET",
+    //     url: globalApi.eventDescription + state.eventId,
+    //     headers: {
+    //       authorization: cookies.get("cookie"),
+    //     },
+    //   })
+    //     .then((respond) => {
+    //       var attenNum = 0;
+    //       if (respond.data.participants) {
+    //         attenNum = respond.data.participants.length;
+    //       }
+    //       const percent =
+    //         String((attenNum / respond.data.maxParticipant) * 100) + "%";
 
-        setEventData(respond.data);
-        setAttendance(attenNum);
-        setProgressData(percent);
+    //       setEventData(respond.data);
+    //       setAttendance(attenNum);
+    //       setProgressData(percent);
 
-        const hostId = respond.data.creatorId;
-        axios({
-          method: "GET",
-          url: globalApi.userData + hostId,
-        })
-          .then((respond) => {
-            setHostData(respond.data);
-          })
-          .catch((error) => {});
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    //       const hostId = respond.data.creatorId;
+    //       axios({
+    //         method: "GET",
+    //         url: globalApi.userData + hostId,
+    //       })
+    //         .then((respond) => {
+    //           setHostData(respond.data);
+    //         })
+    //         .catch((error) => {});
+    //     })
+    //     .catch((error) => {
+    //       console.log(error);
+    //     });
   }, []);
   return (
     <div className="joinContainer">
