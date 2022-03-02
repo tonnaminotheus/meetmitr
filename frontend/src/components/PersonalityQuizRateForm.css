@@ -7,7 +7,9 @@
     margin-left: 10px;
     padding: 5px 10px;
     font-weight: 500;
-    width: 150px;
+    height: 48px;
+    width: 220px;
+    background-color: #F4EDE0;
 }
 
 .Slider {
@@ -15,16 +17,35 @@
     margin-left: 10px;
     height: 20px;
     position: relative;
-    top: 5px;
+    /* top: 5px; */
 }
 
 .score{
     margin-left:20px;
 }
 
+.mmFont {
+    font-size: 30px;
+    font-family: "Roboto", sans-serif;
+}
+
 .subButt {
-    margin-top: 30px;
-    margin-left: 30px;
+    background-color: #ffc229;
+    color: white;
+    border-radius: 15px;
+    outline: 0;
+    border: 0px;
+    cursor: pointer;
+    transition: ease background-color 250ms;
+    height: 77px;
+    width: 246px;
+    margin-left: 52vw;
+    /* margin-right: 20vw; */
+    margin-top: 140px;
+    font-size: 30px;
+    font-weight: bold;
+    font-family: "Roboto", sans-serif;
+    /* align-self: flex-end; */
 }
 
 .subButt:hover {
@@ -32,7 +53,10 @@
 }
 
 .rateText {
-    font-size: 2rem;
+    font-size: 40px;
+    font-family: "Roboto", sans-serif;
+    margin-top: 40px;
+    margin-bottom: 50px;
 }
 
 .container {
@@ -48,7 +72,7 @@
 }
 
 input[type="range"] {
-    width: 30%;
+    width: 35%;
     overflow: hidden;
     -webkit-appearance: none;
     background-color: #C4C4C4; 

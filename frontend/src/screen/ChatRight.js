@@ -1,15 +1,174 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+
+import globalApi from "../globalApi";
+import useWebSocket, { ReadyState } from "react-use-websocket";
+import Cookies from "universal-cookie";
+const cookies = new Cookies();
+let currentUserId = cookies.get("cookie").userID;
+var axios = require("axios").default;
+const textChat = {
+  maxWidth: 500,
+  fontFamily: "Roboto",
+  fontSize: 24,
+  color: "black",
+  backgroundColor: "#CAEDE9",
+  borderStyle: "solid",
+  borderColor: "#000000",
+  borderWidth: 1,
+  padding: 16,
+  alignSelf: "flex-end",
+  alignItem: "flex-start",
+  marginLeft: 16,
+  marginRight: 16,
+  borderRadius: 16,
+  borderColor: "#000000",
+  borderWidth: 1,
+};
+const ChatItem = (props) => {
+  //console.log("chatItemmmmmm");
+
+  if (props.isUser) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row-reverse",
+          alignItems: "flex-end",
+          marginTop: 16,
+          marginBottom: 16,
+        }}
+      >
+        <text style={textChat}>{props.message}</text>
+
+        <text style={{ fontFamily: "Roboto", fontSize: 24, color: "black" }}>
+          {props.time}
+        </text>
+      </div>
+    );
+  }
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        marginTop: 16,
+        alignItems: "flex-end",
+      }}
+    >
+      <text style={textChat}>{props.message}</text>
+
+      <text style={{ fontFamily: "Roboto", fontSize: 24, color: "black" }}>
+        {props.time}
+      </text>
+    </div>
+  );
+};
+
 const ChatRight = (props) => {
+  const cookies = new Cookies();
+  //console.log("COOKIES : ", cookies);
+  let accessToken = cookies.get("cookie").accessToken;
+
+  //const [messageHistory, setMessageHistory] = useState([]);
+
+  //const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
   const [chatArray, setChatArray] = useState([]);
   const [text, setText] = useState("");
-
+  const [socketUrl, setSocketUrl] = useState("");
   const change = (newText) => {
     setText(newText);
-    console.log(newText);
+    //console.log(newText);
   };
+
+  useEffect(() => {
+    console.log(text);
+  }, [chatArray, text]);
+  useEffect(() => {
+    axios({
+      method: "get",
+      url: globalApi.chatToken + `dm/${props.userId}`,
+      headers: {
+        Authorization: "Bearer " + accessToken,
+      },
+    })
+      .then(function (response) {
+        console.log(response.data);
+        setSocketUrl(globalApi.chatSocket + response.data.token);
+        //redirect
+      })
+      .catch(function (error) {
+        console.log("error!!");
+        console.log(error.response);
+      })
+      .then(function () {
+        // always executed
+      });
+  }, []);
+
+  //console.log(socketUrl);
+  const [messageHistory, setMessageHistory] = useState([]);
+
+  const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
+
+  const connectionStatus = {
+    [ReadyState.CONNECTING]: "Connecting",
+    [ReadyState.OPEN]: "Open",
+    [ReadyState.CLOSING]: "Closing",
+    [ReadyState.CLOSED]: "Closed",
+    [ReadyState.UNINSTANTIATED]: "Uninstantiated",
+  }[readyState];
+
+  const handleClickSendMessage = () => {
+    //sendMessage("text");
+    sendMessage(text);
+    setText("");
+  };
+
+  function requestChatHistory() {
+    //****might error if some fields is missing
+
+    axios({
+      method: "get",
+      url: globalApi.chatHistory + `${props.dmId}`,
+      headers: {
+        Authorization: "Bearer " + accessToken,
+      },
+    })
+      .then(function (response) {
+        console.log(response.data.chatHistory);
+        var newArray = [];
+        for (var i = response.data.chatHistory.length - 1; i >= 0; i--) {
+          newArray.push(response.data.chatHistory[i]);
+        }
+
+        setChatArray(newArray);
+
+        //redirect
+      })
+      .catch(function (error) {
+        console.log("error!!");
+        console.log(error.response);
+      })
+      .then(function () {
+        // always executed
+      });
+  }
+  //requestChatHistory();
+
+  const renderChat = chatArray.map((chatArray) => {
+    //console.log("userid", currentUserId, "senderID", typeof chatArray.senderId);
+    //console.log(currentUserId === chatArray.senderId);
+    return (
+      <ChatItem
+        message={chatArray.message}
+        time={chatArray.dateTime.slice(11, 16)}
+        isUser={chatArray.senderId === currentUserId}
+      ></ChatItem>
+    );
+  });
   return (
     <div style={container}>
-      <div style={divScroller}></div>
+      <div style={divScroller}> {renderChat}</div>
       <div
         style={{
           width: "100%",
@@ -33,7 +192,9 @@ const ChatRight = (props) => {
           }}
           onChange={change}
         ></input>
-        <button style={sendButton}>send</button>
+        <button style={sendButton} onClick={handleClickSendMessage}>
+          send
+        </button>
       </div>
     </div>
   );

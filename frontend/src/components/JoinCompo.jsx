@@ -13,7 +13,6 @@ import axios from "axios";
 //new
 import Cookies from "universal-cookie";
 import NotificationModal from "./modal/NotificationModal";
-import globalVar from "../cookie";
 
 import nuke from "../asset/nuclear.png";
 import weed from "../asset/weed.jpg";
@@ -30,7 +29,7 @@ function JoinComponent() {
   console.log("in feed");
   console.log(cookies.get("cookie"));
 
-  let accessToken = globalVar.accessToken;
+  let accessToken = cookies.get("cookie").accessToken;
 
   //noti modal state
   const [notificationState, setNotificationModalState] = useState(false);
@@ -47,7 +46,7 @@ function JoinComponent() {
     axios
       .get(globalApi.recommendFeed + "1", {
         headers: {
-          "Authorization": "Bearer " + accessToken,
+          Authorization: "Bearer " + accessToken,
         },
       })
       .then((res) => {
@@ -61,12 +60,10 @@ function JoinComponent() {
           //   };
           // });
         }
-
       })
       .catch(function (error) {
         console.log(error);
         console.log(error.response);
-
       });
     return () => {
       isMounted = false;
