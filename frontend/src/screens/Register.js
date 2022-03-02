@@ -56,7 +56,7 @@ const TextInput = styled.input`
   font-family: "Titillium Web";
   padding-left: 10px;
 `;
-const InputHeader = styled.text`
+const InputHeader = styled.p`
   margin-top: 0px;
   line-height: 10px;
   font-size: 24px;
@@ -158,8 +158,8 @@ function Register() {
       style={{
         display: "flex",
         height: "100%",
-        "min-height": "100vh",
-        "justify-content": "center",
+        minHeight: "100vh",
+        justifyContent: "center",
         backgroundImage: `url(${bg})`,
         backgroundColor: `#FFE5B9`,
       }}
@@ -167,12 +167,12 @@ function Register() {
       <div
         className="register-container"
         style={{
-          "border-radius": "15px",
-          "background-color": "#ffffff",
-          "margin-top": "150px",
-          "margin-bottom": "150px",
-          "margin-left": "250px",
-          "margin-right": "250px",
+          borderRadius: "15px",
+          backgroundColor: "#ffffff",
+          marginTop: "150px",
+          marginBotton: "150px",
+          marginLeft: "250px",
+          marginRight: "250px",
           flex: "1",
         }}
       >
@@ -180,12 +180,12 @@ function Register() {
           className="register-header"
           style={{
             display: "flex",
-            "margin-left": "50px",
-            "margin-top": "10px",
-            "align-items": "center",
+            marginLeft: "50px",
+            marginTop: "10px",
+            alignItems: "center",
           }}
         >
-          <div class="logo">
+          <div className="logo">
             <img
               className="yellowlogo"
               src={yellowlogo}
@@ -197,30 +197,30 @@ function Register() {
               }}
             />
           </div>
-          <div class="createAccount">
+          <div className="createAccount">
             <p
               style={{
-                "font-size": "55px",
+                fontSize: "55px",
                 margin: "0px",
-                "font-weight": "bold",
-                "font-family": "Roboto, sans-serif",
-                "line-height": "0px",
+                fontWeight: "bold",
+                fontFamily: "Roboto, sans-serif",
+                lineHeight: "0px",
               }}
             >
               Create Account
             </p>
           </div>
-          <div class="Empty" style={{ flex: 1 }} />
-          <div class="Login">
+          <div className="Empty" style={{ flex: 1 }} />
+          <div className="Login">
             <p
               style={{
-                "font-size": "24px",
+                fontSize: "24px",
                 margin: "0px",
-                "font-weight": "regular",
-                "font-family": "Roboto, sans-serif",
-                "line-height": "0px",
+                fontWeight: "regular",
+                fontFamily: "Roboto, sans-serif",
+                lineHeight: "0px",
                 color: "#303B5B",
-                "padding-right": "20px",
+                paddingRight: "20px",
               }}
             >
               Back to Log in?
@@ -231,25 +231,25 @@ function Register() {
           className="register-body"
           style={{
             display: "flex",
-            "margin-left": "50px",
-            "flex-direction": "row",
+            marginLeft: "50px",
+            flexDirection: "row",
           }}
         >
           <div
-            class="left-register-form"
+            className="left-register-form"
             style={{
               flex: "1",
-              "flex-direction": "column",
+              flexDirection: "column",
             }}
           >
             <div
-              class="field"
+              className="field"
               style={{
                 flex: "1",
-                "margin-top": "10px",
-                "white-space": "nowrap",
+                marginTop: "10px",
+                whiteSpace: "nowrap",
                 color: "#303b5b",
-                "flex-direction": "column",
+                flexDirection: "column",
                 textAlign: "left",
               }}
             >
@@ -264,13 +264,13 @@ function Register() {
               />
             </div>
             <div
-              class="field"
+              className="field"
               style={{
                 flex: "1",
-                "margin-top": "10px",
-                "white-space": "nowrap",
+                marginTop: "10px",
+                whiteSpace: "nowrap",
                 color: "#303b5b",
-                "flex-direction": "column",
+                flexDirection: "column",
                 textAlign: "left",
               }}
             >
@@ -285,13 +285,13 @@ function Register() {
               />
             </div>
             <div
-              class="field"
+              className="field"
               style={{
                 flex: "1",
-                "margin-top": "10px",
-                "white-space": "nowrap",
+                marginTop: "10px",
+                whiteSpace: "nowrap",
                 color: "#303b5b",
-                "flex-direction": "column",
+                flexDirection: "column",
                 textAlign: "left",
               }}
             >
@@ -307,20 +307,20 @@ function Register() {
             </div>
           </div>
           <div
-            class="right-register-form"
+            className="right-register-form"
             style={{
               flex: "1",
-              "flex-direction": "column",
+              flexDirection: "column",
             }}
           >
             <div
-              class="field"
+              className="field"
               style={{
                 flex: "1",
-                "margin-top": "10px",
-                "white-space": "nowrap",
+                marginTop: "10px",
+                whiteSpace: "nowrap",
                 color: "#303b5b",
-                "flex-direction": "column",
+                flexDirection: "column",
                 textAlign: "left",
               }}
             >
@@ -335,7 +335,7 @@ function Register() {
               />
             </div>
             <div
-              class="gender-field"
+              className="gender-field"
               style={{
                 display: "flex",
                 flex: "1",
@@ -350,12 +350,12 @@ function Register() {
               }}
             >
               <div
-                class="gender"
+                className="gender"
                 style={{
-                  "margin-top": "10px",
-                  "white-space": "nowrap",
+                  marginTop: "10px",
+                  whiteSpace: "nowrap",
                   color: "#303b5b",
-                  "flex-direction": "column",
+                  flexDirection: "column",
                   textAlign: "left",
                 }}
               >
@@ -375,10 +375,10 @@ function Register() {
               <div
                 calss="birthdate"
                 style={{
-                  "margin-top": "10px",
-                  "white-space": "nowrap",
+                  marginTop: "10px",
+                  whiteSpace: "nowrap",
                   color: "#303b5b",
-                  "flex-direction": "column",
+                  flexDirection: "column",
                   textAlign: "left",
                   display: "flex",
                   flex: "1",
@@ -388,7 +388,7 @@ function Register() {
                 <div style={{ marginBottom: "10px" }}>
                   <InputHeader>Birth Date</InputHeader>
                 </div>
-                <div class="birthDateSelect">
+                <div className="birthDateSelect">
                   <input
                     type="date"
                     placeholder=""
@@ -413,13 +413,13 @@ function Register() {
               </div>
             </div>
             <div
-              class="field"
+              className="field"
               style={{
                 flex: "1",
-                "margin-top": "10px",
-                "white-space": "nowrap",
+                marginTop: "10px",
+                whiteSpace: "nowrap",
                 color: "#303b5b",
-                "flex-direction": "column",
+                flexDirection: "column",
                 textAlign: "left",
               }}
             >
@@ -435,7 +435,7 @@ function Register() {
             </div>
           </div>
         </div>
-        <div class="Empty" style={{ flex: 1 }} />
+        <div className="Empty" style={{ flex: 1 }} />
         <div
           className="register-last"
           style={{
@@ -456,7 +456,7 @@ function Register() {
               onChange={handleAgreeTerm}
             />
           </div>
-          <div class="term">
+          <div className="term">
             <p
               style={{
                 flex: 1,
@@ -496,12 +496,10 @@ function Register() {
               </span>
             </p>
           </div>
-          <div class="button">
-            <form action={submitRegister}>
-              <Button type="Button" onClick={submitRegister}>
-                Create Account
-              </Button>
-            </form>
+          <div className="button">
+            <Button type="Button" onClick={submitRegister}>
+              Create Account
+            </Button>
           </div>
         </div>
       </div>
