@@ -155,7 +155,7 @@ function JoinEventDetail(props) {
     //     .catch((error) => {
     //       console.log(error);
     //     });
-  }, []);
+  }}
 
   const requestJoinEvent = (event) => {
     event.preventDefault();
