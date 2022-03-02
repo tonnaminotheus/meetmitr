@@ -73,6 +73,7 @@ const ChatRight = (props) => {
 
   //const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
   const [chatArray, setChatArray] = useState([]);
+  const [socketArray, setSocketArray] = useState([]);
   const [text, setText] = useState("");
   const [socketUrl, setSocketUrl] = useState("");
   const change = (newText) => {
@@ -82,7 +83,7 @@ const ChatRight = (props) => {
 
   useEffect(() => {
     console.log(text);
-  }, [chatArray, text]);
+  }, [socketArray, text, setText, setSocketArray]);
   useEffect(() => {
     axios({
       method: "get",
@@ -94,6 +95,7 @@ const ChatRight = (props) => {
       .then(function (response) {
         console.log(response.data);
         setSocketUrl(globalApi.chatSocket + response.data.token);
+        requestChatHistory();
         //redirect
       })
       .catch(function (error) {
@@ -106,9 +108,13 @@ const ChatRight = (props) => {
   }, []);
 
   //console.log(socketUrl);
-  const [messageHistory, setMessageHistory] = useState([]);
-
   const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
+  useEffect(() => {
+    if (lastMessage !== null) {
+      //console.log(lastMessage.data);
+      setSocketArray((prev) => prev.concat(lastMessage.data));
+    }
+  }, [lastMessage, setSocketArray]);
 
   const connectionStatus = {
     [ReadyState.CONNECTING]: "Connecting",
@@ -120,8 +126,8 @@ const ChatRight = (props) => {
 
   const handleClickSendMessage = () => {
     //sendMessage("text");
+    console.log("TEXT ON CHANGE : ", text);
     sendMessage(text);
-    setText("");
   };
 
   function requestChatHistory() {
@@ -161,14 +167,33 @@ const ChatRight = (props) => {
     return (
       <ChatItem
         message={chatArray.message}
-        time={chatArray.dateTime.slice(11, 16)}
+        time={chatArray.dateTime}
         isUser={chatArray.senderId === currentUserId}
+      ></ChatItem>
+    );
+  });
+  const renderSocket = socketArray.map((socketArray) => {
+    let socketArray2 = JSON.parse(socketArray);
+    console.log(socketArray2.message);
+    console.log(socketArray2.senderId);
+    console.log(socketArray2.dateTime);
+    //console.log("userid", currentUserId, "senderID", socketArray.senderId);
+    console.log(currentUserId === socketArray2.senderId);
+    return (
+      <ChatItem
+        message={socketArray2.message}
+        time={socketArray2.dateTime}
+        isUser={socketArray2.senderId === currentUserId}
       ></ChatItem>
     );
   });
   return (
     <div style={container}>
-      <div style={divScroller}> {renderChat}</div>
+      <div style={divScroller}>
+        {" "}
+        {renderChat}
+        {renderSocket}
+      </div>
       <div
         style={{
           width: "100%",
@@ -190,7 +215,7 @@ const ChatRight = (props) => {
             height: 35,
             backgroundColor: "#CAEDE9",
           }}
-          onChange={change}
+          onChange={(event) => setText(event.target.value)}
         ></input>
         <button style={sendButton} onClick={handleClickSendMessage}>
           send
