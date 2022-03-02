@@ -147,10 +147,11 @@ function JoinEventDetail(props) {
       method: "GET",
       url: globalApi.eventDescription + state.eventId,
       headers: {
-        authorization: userData.accessToken,
+        authorization: "Bearer " + userData.accessToken,
       },
     })
       .then((respond) => {
+        console.log(respond.data.creatorId, userData.userID);
         var attenNum = 0;
         if (respond.data.participants) {
           attenNum = respond.data.participants.length;
@@ -173,7 +174,7 @@ function JoinEventDetail(props) {
           .catch((error) => {});
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error.respond);
       });
   }, []);
 
@@ -221,7 +222,7 @@ function JoinEventDetail(props) {
             )}
             {!joined && (
               <div>
-                {eventData.creatorId != userData.userID && (
+                {eventData.creatorId !== userData.userID && (
                   <JoinOrEditButton
                     type="submit"
                     onClick={joinEvent}
@@ -232,7 +233,7 @@ function JoinEventDetail(props) {
                     Join
                   </JoinOrEditButton>
                 )}
-                {eventData.creatorId == userData.userID && (
+                {eventData.creatorId === userData.userID && (
                   <JoinOrEditButton
                     type="submit"
                     onClick={() => {
