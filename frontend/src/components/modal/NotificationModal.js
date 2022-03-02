@@ -7,10 +7,11 @@ import globalApi from '../../globalApi';
 
 import NotiBox from "./NotiBox"
 
+import "../css_extensions/btn.css"
+
 var axios = require("axios").default;
 
 const NotificationModal=(props)=>{
-
 
     const cookies = new Cookies();
     const user_cookie = cookies.get("cookie")
@@ -59,9 +60,10 @@ const NotificationModal=(props)=>{
     //       />
     //     ))}
 
+
     return (
         <div>
-            <Modal id="noti-modal" show={isModalShow} onHide={hideModal}>
+            <Modal className='modal fade' id="noti-modal" data-easein={"bounce"} show={isModalShow} onHide={hideModal}>
                 <Modal.Header closeButton>
                     <Modal.Title>Notification</Modal.Title>
                 </Modal.Header>
@@ -72,7 +74,7 @@ const NotificationModal=(props)=>{
                     {all_noti.length <= 0 && <p>No new notifications</p>}
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="success" onClick={hideModal}>Close</Button>
+                    <Button className='btn custom-button'variant="success" onClick={hideModal}>Close</Button>
                 </Modal.Footer>
             </Modal>
         </div>

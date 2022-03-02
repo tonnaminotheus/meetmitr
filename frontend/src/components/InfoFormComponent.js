@@ -236,6 +236,7 @@ const InfoFormComponent=(props)=>{
                 console.log(res.data)
                 if (res.data["imagUrl"]) {
                     setPicURL(res.data["imagUrl"])
+                    props.setPicPtr(res.data["imagUrl"].length-1)
                     console.log(res.data["imagUrl"])
                 }
             }

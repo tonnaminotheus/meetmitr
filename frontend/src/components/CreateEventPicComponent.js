@@ -14,13 +14,15 @@ const CreateEventPicComponent=(props)=>{
     //     props.setImgSrc(img_path)
     // }
 
+    // const [img_ptr,setPicPtr] = useState(Math.max(img_path.length-1,0))
+
     return (
         <div className="pic-component-container">
             <div className="img-div-container">
-                <CreateEventPicDisplayComponent img_path={props.img_path} setPicURL={setPicURL}/>
+                <CreateEventPicDisplayComponent img_path={props.img_path} setPicURL={setPicURL} img_ptr={props.img_ptr} setPicPtr={props.setPicPtr}/>
             </div>
             <div className="upload-div-container">
-                <CreateEventPicUploadComponent img_path={props.img_path} setPicURL={setPicURL}/>
+                <CreateEventPicUploadComponent img_path={props.img_path} setPicURL={setPicURL} img_ptr={props.img_ptr} setPicPtr={props.setPicPtr}/>
             </div>
         </div>
     );
