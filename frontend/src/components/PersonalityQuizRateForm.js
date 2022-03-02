@@ -104,6 +104,7 @@ const RateQuiz = (props) => {
       .then((response) => {
         if (response.status === 200) {
           console.log("200");
+
           navigate("/feed");
         } else {
           console.log(response.status);
@@ -112,6 +113,7 @@ const RateQuiz = (props) => {
       .catch(function (error) {
         console.log("error!!");
         console.log(error);
+
       });
   };
 
@@ -160,7 +162,7 @@ const RateQuiz = (props) => {
               name={num}
               onChange={handleTagChange}
               className="selectInput"
-              aria-label="Disabled select example"
+
               disabled
             >
               <option value="None">None</option>
@@ -203,13 +205,15 @@ const RateQuiz = (props) => {
             type="submit"
             className="subButt btn btn-primary btn-lg"
             onClick={() => {
-              console.log(tagValue);
-              console.log(tagRate);
+
+              // console.log(tagValue);
+              // console.log(tagRate);
               prepData();
             }}
             onMouseEnter={() => {
-              console.log(tagValue);
-              console.log(tagRate);
+              // console.log(tagValue);
+              // console.log(tagRate);
+
               prepData();
             }}
           >

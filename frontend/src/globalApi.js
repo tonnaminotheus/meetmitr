@@ -1,4 +1,4 @@
-const url = "http://44.202.18.143:8080";
+const url = "http://18.233.226.58:8080";
 const globalApi = {
   register: `${url}/api/v1/register`,
   login: `${url}/api/v1/login`,
@@ -10,8 +10,13 @@ const globalApi = {
   eventDescription: `${url}/api/v1/event/descriptions/`, //+:eventId v2022.01
   createEvent: `${url}/api/v1/event/create`, //v2022.01
   userData: `${url}/api/v1/user/`, //+:userId
+
+  upload: `${url}/api/v1/upload`,
+
   rate: `${url}/api/v1/rate/`,
   recommendFeed: `${url}/api/v1/home/`, //+:numPage v2022.01
+  postQuiz: `${url}/api/v1/quiz`,
+  chatPartner: `${url}/api/v1/chat/partners/`,
 };
 
 export default globalApi;

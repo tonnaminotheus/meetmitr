@@ -1,4 +1,5 @@
 import "./InfoFormComponent.css"
+import "../components/css_extensions/form_control.css"
 import { useEffect, useState } from "react";
 
 import Dropdown from 'react-dropdown';
@@ -6,6 +7,8 @@ import 'react-dropdown/style.css';
 import globalApi from "../globalApi";
 import globalVar from "../cookie.js";
 import { useNavigate } from "react-router-dom";
+import Multiselect from 'multiselect-react-dropdown';
+import Cookies from "universal-cookie";
 
 //location.replace("/view/drawing.html");
 
@@ -17,9 +20,22 @@ const defaultOption = "Bangkok";
 
 const InfoFormComponent=(props)=>{
 
-    let accessToken = globalVar.accessToken
-    console.log("accessToken "+globalVar.accessToken)
-    console.log(globalVar)
+    // const img_path = props.img_path
+    const setPicURL = props.setPicURL
+
+    const cookies = new Cookies();
+    let user_cookie = cookies.get("cookie")
+    let accessToken = user_cookie.accessToken
+
+    const [tags, setTags] = useState([])
+    
+    const getEventId=()=>{
+        if (props.eventID == undefined) {
+            return ""
+        }
+        else return props.eventID
+    }
+    
 
     let title = "Edit Event"
     if (props.eventID == undefined) title = "Create Event"
@@ -35,8 +51,32 @@ const InfoFormComponent=(props)=>{
         "endTime" : "23.59",
         "onSite" : true,
         "maxParticipant" : 1,
-        "price" : 0
+        "price" : 0,
+        "tags" : [],
+        "imagUrl" : props.img_path
     });
+
+    const getTagsIdx=()=>{
+        let res = {}
+        for (let i=0;i<tags.length;i++) {
+            res[tags[i]] = i+1
+        }
+        return res
+    }
+    
+    const mapTagsToIDs=(arr)=>{
+        let res = []
+        let idMap = getTagsIdx()
+        console.log(idMap)
+        for (let i=0; i<arr.length;i++) {
+            res.push(idMap[arr[i]])
+        }
+        console.log(res)
+        return res.sort(function(a, b){
+            //lower
+            return a-b
+        })
+    }
 
     const getRadio=()=>{
         let x = document.getElementById("Online-radio");
@@ -98,7 +138,12 @@ const InfoFormComponent=(props)=>{
             // "onSite" : document.getElementById("event-date-end").value  document.getElementById("event-time-end").value,
             "onSite" : getRadio(),
             "maxParticipant" : parseInt(document.getElementById("max-atten").value),
-            "price" : parseInt(document.getElementById("event-price").value)
+            "price" : parseInt(document.getElementById("event-price").value),
+
+            //tags to tagsID
+            "tags" : mapTagsToIDs(data["tags"]),
+
+            "imagUrl" : props.img_path
         }
 
         axios({
@@ -140,12 +185,16 @@ const InfoFormComponent=(props)=>{
             // "onSite" : document.getElementById("event-date-end").value  document.getElementById("event-time-end").value,
             "onSite" : getRadio(),
             "maxParticipant" : parseInt(document.getElementById("max-atten").value),
-            "price" : parseInt(document.getElementById("event-price").value)
+            "price" : parseInt(document.getElementById("event-price").value),
+            //tags to tagsID
+            "tags" : mapTagsToIDs(data["tags"]),
+
+            "imagUrl" : props.img_path
         }
         console.log(new_data)
         axios({
             method: 'PUT',
-            url: globalApi.updateEvent+props.eventID,
+            url: globalApi.updateEvent+getEventId(),
             headers: {
                 "Authorization" : "Bearer "+globalVar.accessToken,
             }, 
@@ -171,26 +220,55 @@ const InfoFormComponent=(props)=>{
     useEffect(()=>{
         axios({
             method: 'get',
-            url: globalApi.eventDescription + `${props.eventID}`,
+            url: globalApi.eventDescription + getEventId(),
+            headers: {
+                "Authorization" : "Bearer "+accessToken,
+            },
             timeout: 8000
         })
         .then((res)=>{
             if (res.status == 200) {
-                console.log(res.data)
                 res.data["startDate"] = res.data["startTime"].split(" ")[0]
                 res.data["endDate"] = res.data["startTime"].split(" ")[0]
                 res.data["startTime"] = res.data["startTime"].split(" ")[1].slice(0,5)
                 res.data["endTime"] = res.data["endTime"].split(" ")[1].slice(0,5)
-                console.log(res.data)
                 setData(res.data)
+                console.log(res.data)
+                if (res.data["imagUrl"]) {
+                    setPicURL(res.data["imagUrl"])
+                    console.log(res.data["imagUrl"])
+                }
             }
         })
         .catch(error => {
             console.log("error!!")
             console.log(error)
-            }
-        )
+        })
+        
     },[]);
+
+    useEffect(()=>{
+        //get all tag must be outside
+        axios({
+            method: 'get',
+            url: globalApi.tagsEvent,
+            headers: {
+                "Authorization" : "Bearer "+accessToken,
+            },
+            timeout: 8000
+        })
+        .then((tag_res)=>{
+            if (tag_res.status == 200) {
+                setTags(tag_res.data["tagList"])
+                console.log(tag_res.data["tagList"])
+            }
+        })
+        .catch(error2 => {
+            console.log("error2!!")
+            console.log(error2)
+        })
+    },[]);
+
 
     const setParticularField=(value, field_name)=>{
         let new_data = {...data} //beware copying onj
@@ -210,7 +288,7 @@ const InfoFormComponent=(props)=>{
                 {/* Eventname */}
                 <div className="info-form-box">
                     <label htmlFor="event-name-form">Event Name :</label>
-                    <input type={"text"} id="event-name-form" value={data.name} required onChange={(event)=>{
+                    <input type={"text"} className={"edit-event-input"} id="event-name-form" value={data.name} required onChange={(event)=>{
                         console.log(event.target.value)
                         setParticularField(event.target.value, "name")
                     }}/>
@@ -219,7 +297,7 @@ const InfoFormComponent=(props)=>{
                 {/* max_atten */}
                 <div className="info-form-box">
                     <label htmlFor="max-atten">Max Attendance :</label>
-                    <input type="number" min={1} id={"max-atten"} value={data.maxParticipant} required onChange={(event)=>{
+                    <input type="number" className={"edit-event-input"} min={1} id={"max-atten"} value={data.maxParticipant} required onChange={(event)=>{
                         console.log(event.target.value)
                         setParticularField(event.target.value, "maxParticipant")
                     }}/><span>participants</span>
@@ -228,7 +306,7 @@ const InfoFormComponent=(props)=>{
                 {/* price */}
                 <div className="info-form-box">
                     <label htmlFor="event-price">Price :</label>
-                    <input type="number" min={0} id={"event-price"} value={data.price} required onChange={(event)=>{
+                    <input type="number" className={"edit-event-input"} min={0} id={"event-price"} value={data.price} required onChange={(event)=>{
                         console.log(event.target.value)
                         setParticularField(event.target.value, "price")
                     }}/><span>coins</span>
@@ -245,14 +323,14 @@ const InfoFormComponent=(props)=>{
 
                 {/* date start - end */}
                 <div className="info-form-box">
-                    <label htmlFor="event-date-start">Date Start :</label>
-                    <input type={"date"} id={"event-date-start"} min={getTodayDate()} value={data.startDate} onChange={(event)=>{
+                    <label htmlFor="event-date-start">Date Start : </label>
+                    <input type={"date"} id={"event-date-start"} className={"date-time-editevent-input"} min={getTodayDate()} value={data.startDate} onChange={(event)=>{
                         console.log(event.target.value)
                         setParticularField(event.target.value, "startDate")
                     }}></input>
 
                     <label htmlFor="event-date-end">Date End :</label>
-                    <input type={"date"} id={"event-date-end"} min={getTodayDate()} value={data.endDate} onChange={(event)=>{
+                    <input type={"date"} id={"event-date-end"} className={"date-time-editevent-input"} min={getTodayDate()} value={data.endDate} onChange={(event)=>{
                         console.log(event.target.value)
                         setParticularField(event.target.value, "endDate")
                         
@@ -262,12 +340,12 @@ const InfoFormComponent=(props)=>{
                 {/* time start end*/}
                 <div className="info-form-box">
                     <label htmlFor="event-time-start">Time Start :</label>
-                    <input type={"time"} id={"event-time-start"} value={data.startTime} onChange={(event)=>{
+                    <input type={"time"} id={"event-time-start"} className={"date-time-editevent-input"} value={data.startTime} onChange={(event)=>{
                         console.log(event.target.value)
                         setParticularField(event.target.value, "startTime")
                     }}/>
                     <label htmlFor="event-time-end">Time End :</label>
-                    <input type={"time"} id={"event-time-end"} value={data.endTime} onChange={(event)=>{
+                    <input type={"time"} id={"event-time-end"} className={"date-time-editevent-input"} value={data.endTime} onChange={(event)=>{
                         console.log(event.target.value)
                         setParticularField(event.target.value, "endTime")
                     }}/>
@@ -282,7 +360,7 @@ const InfoFormComponent=(props)=>{
                 {/* address */}
                 <div className="info-form-box">
                     <label htmlFor="address-input" style={{display: "block"}}>Address :</label>
-                    <textarea id="address-input" className="address-input text-area" rows={5} placeholder="Please Enter Address of this Event" htmlFor="create-event-info-form" value={data.address} onChange={(event)=>{
+                    <textarea id="address-input" className="text-area" rows={2} placeholder="Please Enter Address of this Event" htmlFor="create-event-info-form" value={data.address} onChange={(event)=>{
                         console.log(event.target.value)
                         setParticularField(event.target.value, "address")
                     }}></textarea>
@@ -295,12 +373,53 @@ const InfoFormComponent=(props)=>{
                         console.log(event.target.value)
                         setData({province: event.target.value})
                     }}/> */}
-                    <Dropdown className="province-dropdown" id="event-province" options={provinces} value={data.province} placeholder="Select an option" onChange={(event)=>{
+                    <Dropdown className="edit-event-dropdown" id="event-province" options={provinces} value={data.province} placeholder="Select an option" onChange={(event)=>{
                         console.log(event)
                         // console.log(provinces)
-                        setData({province: event.value})
+                        // setData({province: event.value})
                         setParticularField(event.value, "province")
                     }}/>
+                </div>
+
+                {/* tags */}
+                <div className="info-form-box">
+                    <label htmlFor="event-tag">Tag :</label>
+                    {/* <Dropdown className="edit-event-dropdown" id="event-tag" options={tags} value={data.tags} placeholder="Select an option" onChange={(event)=>{
+                        console.log(event.data)
+                        // console.log(provinces)
+                        // setData({province: event.value})
+                        setParticularField(event.value, "tags")
+                    }}/> */}
+                    {/* <Multiselect
+                        options={tags}
+                        value={data.tags}
+                        placeholder="Select an option"
+                    /> */}
+                    <Multiselect id="tags-slct"
+                        options={tags} // Options to display in the dropdown
+                        isObject={false}
+                        showArrow={true}
+                        showCheckbox={true}
+                        placeholder={"Select event's categories"}
+                        closeOnSelect={false}
+                        selectedValues={data.tags}
+                        onSelect={(selectedList, selectedItem)=>{
+                            console.log(selectedList)
+                            console.log(selectedItem)
+                            console.log(document.getElementById("tags-slct"))
+                            setParticularField(selectedList, "tags")
+                            console.log(mapTagsToIDs(data["tags"]))
+
+                        }} // Function will trigger on select event
+                        onRemove={(selectedList, selectedItem)=>{
+                            console.log(selectedList)
+                            console.log(selectedItem)
+                            console.log(document.getElementById("tags-slct"))
+                            setParticularField(selectedList, "tags")
+                            console.log(mapTagsToIDs(data["tags"]))
+                        }} // Function will trigger on remove event
+                        displayValue="name" // Property name to display in the dropdown options
+                    />
                 </div>
                 
 
@@ -308,16 +427,16 @@ const InfoFormComponent=(props)=>{
                 {/* about */}
                 <div className="info-form-box">
                     <label htmlFor="about-input" style={{display: "block"}}>About :</label>
-                    <textarea id="about-input" className="text-area" rows={5} placeholder="Please Enter More Info about this Event" value={data.description} form="create-event-info-form" onChange={(event)=>{
+                    <textarea id="about-input" className="text-area" rows={2} placeholder="Please Enter More Info about this Event" value={data.description} form="create-event-info-form" onChange={(event)=>{
                         console.log(event.target.value)
-                        setData({description: event.target.value})
+                        // setData({description: event.target.value})
                         setParticularField(event.target.value, "description")
                     }}></textarea>
                 </div>
 
                 {/* btn */}
                 <div className="info-form-box">
-                    <button className="custom-button create-event-btn" style={{padding: "5px", margin: "10px", float: "right"}} onClick={onBtnClicked} >
+                    <button className="custom-button create-event-btn btn btn-success" style={{padding: "5px", margin: "10px", float: "right"}} onClick={onBtnClicked} >
                         <span>{title}</span>
                     </button>
                 </div>
