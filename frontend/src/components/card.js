@@ -36,7 +36,7 @@ const EventCard = (props) => {
 
   useEffect(() => {
     axios
-      .get(globalApi.eventDescription + id, {
+      .get(globalApi.eventDescription + props.id, {
         headers: {
           Authorization: "Bearer " + accessToken,
         },

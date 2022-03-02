@@ -20,7 +20,12 @@ const defaultOption = "Bangkok";
 
 const InfoFormComponent=(props)=>{
 
-    let img_src = props.img_src
+    // const img_path = props.img_path
+    const setPicURL = props.setPicURL
+
+    const cookies = new Cookies();
+    let user_cookie = cookies.get("cookie")
+    let accessToken = user_cookie.accessToken
 
     const [tags, setTags] = useState([])
     
@@ -30,16 +35,7 @@ const InfoFormComponent=(props)=>{
         }
         else return props.eventID
     }
-
-    let accessToken = globalVar.accessToken
-    console.log("accessToken "+globalVar.accessToken)
-    console.log(globalVar)
-
-    //test cookie
-    const cookies = new Cookies();
-    console.log("in feed")
-    console.log(cookies.get("cookie"))
-    let user
+    
 
     let title = "Edit Event"
     if (props.eventID == undefined) title = "Create Event"
@@ -56,7 +52,8 @@ const InfoFormComponent=(props)=>{
         "onSite" : true,
         "maxParticipant" : 1,
         "price" : 0,
-        "tags" : []
+        "tags" : [],
+        "imagUrl" : props.img_path
     });
 
     const getTagsIdx=()=>{
@@ -144,8 +141,9 @@ const InfoFormComponent=(props)=>{
             "price" : parseInt(document.getElementById("event-price").value),
 
             //tags to tagsID
-            "tags" : mapTagsToIDs(data["tags"])
+            "tags" : mapTagsToIDs(data["tags"]),
 
+            "imagUrl" : props.img_path
         }
 
         axios({
@@ -189,7 +187,9 @@ const InfoFormComponent=(props)=>{
             "maxParticipant" : parseInt(document.getElementById("max-atten").value),
             "price" : parseInt(document.getElementById("event-price").value),
             //tags to tagsID
-            "tags" : mapTagsToIDs(data["tags"])
+            "tags" : mapTagsToIDs(data["tags"]),
+
+            "imagUrl" : props.img_path
         }
         console.log(new_data)
         axios({
@@ -234,6 +234,10 @@ const InfoFormComponent=(props)=>{
                 res.data["endTime"] = res.data["endTime"].split(" ")[1].slice(0,5)
                 setData(res.data)
                 console.log(res.data)
+                if (res.data["imagUrl"]) {
+                    setPicURL(res.data["imagUrl"])
+                    console.log(res.data["imagUrl"])
+                }
             }
         })
         .catch(error => {
