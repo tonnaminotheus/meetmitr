@@ -30,12 +30,11 @@ func HomeHandler(c *gin.Context) {
 	startRow := (intNumPage - 1) * EventPerPage
 	endRow := intNumPage * EventPerPage
 	rows, err := database.Sql.Query(
-		`select ID,N,A,P,ST,IM,TN
-		from (select ID,N,A,P,ST,IM
+		`select ID,N,A,P,ST,TN
+		from (select ID,N,A,P,ST
 				from
 				(SELECT ROW_NUMBER() OVER (Order by eventId) AS RowNumber, Event.eventId as ID, Event.name as N, 
-																Event.address as A, Event.province as P, Event.startTime as ST, 
-																Event.imagURL as IM
+																Event.address as A, Event.province as P, Event.startTime as ST
 				FROM Event) as sq
 				where RowNumber>=? and RowNumber<=?) as sqq,
 				(select ET2.eventId as ID2, TA2.tagName as TN
@@ -63,7 +62,7 @@ func HomeHandler(c *gin.Context) {
 	counter = 0
 	for rows.Next() {
 		rows.Scan(&eventHome.EventId, &eventHome.Name, &eventHome.Address,
-			&eventHome.Province, &eventHome.StartTime, &eventHome.ImagUrl, &tag)
+			&eventHome.Province, &eventHome.StartTime, &tag)
 		counterIdx, ok := mp[eventHome.EventId]
 		if ok {
 			eventHomes[counterIdx].Tags = append(eventHomes[counterIdx].Tags, tag)
@@ -73,6 +72,30 @@ func HomeHandler(c *gin.Context) {
 			eventHomes = append(eventHomes, eventHome)
 			mp[eventHome.EventId] = counter
 			counter += 1
+		}
+	}
+
+	rows2, err2 := database.Sql.Query(`select * from EventImage`)
+
+	if err2 != nil || rows2 == nil {
+		message := "No image found"
+		if err2 != nil {
+			message = err2.Error()
+		}
+		c.JSON(500, gin.H{
+			"message": message,
+		})
+		return
+	}
+
+	defer rows2.Close()
+	var imgUrl string
+	var eventId int
+	for rows2.Next() {
+		rows2.Scan(&imgUrl, &eventId)
+		counterIdx, ok := mp[eventId]
+		if ok {
+			eventHomes[counterIdx].Images = append(eventHomes[counterIdx].Images, imgUrl)
 		}
 	}
 
