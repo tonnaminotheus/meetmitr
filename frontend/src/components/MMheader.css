@@ -16,7 +16,9 @@
 }
 
 .feedHeader{
-    font-size: 50px;
+    font-size: 100px;
+    font-family: "Titillium Web", "Roboto", sans-serif;
+    font-weight: bold;
     margin-top: 110px;
     font-size: 80px;
     text-align: center;
