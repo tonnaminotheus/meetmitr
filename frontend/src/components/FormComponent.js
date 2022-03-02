@@ -1,10 +1,9 @@
 // import "./FormComponent.css";
-import "../components/css_extensions/form_control.css"
+import "../components/css_extensions/form_control.css";
 
 import globalApi from "../globalApi";
-import globalVar from "../cookie";
 
-import Cookies from 'universal-cookie';
+import Cookies from "universal-cookie";
 
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -13,27 +12,30 @@ var axios = require("axios").default;
 var hash = require("object-hash");
 
 const FormComponent = (props) => {
-
   //cookies
   const cookies = new Cookies();
-  cookies.remove("cookie")
-  cookies.set("cookie", {"userID" : "", "accessToken" : "", "refreshToken": ""}, {path:"/"})
-  console.log(cookies.get("cookie"))
+  cookies.remove("cookie");
+  cookies.set(
+    "cookie",
+    { userID: "", accessToken: "", refreshToken: "" },
+    { path: "/" }
+  );
+  console.log(cookies.get("cookie"));
 
-  const [pwdType,setpwdType] = useState("password")
+  const [pwdType, setpwdType] = useState("password");
 
   let navigate = useNavigate();
   const toFeed = () => {
     navigate("/feed");
   };
-  const getCheckboxStatus=()=>{
-    return pwdType === "text"
+  const getCheckboxStatus = () => {
+    return pwdType === "text";
     // document.getElementById("pwd-checkbox").checked
-  }
+  };
   function togglePassword(event) {
-    console.log(event.target.checked)
+    console.log(event.target.checked);
     if (pwdType === "text") {
-      setpwdType("password")
+      setpwdType("password");
     } else if (pwdType === "password") {
       setpwdType("text");
     }
@@ -55,28 +57,32 @@ const FormComponent = (props) => {
       .then(function (response) {
         console.log(response);
 
-            if (response.status == 200) {
-                globalVar.accessToken = response.data["accessToken"]
-                globalVar.refreshToken = response.data["refreshToken"]
-                globalVar.userID = response.data["userId"]
-
-                //set(name, value, [options])
-                cookies.set("cookie", {"userID" : parseInt(response.data["userId"]), "accessToken" : response.data["accessToken"], "refreshToken": response.data["refreshToken"]}, {path:"/"})
-                // cookies.set("cookie", response.data["userId"], {path:"/"})
-                console.log(cookies)
-                console.log(cookies.get("cookie"))
-                //redirect
-                toFeed()
-            }
-        })
-        .catch(function (error) {
-            console.log("error!!")
-            console.log(error);
-        })
-        .then(function () {
-            // always executed
-        });
-  }
+        if (response.status == 200) {
+          //set(name, value, [options])
+          cookies.set(
+            "cookie",
+            {
+              userID: parseInt(response.data["userId"]),
+              accessToken: response.data["accessToken"],
+              refreshToken: response.data["refreshToken"],
+            },
+            { path: "/" }
+          );
+          // cookies.set("cookie", response.data["userId"], {path:"/"})
+          console.log(cookies);
+          console.log(cookies.get("cookie"));
+          //redirect
+          toFeed();
+        }
+      })
+      .catch(function (error) {
+        console.log("error!!");
+        console.log(error);
+      })
+      .then(function () {
+        // always executed
+      });
+  };
   return (
     <div className="login-form">
       <h2 className="login-title">Hi Mitr!</h2>
@@ -103,7 +109,12 @@ const FormComponent = (props) => {
           />
         </div>
         <div className="Form-control">
-          <input type="checkbox" id="pwd-checkbox" onClick={togglePassword} checked={getCheckboxStatus()}/>
+          <input
+            type="checkbox"
+            id="pwd-checkbox"
+            onClick={togglePassword}
+            checked={getCheckboxStatus()}
+          />
           Show Password
         </div>
 

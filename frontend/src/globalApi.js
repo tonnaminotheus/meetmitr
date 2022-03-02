@@ -15,10 +15,10 @@ const globalApi = {
   recommendFeed: `${url}/api/v1/home/`, //+:numPage v2022.01
   chatPartner: `${url}/api/v1/chat/partners`,
   chatHistory: `${url}/api/v1/chat/history/dm/`, // /DMId
-  chatSocket: `ws://${url.slice(6)}/api/v1/chat/room/`, //+ chatType/ + userId
+  chatSocket: `ws://${url.slice(7)}/api/v1/chat/room/`, //+ token
   postQuiz: `${url}/api/v1/quiz`,
-  getAllNoti: `${url}/api/v1/noti/getAll`
-
+  getAllNoti: `${url}/api/v1/noti/getAll`,
+  chatToken: `${url}/api/v1/chat/token/`, //+ chatType + userId
 };
 
 export default globalApi;

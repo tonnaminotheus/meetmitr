@@ -2,11 +2,16 @@ import MMheader from "../components/MMheader";
 import ChatListUser from "../components/ChatListUser";
 import FriendYouMayKnow from "../components/FriendYouMayKnow";
 import globalApi from "../globalApi";
-import globalVar from "../cookie";
-import { useState } from "react";
+import Cookies from "universal-cookie";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 var axios = require("axios").default;
 const ChatList = (props) => {
-  let accessToken = globalVar.accessToken;
+  const navigate = useNavigate();
+  const cookies = new Cookies();
+  //console.log(cookie);
+  const accessToken = cookies.get("cookie").accessToken;
+  //let accessToken = globalVar.accessToken;
   const [partners, setPartners] = useState([]);
   function requestFriendList() {
     //****might error if some fields is missing
@@ -25,13 +30,15 @@ const ChatList = (props) => {
       })
       .catch(function (error) {
         console.log("error!!");
-        console.log(error);
+        console.log(error.response);
       })
       .then(function () {
         // always executed
       });
   }
-  requestFriendList();
+  useEffect(() => {
+    requestFriendList();
+  }, []);
 
   const friendList = partners.map((partners) => {
     return (
@@ -59,7 +66,14 @@ const ChatList = (props) => {
           <div style={{ overflowY: "scroll", height: "90%", width: "60vw" }}>
             {friendList}
           </div>
-          <button style={button}>Back</button>
+          <button
+            style={button}
+            onClick={() => {
+              navigate("/feed");
+            }}
+          >
+            Back
+          </button>
         </div>
 
         <FriendYouMayKnow />

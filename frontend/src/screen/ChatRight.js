@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
-import globalVar from "../cookie";
+
 import globalApi from "../globalApi";
-let currentUserId = globalVar.userID;
+import useWebSocket, { ReadyState } from "react-use-websocket";
+import Cookies from "universal-cookie";
+const cookies = new Cookies();
+let currentUserId = cookies.get("cookie").userID;
 var axios = require("axios").default;
 const textChat = {
   maxWidth: 500,
@@ -17,9 +20,13 @@ const textChat = {
   alignItem: "flex-start",
   marginLeft: 16,
   marginRight: 16,
+  borderRadius: 16,
+  borderColor: "#000000",
+  borderWidth: 1,
 };
 const ChatItem = (props) => {
   //console.log("chatItemmmmmm");
+
   if (props.isUser) {
     return (
       <div
@@ -32,17 +39,10 @@ const ChatItem = (props) => {
         }}
       >
         <text style={textChat}>{props.message}</text>
-        <div
-          style={{
-            flexDirection: "column-reverse",
-            display: "flex",
-            alignItems: "flex-end",
-          }}
-        >
-          <text style={{ fontFamily: "Roboto", fontSize: 24, color: "black" }}>
-            {props.time}
-          </text>
-        </div>
+
+        <text style={{ fontFamily: "Roboto", fontSize: 24, color: "black" }}>
+          {props.time}
+        </text>
       </div>
     );
   }
@@ -65,18 +65,16 @@ const ChatItem = (props) => {
 };
 
 const ChatRight = (props) => {
-  const [socketUrl, setSocketUrl] = useState(
-    globalApi.chatSocket + `dm/${props.userId}`
-  );
-  let accessToken = globalVar.accessToken;
-  const Authorization = "Bearer " + accessToken;
+  const cookies = new Cookies();
+  //console.log("COOKIES : ", cookies);
+  let accessToken = cookies.get("cookie").accessToken;
 
   //const [messageHistory, setMessageHistory] = useState([]);
 
   //const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
   const [chatArray, setChatArray] = useState([]);
   const [text, setText] = useState("");
-
+  const [socketUrl, setSocketUrl] = useState("");
   const change = (newText) => {
     setText(newText);
     //console.log(newText);
@@ -85,19 +83,46 @@ const ChatRight = (props) => {
   useEffect(() => {
     console.log(text);
   }, [chatArray, text]);
+  useEffect(() => {
+    axios({
+      method: "get",
+      url: globalApi.chatToken + `dm/${props.userId}`,
+      headers: {
+        Authorization: "Bearer " + accessToken,
+      },
+    })
+      .then(function (response) {
+        console.log(response.data);
+        setSocketUrl(globalApi.chatSocket + response.data.token);
+        //redirect
+      })
+      .catch(function (error) {
+        console.log("error!!");
+        console.log(error.response);
+      })
+      .then(function () {
+        // always executed
+      });
+  }, []);
+
+  //console.log(socketUrl);
+  const [messageHistory, setMessageHistory] = useState([]);
+
+  const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
+
+  const connectionStatus = {
+    [ReadyState.CONNECTING]: "Connecting",
+    [ReadyState.OPEN]: "Open",
+    [ReadyState.CLOSING]: "Closing",
+    [ReadyState.CLOSED]: "Closed",
+    [ReadyState.UNINSTANTIATED]: "Uninstantiated",
+  }[readyState];
 
   const handleClickSendMessage = () => {
     //sendMessage("text");
+    sendMessage(text);
     setText("");
   };
-
-  // const connectionStatus = {
-  //  [ReadyState.CONNECTING]: "Connecting",
-  //   [ReadyState.OPEN]: "Open",
-  //  [ReadyState.CLOSING]: "Closing",
-  //  [ReadyState.CLOSED]: "Closed",
-  //   [ReadyState.UNINSTANTIATED]: "Uninstantiated",
-  //}[readyState];
 
   function requestChatHistory() {
     //****might error if some fields is missing
@@ -128,10 +153,11 @@ const ChatRight = (props) => {
         // always executed
       });
   }
-  requestChatHistory();
+  //requestChatHistory();
 
   const renderChat = chatArray.map((chatArray) => {
-    //console.log("userid", currentUserId, "senderID", chatArray.senderId);
+    //console.log("userid", currentUserId, "senderID", typeof chatArray.senderId);
+    //console.log(currentUserId === chatArray.senderId);
     return (
       <ChatItem
         message={chatArray.message}
