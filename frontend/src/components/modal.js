@@ -1,4 +1,6 @@
 import "./modal.css";
+import "../components/css_extensions/form_control.css"
+
 import Modal from "react-modal";
 import { Button } from "react-bootstrap";
 

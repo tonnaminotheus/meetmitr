@@ -13,8 +13,6 @@ import LoginRootComponent from "./components/LoginRootComponent";
 // create event
 import EditEventComponent from "./components/EditEventComponent";
 
-//modal
-import JoinEventFilterModal from "./components/modal/modal.js";
 
 import { useState } from "react";
 import ChatListUser from "./components/ChatListUser";

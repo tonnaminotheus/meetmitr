@@ -5,6 +5,7 @@ import { useState } from "react";
 import globalApi from "../globalApi";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Cookies from "universal-cookie";
 
 const EventCard = (props) => {
   const navigate = useNavigate();
@@ -12,19 +13,23 @@ const EventCard = (props) => {
   // const [tagAvailable, setTagAvailable] = useState({});
   const [display, setDisplay] = useState([true, false, true]);
 
-  // useEffect(() => {
-  //   let isMounted = true;
-  //   axios.get(globalApi.eventDescription + id).then((res) => {
-  //     if (isMounted) {
-  //       console.log(res.data);
-  //       setEventInfo(res.data);
-  //       TagList();
-  //     }
-  //   });
-  //   return () => {
-  //     isMounted = false;
-  //   };
-  // }, []);
+  const cookies = new Cookies();
+  let user_cookie = cookies.get("cookie");
+  let accessToken = user_cookie["accessToken"];
+
+  useEffect(() => {
+    axios
+      .get(globalApi.eventDescription + id, {
+        headers: {
+          Authorization: "Bearer " + accessToken,
+        },
+      })
+      .then((res) => {
+        console.log(res.data);
+        setEventInfo(res.data);
+        TagList();
+      });
+  }, []);
 
   function TagList() {
     console.log(eventInfo.tags.length);
