@@ -19,7 +19,7 @@ const ChatList = (props) => {
       },
     })
       .then(function (response) {
-        console.log(response.data.partners);
+        //console.log(response.data.partners);
         setPartners(response.data.partners);
         //redirect
       })

@@ -17,7 +17,7 @@ const globalApi = {
   recommendFeed: `${url}/api/v1/home/`, //+:numPage v2022.01
   chatPartner: `${url}/api/v1/chat/partners`,
   chatHistory: `${url}/api/v1/chat/history/dm/`, // /DMId
-  chatSocket: `${url}/api/v1/chat/room/`, //+ chatType/ + userId
+  chatSocket: `ws://${url.slice(6)}/api/v1/chat/room/`, //+ chatType/ + userId
   postQuiz: `${url}/api/v1/quiz`,
 };
 
