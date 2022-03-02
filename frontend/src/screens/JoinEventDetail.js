@@ -6,16 +6,90 @@ import React, { useEffect } from "react";
 import moment from "moment";
 import axios from "axios";
 import globalApi from "../globalApi";
-import globalVar from "../cookie";
 import { useLocation, useNavigate } from "react-router-dom";
+import Cookie from "universal-cookie";
 
-function JoinEventDetail() {
+const JoinOrEditButton = styled.button`
+  background-color: #ffc229;
+  color: white;
+  border-radius: 15px;
+  outline: 0;
+  border: 0px;
+  cursor: pointer;
+  transition: ease background-color 250ms;
+  height: 77px;
+  width: 246px;
+  margin-right: 10px;
+  margin-left: 0px;
+  font-size: 30px;
+  font-weight: bold;
+  font-family: "Roboto", sans-serif;
+  align-self: flex-end;
+`;
+const JoinedButton = styled.button`
+  background-color: #d9d9d9;
+  color: #000000;
+  border-radius: 15px;
+  outline: 0;
+  border: 0px;
+  cursor: pointer;
+  transition: ease background-color 250ms;
+  height: 77px;
+  width: 246px;
+  margin-right: 10px;
+  margin-left: 0px;
+  font-size: 30px;
+  font-weight: bold;
+  font-family: "Roboto", sans-serif;
+  align-self: flex-end;
+`;
+const SelectedTabbarButton = styled.button`
+  background-color: transparent;
+  color: #000000;
+  outline: 0;
+  cursor: pointer;
+  transition: ease background-color 250ms;
+  height: 50px;
+  width: 175px;
+  margin-right: 0px;
+  margin-left: 0px;
+  border-bottom: 3px solid #ffcc4d;
+  border-top: 0px;
+  border-left: 0px;
+  border-right: 0px;
+  font-size: 25 px;
+  font-weight: bold;
+  font-family: "Roboto", sans-serif;
+`;
+const UnSelectedTabbarButton = styled.button`
+  background-color: transparent;
+  color: #8b8b8b;
+  outline: 0;
+  cursor: pointer;
+  transition: ease background-color 250ms;
+  height: 50px;
+  width: 175px;
+  margin-right: 0px;
+  margin-left: 0px;
+  border-bottom: 1px solid #575757;
+  border-top: 0px;
+  border-left: 0px;
+  border-right: 0px;
+  font-size: 25 px;
+  font-weight: bold;
+  font-family: "Roboto", sans-serif;
+`;
+
+function JoinEventDetail(props) {
   const navigate = useNavigate();
   const { state } = useLocation();
+  var cookies = new Cookie();
+  var userData = cookies.get("cookie");
   const [show, setShow] = React.useState([true, false, false]);
   const [attendance, setAttendance] = React.useState(0);
   const [progressData, setProgressData] = React.useState("50%");
   const [joined, setJoined] = React.useState(false);
+  const [eventId, setEventId] = React.useState(0);
   const [hostData, setHostData] = React.useState({
     userId: 1,
     email: "test@gmail.com",
@@ -46,80 +120,35 @@ function JoinEventDetail() {
     creatorId: 1,
     participants: ["PRyuSudHod", "PRyuSudTae"],
   });
-  const JoinOrEditButton = styled.button`
-    background-color: #ffc229;
-    color: white;
-    border-radius: 15px;
-    outline: 0;
-    border: 0px;
-    cursor: pointer;
-    transition: ease background-color 250ms;
-    height: 77px;
-    width: 246px;
-    margin-right: 10px;
-    margin-left: 0px;
-    font-size: 30px;
-    font-weight: bold;
-    font-family: "Roboto", sans-serif;
-    align-self: flex-end;
-  `;
-  const JoinedButton = styled.button`
-    background-color: #d9d9d9;
-    color: #000000;
-    border-radius: 15px;
-    outline: 0;
-    border: 0px;
-    cursor: pointer;
-    transition: ease background-color 250ms;
-    height: 77px;
-    width: 246px;
-    margin-right: 10px;
-    margin-left: 0px;
-    font-size: 30px;
-    font-weight: bold;
-    font-family: "Roboto", sans-serif;
-    align-self: flex-end;
-  `;
-  const SelectedTabbarButton = styled.button`
-    background-color: transparent;
-    color: #000000;
-    outline: 0;
-    cursor: pointer;
-    transition: ease background-color 250ms;
-    height: 50px;
-    width: 175px;
-    margin-right: 0px;
-    margin-left: 0px;
-    border-bottom: 3px solid #ffcc4d;
-    border-top: 0px;
-    border-left: 0px;
-    border-right: 0px;
-    font-size: 25 px;
-    font-weight: bold;
-    font-family: "Roboto", sans-serif;
-  `;
-  const UnSelectedTabbarButton = styled.button`
-    background-color: transparent;
-    color: #8b8b8b;
-    outline: 0;
-    cursor: pointer;
-    transition: ease background-color 250ms;
-    height: 50px;
-    width: 175px;
-    margin-right: 0px;
-    margin-left: 0px;
-    border-bottom: 1px solid #575757;
-    border-top: 0px;
-    border-left: 0px;
-    border-right: 0px;
-    font-size: 25 px;
-    font-weight: bold;
-    font-family: "Roboto", sans-serif;
-  `;
+
+  const joinEvent = () => {
+    axios({
+      method: "POST",
+      url: globalApi.joinEvent + eventData.eventId,
+      headers: {
+        authorization: userData.accessToken,
+      },
+    })
+      .then((respond) => {
+        setJoined(true);
+        const nAttenNum = attendance + 1;
+        const percent =
+          String((nAttenNum / eventData.maxParticipant) * 100) + "%";
+        setAttendance(nAttenNum);
+        setProgressData(percent);
+      })
+      .catch((error) => {
+        console.log(error);
+        alert(error);
+      });
+  };
   useEffect(() => {
     axios({
       method: "GET",
       url: globalApi.eventDescription + state.eventId,
+      headers: {
+        authorization: userData.accessToken,
+      },
     })
       .then((respond) => {
         var attenNum = 0;
@@ -132,7 +161,7 @@ function JoinEventDetail() {
         setEventData(respond.data);
         setAttendance(attenNum);
         setProgressData(percent);
-
+        setJoined(respond.data.isJoin);
         const hostId = respond.data.creatorId;
         axios({
           method: "GET",
@@ -147,6 +176,7 @@ function JoinEventDetail() {
         console.log(error);
       });
   }, []);
+
   return (
     <div className="joinContainer">
       <div className="pic">
@@ -182,29 +212,27 @@ function JoinEventDetail() {
                   setAttendance(nAttenNum);
                   setProgressData(percent);
                 }}
+                onMouseEnter={() => {
+                  console.log("eventId is " + eventId);
+                }}
               >
                 Joined
               </JoinedButton>
             )}
             {!joined && (
               <div>
-                {eventData.eventId != 2 && (
+                {eventData.creatorId != userData.userID && (
                   <JoinOrEditButton
                     type="submit"
-                    onClick={() => {
-                      setJoined(true);
-                      const nAttenNum = attendance + 1;
-                      const percent =
-                        String((nAttenNum / eventData.maxParticipant) * 100) +
-                        "%";
-                      setAttendance(nAttenNum);
-                      setProgressData(percent);
+                    onClick={joinEvent}
+                    onMouseEnter={() => {
+                      console.log("eventId is " + eventId);
                     }}
                   >
                     Join
                   </JoinOrEditButton>
                 )}
-                {eventData.eventId == 2 && (
+                {eventData.creatorId == userData.userID && (
                   <JoinOrEditButton
                     type="submit"
                     onClick={() => {

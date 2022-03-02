@@ -7,35 +7,34 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 
-function EventCard({ events, id }) {
+const EventCard = (props) => {
   const navigate = useNavigate();
-  const [eventInfo, setEventInfo] = useState({});
+  const [eventInfo, setEventInfo] = useState(props.events);
   // const [tagAvailable, setTagAvailable] = useState({});
   const [display, setDisplay] = useState([true, false, true]);
 
   const cookies = new Cookies();
-  let user_cookie = cookies.get("cookie")
-  let accessToken = user_cookie["accessToken"]
-  
+  let user_cookie = cookies.get("cookie");
+  let accessToken = user_cookie["accessToken"];
 
   useEffect(() => {
-    axios.get(
-      globalApi.eventDescription + id,
-      {
+    axios
+      .get(globalApi.eventDescription + props.id, {
         headers: {
-          "Authorization" : "Bearer "+accessToken,
-        }
-      }
-    ).then((res) => {
-      console.log(res.data);
-      setEventInfo(res.data);
-      TagList();
-    });
+          Authorization: "Bearer " + accessToken,
+        },
+      })
+      .then((res) => {
+        console.log(res.data);
+        setEventInfo(res.data);
+        TagList();
+      });
   }, []);
 
   function TagList() {
+    console.log(eventInfo.tags.length);
     const tags = eventInfo.tags;
-    const ta = eventInfo.tags === null ? false : true;
+    const ta = eventInfo.length !== 0;
     const listTags = ta && tags.map((tag) => <li key={"tag-" + tag}>{tag}</li>);
     return <ul>{listTags}</ul>;
   }
@@ -75,7 +74,7 @@ function EventCard({ events, id }) {
             <Card.Img
               className="cardImg"
               variant="top"
-              src={events.imgSrc}
+              src={eventInfo.imgSrc}
               alt=""
             />
           )}
@@ -95,7 +94,7 @@ function EventCard({ events, id }) {
       </Card>
     </div>
   );
-}
+};
 
 export default EventCard;
 

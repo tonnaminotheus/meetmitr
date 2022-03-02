@@ -4,10 +4,10 @@ const ChatListUser = (props) => {
   const navigate = useNavigate();
   return (
     <div style={container}>
-      <img src={naem} style={picture}></img>
+      <img src={props.imgUrl} style={picture}></img>
       <div style={profile}>
-        <p style={usernameText}>name</p>
-        <p style={descriptionText}>description</p>
+        <p style={usernameText}>{props.name}</p>
+        <p style={descriptionText}>{props.lastMessage}</p>
       </div>
       <button
         style={button}

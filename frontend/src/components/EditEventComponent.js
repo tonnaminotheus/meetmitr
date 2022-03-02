@@ -1,10 +1,12 @@
 import "./EditEventComponent.css";
-import CreateEventPicComponent from "./CreateEventPicComponent"
-import CreateEventInfoComponent from "./CreateEventInfoComponent"
-import { useLocation } from "react-router-dom"
+import CreateEventPicComponent from "./CreateEventPicComponent";
+import CreateEventInfoComponent from "./CreateEventInfoComponent";
+import { useLocation } from "react-router-dom";
 import { useState } from "react";
 
-const EditEventComponent=(props)=>{
+const EditEventComponent = (props) => {
+  const { state } = useLocation();
+  // console.log("eventID :"+eventID)
 
     const {state} = useLocation();
     // console.log("eventID :"+eventID)  
