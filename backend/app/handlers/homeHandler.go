@@ -27,21 +27,16 @@ func HomeHandler(c *gin.Context) {
 		return
 	}
 	EventPerPage := 5
-	startRow := (intNumPage - 1) * EventPerPage
+	startRow := (intNumPage-1)*EventPerPage + 1
 	endRow := intNumPage * EventPerPage
 	rows, err := database.Sql.Query(
-		`select ID,N,A,P,ST,TN
+		`select ID,N,A,P,ST
 		from (select ID,N,A,P,ST
 				from
 				(SELECT ROW_NUMBER() OVER (Order by eventId) AS RowNumber, Event.eventId as ID, Event.name as N, 
 																Event.address as A, Event.province as P, Event.startTime as ST
 				FROM Event) as sq
-				where RowNumber>=? and RowNumber<=?) as sqq,
-				(select ET2.eventId as ID2, TA2.tagName as TN
-				from Tag as TA2, EventTag as ET2, Event as E2
-				where TA2.tagId=ET2.tagId and ET2.eventId=E2.eventId
-				) as sqq2
-		where ID=ID2`, startRow, endRow)
+				where RowNumber>=? and RowNumber<=?) as sqq`, startRow, endRow)
 
 	if err != nil || rows == nil {
 		message := "No event found"
@@ -62,14 +57,13 @@ func HomeHandler(c *gin.Context) {
 	counter = 0
 	for rows.Next() {
 		rows.Scan(&eventHome.EventId, &eventHome.Name, &eventHome.Address,
-			&eventHome.Province, &eventHome.StartTime, &tag)
+			&eventHome.Province, &eventHome.StartTime)
 		counterIdx, ok := mp[eventHome.EventId]
 		if ok {
 			eventHomes[counterIdx].Tags = append(eventHomes[counterIdx].Tags, tag)
 		} else {
 			eventHome.Tags = []string{}
 			eventHome.Images = []string{}
-			eventHome.Tags = append(eventHome.Tags, tag)
 			eventHomes = append(eventHomes, eventHome)
 			mp[eventHome.EventId] = counter
 			counter += 1
@@ -97,6 +91,30 @@ func HomeHandler(c *gin.Context) {
 		counterIdx, ok := mp[eventId]
 		if ok {
 			eventHomes[counterIdx].Images = append(eventHomes[counterIdx].Images, imgUrl)
+		}
+	}
+
+	rows3, err3 := database.Sql.Query(`select EventTag.eventId, Tag.tagName
+	from Tag,EventTag
+	where Tag.tagId=EventTag.tagId`)
+
+	if err3 != nil || rows3 == nil {
+		message := "No tag found"
+		if err3 != nil {
+			message = err3.Error()
+		}
+		c.JSON(500, gin.H{
+			"message": message,
+		})
+		return
+	}
+
+	defer rows2.Close()
+	for rows3.Next() {
+		rows3.Scan(&eventId, &tag)
+		counterIdx, ok := mp[eventId]
+		if ok {
+			eventHomes[counterIdx].Tags = append(eventHomes[counterIdx].Tags, tag)
 		}
 	}
 
