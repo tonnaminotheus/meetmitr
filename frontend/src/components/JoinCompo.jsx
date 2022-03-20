@@ -14,6 +14,7 @@ import axios from "axios";
 import Cookies from "universal-cookie";
 import NotificationModal from "./modal/NotificationModal";
 import globalVar from "../cookie";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 import nuke from "../asset/nuclear.png";
 import weed from "../asset/weed.jpg";
@@ -31,6 +32,7 @@ function JoinComponent() {
   console.log(cookies.get("cookie"));
 
   let accessToken = globalVar.accessToken;
+  let numPage = 1;
 
   //noti modal state
   const [notificationState, setNotificationModalState] = useState(false);
@@ -45,7 +47,7 @@ function JoinComponent() {
   useEffect(() => {
     let isMounted = true;
     axios
-      .get(globalApi.recommendFeed + "1", {
+      .get(globalApi.recommendFeed + String(numPage), {
         headers: {
           "Authorization": "Bearer " + accessToken,
         },
@@ -156,6 +158,21 @@ function JoinComponent() {
           onChange={this.updateSearch.bind(this)}
         ></input> */}
       <Cards events={filteredEvents} />
+      {/* <div style="height:700px;overflow:auto;">
+        <InfiniteScroll
+          pageStart={1}
+          loadMore={loadFunc}
+          hasMore={true || false}
+          loader={
+            <div className="loader" key={0}>
+              Loading ...
+            </div>
+          }
+          useWindow={false}
+        >
+          {items}
+        </InfiniteScroll>
+      </div> */}
     </div>
   );
 }
