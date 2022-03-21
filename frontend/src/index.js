@@ -14,6 +14,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import ChatList from "./screen/ChatList";
 import RateQuiz from "./components/PersonalityQuizRateForm.js";
 import PersonalQuiz from "./screens/PersonalQuiz";
+import Profile from "./screen/Profile";
 render(
   <BrowserRouter>
     <Routes>
@@ -29,6 +30,7 @@ render(
       <Route path="chatList" element={<ChatList />} />
       <Route path="quiz" element={<PersonalQuiz />} />
       <Route path="quiz2" element={<RateQuiz />} />
+      <Route path="profile" element={<Profile />} />
     </Routes>
   </BrowserRouter>,
   document.getElementById("root")
