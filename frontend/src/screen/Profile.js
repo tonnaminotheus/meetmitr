@@ -78,11 +78,11 @@ const Profile = (props) => {
   const shootAPIUser = () => {
     axios({
       method: "get",
-      url: globalApi.userData + `${1}`,
+      url: globalApi.userData + `${props.userId}`,
     })
       .then(function (response) {
         console.log(response.data);
-        setImage(response.data.profilePicUrls);
+        setImage(response.data.profilePicUrl);
         setBio(response.data.bio);
         setProfileName(`${response.data.profileName}`);
         //redirect
