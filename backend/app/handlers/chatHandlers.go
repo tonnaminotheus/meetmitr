@@ -53,6 +53,7 @@ func GetChatTokenHandler(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "ok",
 			"token":   token,
+			"DMId":    chatId,
 		})
 
 	}

@@ -1,6 +1,7 @@
 package services
 
 import (
+	"backend/app/requests"
 	"backend/database"
 )
 
@@ -15,5 +16,9 @@ func RateTag(userId, tagId string, score *int) error {
 		return err2
 	}
 
+	return nil
+}
+
+func UpdateUser(userId string, updateReq *requests.UpdateUserRequest) error {
 	return nil
 }
