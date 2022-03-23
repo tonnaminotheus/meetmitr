@@ -1,12 +1,30 @@
 import "./FinishRegister.css";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import globalApi from "../globalApi";
 
 function FinishRegister() {
   let navigate = useNavigate();
+  let { activateStr } = useParams();
+  const [name, setName] = useState("");
   const goToLogin = () => {
     navigate("/");
   };
+  useEffect(() => {
+    axios({
+      method: "POST",
+      url: globalApi.activate + activateStr,
+    })
+      .then((respond) => {
+        setName(respond.data.firstName);
+      })
+      .catch((error) => {
+        console.log(error);
+        navigate("/");
+      });
+  }, []);
   const Button = styled.button`
     background-color: #303b5b;
     color: white;
@@ -27,7 +45,7 @@ function FinishRegister() {
   return (
     <div className="Register">
       <div className="register-container">
-        <h1>Thank for registration</h1>
+        <h1>Thank for registration {name}</h1>
         <p>Please go to login to use features in MeetMitr.</p>
         <Button type="Button" onClick={goToLogin}>
           go to login
