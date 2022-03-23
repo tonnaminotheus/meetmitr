@@ -17,8 +17,8 @@ const globalApi = {
   chatHistory: `${url}/api/v1/chat/history/dm/`, // /DMId
   chatSocket: `ws://${url.slice(6)}/api/v1/chat/room/`, //+ chatType/ + userId
   postQuiz: `${url}/api/v1/quiz`,
-  getAllNoti: `${url}/api/v1/noti/getAll`
-
+  getAllNoti: `${url}/api/v1/noti/getAll`,
+  getFilteredEvent: `${url}/api/v1/home/avt`, //+ numPage
 };
 
 export default globalApi;

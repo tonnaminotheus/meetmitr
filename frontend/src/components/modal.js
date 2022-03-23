@@ -1,14 +1,50 @@
 import "./modal.css";
 import "../components/css_extensions/form_control.css";
+import React, { useState } from "react";
 import axios from "axios";
 
+import Cookies from "universal-cookie";
 import Modal from "react-modal";
 
 // import { Button } from 'react-bootstrap';
 import { Form } from "react-bootstrap";
 
 const JoinEventFilterModal = (props) => {
-  const onFilterSubmit = props.onFilterSubmit;
+  // const onFilterSubmit = props.onFilterSubmit;
+  const [time, setTime] = useState({});
+  const cookies = new Cookies();
+  var userData = cookies.get("cookie");
+  var submitted = 0;
+  let numPage = 1;
+
+  useEffect(() => {
+    axios({
+      method: "GET",
+      url: globalApi.getFilteredEvent + String(numPage),
+      headers: {
+        authorization: userData.accessToken,
+      },
+      data: {
+        time,
+      },
+    });
+    axios
+      .get(globalApi.getFilteredEvent + String(numPage), {
+        headers: {
+          Authorization: userData.accessToken,
+        },
+      })
+      .then(function (response) {
+        props.setEvent(response.data);
+      })
+      .catch(function (error) {
+        console.log("error!!");
+        console.log(error);
+      })
+      .then(function () {
+        // always executed
+      });
+  }, [submitted]);
 
   const getTodayDate = () => {
     let today = new Date();
@@ -46,8 +82,10 @@ const JoinEventFilterModal = (props) => {
       // is_online: document.getElementById("Online-checkbox").value,
       // is_onsite: document.getElementById("Onsite-checkbox").value,
     };
+    setTime(filter_props);
+    submitted = submitted + 1;
     console.log(filter_props);
-    onFilterSubmit(filter_props);
+    // onFilterSubmit(filter_props);
   };
 
   Modal.setAppElement("#root");

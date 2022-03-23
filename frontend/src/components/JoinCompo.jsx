@@ -28,28 +28,29 @@ import john from "../asset/John.jpg";
 function JoinComponent() {
   //test cookie
   const cookies = new Cookies();
+  var userData = cookies.get("cookie");
   console.log("in feed");
   console.log(cookies.get("cookie"));
 
-  let accessToken = globalVar.accessToken;
+  let accessToken = cookies.accessToken;
   let numPage = 1;
 
   //noti modal state
   const [notificationState, setNotificationModalState] = useState(false);
 
   const [cardInfo, setCardInfo] = useState({});
-  const [cardsInfo, setCardsInfo] = useState({});
+  // const [cardsInfo, setCardsInfo] = useState({});
 
   const [search, setSearch] = useState("");
   const [modalstate, setModalstate] = useState(false);
-  const [joinEventFilterProps, setJoinEventFilterProps] = useState({});
+  // const [joinEventFilterProps, setJoinEventFilterProps] = useState({});
 
   useEffect(() => {
     let isMounted = true;
     axios
       .get(globalApi.recommendFeed + String(numPage), {
         headers: {
-          "Authorization": "Bearer " + accessToken,
+          "Authorization": userData.accessToken,
         },
       })
       .then((res) => {
@@ -87,10 +88,10 @@ function JoinComponent() {
   };
 
   //passed function
-  const onFilterSubmit = (filter_props) => {
-    console.log("get props from child compo");
-    setJoinEventFilterProps(filter_props);
-  };
+  // const onFilterSubmit = (filter_props) => {
+  //   console.log("get props from child compo");
+  //   setJoinEventFilterProps(filter_props);
+  // };
 
   const date = () => {
     var today = new Date();
@@ -142,9 +143,10 @@ function JoinComponent() {
         </Row>
       </Form.Group>
       <JoinEventFilterModal
-        onFilterSubmit={onFilterSubmit}
+        // onFilterSubmit={onFilterSubmit}
         mState={modalstate}
         onClose={setModalClose}
+        setEvent={setCardInfo}
       />
 
       <NotificationModal
