@@ -20,6 +20,7 @@ const JoinEventFilterModal = (props) => {
 
   useEffect(() => {
     console.log("run useEffect");
+    console.log(submitted);
     axios({
       method: "GET",
       url: globalApi.getFilteredEvent + String(numPage),
@@ -29,14 +30,9 @@ const JoinEventFilterModal = (props) => {
       data: {
         time,
       },
-    });
-    axios
-      .get(globalApi.getFilteredEvent + String(numPage), {
-        headers: {
-          Authorization: userData.accessToken,
-        },
-      })
+    })
       .then(function (response) {
+        console.log(response.data);
         props.setEvent(response.data);
       })
       .catch(function (error) {

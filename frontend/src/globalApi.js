@@ -1,4 +1,4 @@
-const url = "http://18.233.226.58:8080";
+const url = "http://44.201.173.157:8080";
 const globalApi = {
   register: `${url}/api/v1/register`,
   login: `${url}/api/v1/login`,
@@ -18,7 +18,7 @@ const globalApi = {
   chatSocket: `ws://${url.slice(6)}/api/v1/chat/room/`, //+ chatType/ + userId
   postQuiz: `${url}/api/v1/quiz`,
   getAllNoti: `${url}/api/v1/noti/getAll`,
-  getFilteredEvent: `${url}/api/v1/home/avt`, //+ numPage
+  getFilteredEvent: `${url}/api/v1/home/avt/`, //+ numPage
 };
 
 export default globalApi;
