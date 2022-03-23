@@ -145,6 +145,7 @@ function JoinComponent() {
       <JoinEventFilterModal
         // onFilterSubmit={onFilterSubmit}
         mState={modalstate}
+        setMState={setModalstate}
         onClose={setModalClose}
         setEvent={setCardInfo}
       />

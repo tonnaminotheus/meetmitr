@@ -1,7 +1,8 @@
 import "./modal.css";
 import "../components/css_extensions/form_control.css";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
+import globalApi from "../globalApi";
 
 import Cookies from "universal-cookie";
 import Modal from "react-modal";
@@ -18,6 +19,7 @@ const JoinEventFilterModal = (props) => {
   let numPage = 1;
 
   useEffect(() => {
+    console.log("run useEffect");
     axios({
       method: "GET",
       url: globalApi.getFilteredEvent + String(numPage),
@@ -60,7 +62,7 @@ const JoinEventFilterModal = (props) => {
   };
 
   const onClickSubmitFilter = (event) => {
-    console.log("hi!!");
+    console.log("click apply butt");
     event.preventDefault();
     const filter_props = {
       datetime_start: document
@@ -82,6 +84,7 @@ const JoinEventFilterModal = (props) => {
       // is_online: document.getElementById("Online-checkbox").value,
       // is_onsite: document.getElementById("Onsite-checkbox").value,
     };
+    props.setMState(false);
     setTime(filter_props);
     submitted = submitted + 1;
     console.log(filter_props);
@@ -120,53 +123,52 @@ const JoinEventFilterModal = (props) => {
           },
         }}
       >
-        <form onSubmit={onFilterSubmit}>
-          <div className="info-form-box">
-            <h3>Date</h3>
-            <div className="centerBox">
-              {/* <label htmlFor="date-start">Date Start :</label> */}
-              <input
-                type={"date"}
-                id={"filter-date-start"}
-                min={getTodayDate()}
-                className="inputText inputBox"
-                style={{ marginRight: "20px" }}
-              ></input>
-
-              {/* <label htmlFor="date-end">Date End :</label> */}
-              <input
-                type={"date"}
-                id={"filter-date-end"}
-                min={getTodayDate()}
-                className="inputText inputBox"
-              ></input>
-            </div>
-          </div>
-
-          <hr />
-
-          <h3>Time</h3>
+        <div className="info-form-box">
+          <h3>Date</h3>
           <div className="centerBox">
-            <div className="info-form-box">
-              {/* <label htmlFor="filter-time-start">Time Start :</label> */}
-              <input
-                type={"time"}
-                id={"filter-time-start"}
-                className="inputText inputBox"
-                style={{ marginRight: "20px" }}
-              />
-              {/* <label htmlFor="filter-time-end">Time End :</label> */}
-              <input
-                type={"time"}
-                id={"filter-time-end"}
-                className="inputText inputBox"
-              />
-            </div>
+            {/* <label htmlFor="date-start">Date Start :</label> */}
+            <input
+              type={"date"}
+              id={"filter-date-start"}
+              min={getTodayDate()}
+              className="inputText inputBox"
+              style={{ marginRight: "20px" }}
+            ></input>
+
+            {/* <label htmlFor="date-end">Date End :</label> */}
+            <input
+              type={"date"}
+              id={"filter-date-end"}
+              min={getTodayDate()}
+              className="inputText inputBox"
+            ></input>
           </div>
+        </div>
 
-          <hr />
+        <hr />
 
-          {/* <div>
+        <h3>Time</h3>
+        <div className="centerBox">
+          <div className="info-form-box">
+            {/* <label htmlFor="filter-time-start">Time Start :</label> */}
+            <input
+              type={"time"}
+              id={"filter-time-start"}
+              className="inputText inputBox"
+              style={{ marginRight: "20px" }}
+            />
+            {/* <label htmlFor="filter-time-end">Time End :</label> */}
+            <input
+              type={"time"}
+              id={"filter-time-end"}
+              className="inputText inputBox"
+            />
+          </div>
+        </div>
+
+        <hr />
+
+        {/* <div>
             <h3>Category</h3>
           </div>
           <div className="info-form-box" id="checkbox-eventtype-container">
@@ -189,15 +191,14 @@ const JoinEventFilterModal = (props) => {
 
           <hr /> */}
 
-          <div className="info-form-box centerBox">
-            <button className="closeButt" onClick={() => props.onClose()}>
-              <span>Close</span>
-            </button>
-            <button className="applyButt" onClick={onClickSubmitFilter}>
-              <span>Apply</span>
-            </button>
-          </div>
-        </form>
+        <div className="info-form-box centerBox">
+          <button className="closeButt" onClick={() => props.onClose()}>
+            <span>Close</span>
+          </button>
+          <button className="applyButt" onClick={onClickSubmitFilter}>
+            <span>Apply</span>
+          </button>
+        </div>
 
         {/* <Modal isOpen={props.mState} onRequestClose={() => props.onClose()}>
         <button className="btn btn-danger ml-3" onClick={() => props.onClose()}>
