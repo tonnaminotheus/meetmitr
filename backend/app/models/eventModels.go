@@ -7,7 +7,7 @@ type Event struct {
 	Tags             []string `json:"tags"`
 	Address          string   `json:"address"`
 	Province         string   `json:"province"`
-	ImagUrl          []string   `json:"imagUrl"`
+	ImagUrl          []string `json:"imagUrl"`
 	StartTime        string   `json:"startTime"`
 	EndTime          string   `json:"endTime"`
 	Onsite           bool     `json:"onsite"`

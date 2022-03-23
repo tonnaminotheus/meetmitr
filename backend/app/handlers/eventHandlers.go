@@ -1,8 +1,8 @@
 package handlers
 
 import (
-	"backend/app/models"
 	"backend/app/requests"
+	"backend/app/responses"
 	"backend/app/services"
 	"backend/database"
 	"net/http"
@@ -21,7 +21,7 @@ func GetEventDescHandler(c *gin.Context) {
 
 	eventId := c.Param("eventId")
 
-	event := models.Event{}
+	event := responses.EventDescResponse{}
 
 	err := database.Sql.QueryRow(`SELECT * FROM Event WHERE eventId=?`, eventId).Scan(
 		&event.EventId, &event.Name, &event.Description, &event.Address, &event.Province,
@@ -77,9 +77,9 @@ func GetEventDescHandler(c *gin.Context) {
 	}
 
 	rows, err3 := database.Sql.Query(
-		`select User.profileName
+		`select profileName, userId,displayPicUrl
 		from User, UserEventStatus
-		where User.userId=UserEventStatus.userId and UserEventStatus.eventId=?`, eventId)
+		where UserEventStatus.eventId=? and User.userId=UserEventStatus.userId`, eventId)
 	if err3 != nil || rows == nil {
 		message := "No user profile found"
 		if err != nil {
@@ -94,9 +94,12 @@ func GetEventDescHandler(c *gin.Context) {
 	defer rows.Close()
 
 	var participant string
+	var participantId int
 	for rows.Next() {
-		rows.Scan(&participant)
+		rows.Scan(&participant, &participantId, &img)
 		event.Participants = append(event.Participants, participant)
+		event.ParticipantsId = append(event.ParticipantsId, participantId)
+		event.ParticipantsImage = append(event.ParticipantsImage, img)
 	}
 
 	var isJoin bool
@@ -106,6 +109,7 @@ func GetEventDescHandler(c *gin.Context) {
 	} else {
 		event.IsJoin = true
 	}
+	_ = database.Sql.QueryRow(`SELECT profileName, displayPicUrl FROM User WHERE userId=?`, userId).Scan(&event.CreatorName, &event.CreatorImage)
 
 	c.JSON(http.StatusOK, event)
 }

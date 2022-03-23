@@ -3,7 +3,6 @@ package handlers
 import (
 	"backend/app/requests"
 	"backend/app/responses"
-	"backend/app/services"
 
 	"github.com/gin-gonic/gin"
 )
@@ -41,7 +40,7 @@ func UpdateUserHandler(c *gin.Context) {
 		})
 		return
 	}
-	err = services.UpdateUser(userId, body)
+	err = userService.UpdateUser(userId, body)
 	if err != nil {
 		c.JSON(400, gin.H{
 			"message": err,

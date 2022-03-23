@@ -2,6 +2,7 @@ package services
 
 import (
 	"backend/app/models"
+	"backend/app/requests"
 	"backend/database"
 	"database/sql"
 	"errors"
@@ -52,4 +53,10 @@ func (s *UserServiceImpl) FindUserById(userId string) (*models.User, error) {
 	user.MiddleName = middleName.String
 	user.NumberOfPenalty = int(noPenalty.Int64)
 	return user, nil
+}
+
+func (s *UserServiceImpl) UpdateUser(userId string, updateReq *requests.UpdateUserRequest) error {
+	oks := []bool{updateReq.Email != nil}
+	_, err := database.Sql.Exec(`Update User
+	SET email = case when `)
 }
