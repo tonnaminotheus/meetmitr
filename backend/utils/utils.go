@@ -1,9 +1,12 @@
 package utils
 
 import (
+	"crypto/tls"
 	"fmt"
 	"math/rand"
 	"time"
+
+	gomail "gopkg.in/mail.v2"
 )
 
 var (
@@ -11,9 +14,12 @@ var (
 	random        = rand.New(randomSource)
 	MainEmail     = "meetmitr.se2@gmail.com"
 	EmailPassword = "MeetMitrSE2"
-	ActivatePath  = "localhost:8080/api/v1/activate/"
+	ActivatePath  = "/activate/"
 	StoragePath   = "gs://meetmitr-se2.appspot.com/"
 	BucketName    = "meetmitr-se2.appspot.com"
+	EventUrl      = "/event/"
+	LoginPath     = "/loginVerif/"
+	InitialPath   = "sth.com"
 )
 
 func init() {
@@ -36,4 +42,29 @@ func GetFilePath(fileName string) string {
 
 func FormatTime(t time.Time) string {
 	return t.Local().Format("2006-01-02 15:04:05")
+}
+
+func SendTextEmail(email, subject, sentence string) error {
+	m := gomail.NewMessage()
+	m.SetHeader("From", MainEmail)
+	m.SetHeader("To", email)
+	m.SetHeader("Subject", subject)
+	m.SetBody("text/plain", sentence)
+
+	d := gomail.NewDialer("smtp.gmail.com", 587, MainEmail, EmailPassword)
+	d.TLSConfig = &tls.Config{InsecureSkipVerify: true}
+
+	if err := d.DialAndSend(m); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func GetActivatePath() string {
+	return InitialPath + ActivatePath
+}
+
+func GetLoginPath() string {
+	return InitialPath + LoginPath
 }

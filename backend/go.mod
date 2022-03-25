@@ -3,9 +3,9 @@ module backend
 go 1.16
 
 require (
-	cloud.google.com/go/firestore v1.6.1 // indirect
-	cloud.google.com/go/storage v1.21.0 // indirect
-	firebase.google.com/go v3.13.0+incompatible // indirect
+	cloud.google.com/go/firestore v1.6.1
+	cloud.google.com/go/storage v1.21.0
+	firebase.google.com/go v3.13.0+incompatible
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gin-contrib/cors v1.3.1
 	github.com/gin-gonic/gin v1.7.7
@@ -21,7 +21,7 @@ require (
 	golang.org/x/crypto v0.0.0-20220128200615-198e4374d7ed // indirect
 	golang.org/x/oauth2 v0.0.0-20220223155221-ee480838109b // indirect
 	golang.org/x/text v0.3.7 // indirect
-	google.golang.org/api v0.70.0 // indirect
+	google.golang.org/api v0.70.0
 	google.golang.org/protobuf v1.27.1 // indirect
 	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
 	gopkg.in/mail.v2 v2.3.1
