@@ -2,7 +2,6 @@ package models
 
 import (
 	"github.com/dgrijalva/jwt-go"
-	
 )
 
 type JwtClaims struct {
@@ -12,3 +11,10 @@ type JwtClaims struct {
 }
 
 var JWTSignedKey string
+
+type IpLog struct {
+	Id        int    `json:"id"`
+	UserId    int    `json:"userId"`
+	Ip        string `json:"ip"`
+	TimeAdded string `json:"timeAdded"`
+}

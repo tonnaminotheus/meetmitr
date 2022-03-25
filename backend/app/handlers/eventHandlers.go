@@ -1,11 +1,14 @@
 package handlers
 
 import (
+	"backend/app/models"
 	"backend/app/requests"
 	"backend/app/responses"
 	"backend/app/services"
 	"backend/database"
+	"backend/utils"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -57,7 +60,7 @@ func GetEventDescHandler(c *gin.Context) {
 	}
 
 	rows, err5 := database.Sql.Query(`select imgURL from EventImage where eventId=?`, eventId)
-	if err5 != nil || rows == nil {
+	if err5 != nil {
 		message := "No imgURL found"
 		if err5 != nil {
 			message = err5.Error()
@@ -77,13 +80,13 @@ func GetEventDescHandler(c *gin.Context) {
 	}
 
 	rows, err3 := database.Sql.Query(
-		`select profileName, userId,displayPicUrl
+		`select User.profileName, User.userId, User.displayPic
 		from User, UserEventStatus
 		where UserEventStatus.eventId=? and User.userId=UserEventStatus.userId`, eventId)
-	if err3 != nil || rows == nil {
+	if err3 != nil {
 		message := "No user profile found"
-		if err != nil {
-			message = err.Error()
+		if err3 != nil {
+			message = err3.Error()
 		}
 		c.JSON(500, gin.H{
 			"message": message,
@@ -95,13 +98,14 @@ func GetEventDescHandler(c *gin.Context) {
 
 	var participant string
 	var participantId int
-	for rows.Next() {
-		rows.Scan(&participant, &participantId, &img)
-		event.Participants = append(event.Participants, participant)
-		event.ParticipantsId = append(event.ParticipantsId, participantId)
-		event.ParticipantsImage = append(event.ParticipantsImage, img)
+	if rows != nil {
+		for rows.Next() {
+			rows.Scan(&participant, &participantId, &img)
+			event.Participants = append(event.Participants, participant)
+			event.ParticipantsId = append(event.ParticipantsId, participantId)
+			event.ParticipantsImage = append(event.ParticipantsImage, img)
+		}
 	}
-
 	var isJoin bool
 	err4 := database.Sql.QueryRow(`SELECT status FROM UserEventStatus WHERE userId=? and eventId=?`, userId, eventId).Scan(&isJoin)
 	if err4 != nil {
@@ -109,7 +113,7 @@ func GetEventDescHandler(c *gin.Context) {
 	} else {
 		event.IsJoin = true
 	}
-	_ = database.Sql.QueryRow(`SELECT profileName, displayPicUrl FROM User WHERE userId=?`, userId).Scan(&event.CreatorName, &event.CreatorImage)
+	_ = database.Sql.QueryRow(`SELECT profileName, displayPic FROM User WHERE userId=?`, userId).Scan(&event.CreatorName, &event.CreatorImage)
 
 	c.JSON(http.StatusOK, event)
 }
@@ -227,12 +231,13 @@ func JoinEventHandler(c *gin.Context) {
 		})
 		return
 	}
-
+	userIdInt, _ := strconv.Atoi(userId.(string))
 	eventId := c.Param("eventId")
 
 	//get event price
 	var price int
-	err1 := database.Sql.QueryRow("select Event.price from Event where Event.eventId=?", eventId).Scan(&price)
+	var name string
+	err1 := database.Sql.QueryRow("select Event.price, Event.name from Event where Event.eventId=?", eventId).Scan(&price, &name)
 	if err1 != nil {
 		c.JSON(500, gin.H{
 			"message": err1.Error(),
@@ -273,8 +278,15 @@ func JoinEventHandler(c *gin.Context) {
 			})
 			return
 		}
+		err1 = services.AppendNoti(&models.Noti{NotiContent: "You have join event " + name,
+			URL: utils.EventUrl + eventId, UserId: userIdInt})
+		notiAppend := "ok"
+		if err1 != nil {
+			notiAppend = err1.Error()
+		}
 		c.JSON(http.StatusOK, gin.H{
 			"message": "join success",
+			"noti":    notiAppend,
 		})
 		return
 	}

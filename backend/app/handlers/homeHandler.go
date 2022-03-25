@@ -10,7 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func HomeHandler(c *gin.Context) {
+func HomeWithAvtHandler(c *gin.Context) {
 	_, ok := c.Get("user_id")
 	if !ok {
 		c.JSON(401, gin.H{
@@ -134,7 +134,7 @@ func HomeHandler(c *gin.Context) {
 
 }
 
-func HomeWithAvtHandler(c *gin.Context) {
+func HomeHandler(c *gin.Context) {
 	_, ok := c.Get("user_id")
 	if !ok {
 		c.JSON(401, gin.H{

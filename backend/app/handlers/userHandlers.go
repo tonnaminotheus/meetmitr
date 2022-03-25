@@ -30,20 +30,20 @@ func GetUserHandler(c *gin.Context) {
 }
 
 func UpdateUserHandler(c *gin.Context) {
-	userId := c.GetString("userId")
+	userId := c.GetString("user_id")
 
 	body := &requests.UpdateUserRequest{}
 	err := c.ShouldBindJSON(body)
 	if err != nil {
 		c.JSON(400, gin.H{
-			"message": err,
+			"message": err.Error(),
 		})
 		return
 	}
 	err = userService.UpdateUser(userId, body)
 	if err != nil {
 		c.JSON(400, gin.H{
-			"message": err,
+			"message": err.Error(),
 		})
 		return
 	} else {

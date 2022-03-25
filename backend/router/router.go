@@ -39,8 +39,9 @@ func GenerateRouter() *gin.Engine {
 	router.POST("/api/v1/register", handlers.RegisterHandler)
 	router.POST("/api/v1/activate/:activStr", handlers.ActivateUserHandler)
 	router.POST("/api/v1/login", handlers.LoginHandler)
+	router.POST("/api/v1/loginVerif/:loginKey", handlers.LoginVerifHandler)
 	router.GET("/api/v1/user/:userId", handlers.GetUserHandler)
-
+	router.PUT("/api/v1/user", AttractAuthMiddleware(ABORT), handlers.UpdateUserHandler)
 	// EventHandler
 	v1Event := router.Group("/api/v1/event")
 	{
@@ -67,6 +68,7 @@ func GenerateRouter() *gin.Engine {
 	router.POST("/api/v1/transaction/:amount", AttractAuthMiddleware(ABORT), handlers.TransactionHandler)
 
 	//HomeHandler
+	router.POST("/api/v1/home/avt/:numPage", AttractAuthMiddleware(ABORT), handlers.HomeWithAvtHandler)
 	router.GET("/api/v1/home/:numPage", AttractAuthMiddleware(ABORT), handlers.HomeHandler)
 	router.POST("/api/v1/rate", AttractAuthMiddleware(ABORT), handlers.RateHandler)
 	router.GET("/api/v1/rate", AttractAuthMiddleware(ABORT), handlers.GetRateHandler)
@@ -76,7 +78,7 @@ func GenerateRouter() *gin.Engine {
 	//quiz
 	router.GET("/api/v1/quiz", AttractAuthMiddleware(ABORT), handlers.GetQuizHandler)
 	router.POST("/api/v1/quiz", AttractAuthMiddleware(ABORT), handlers.SendQuizHandler)
-	
+
 	//Noti
 	router.GET("/api/v1/noti/getAll", AttractAuthMiddleware(ABORT), handlers.NotiHandler)
 	router.GET("/api/v1/noti/getCount", AttractAuthMiddleware(ABORT), handlers.NotiCountHandler)
