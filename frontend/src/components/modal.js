@@ -12,7 +12,20 @@ import { Form } from "react-bootstrap";
 
 const JoinEventFilterModal = (props) => {
   // const onFilterSubmit = props.onFilterSubmit;
-  const [time, setTime] = useState({});
+  const blackBorder = "2px solid rgba(0, 0, 0, 1)";
+
+  const redBorder = "2px solid rgba(255, 66, 34, 1)";
+
+  const [dateStartStyle, setDateStartStyle] = useState("");
+  const [dateEndStyle, setDateEndStyle] = useState("");
+  const [timeStartStyle, setTimeStartStyle] = useState("");
+  const [timeEndStyle, setTimeEndStyle] = useState("");
+
+  let today = new Date();
+  const [time, setTime] = useState({
+    // "startTime": today.getFullYear.concat("-01-01 00:00:00"),
+    // "endTime": today.getFullYear.concat("-12-31 23:59:59")
+  });
   const cookies = new Cookies();
   console.log(cookies.get("cookie"));
   var userData = cookies.get("cookie");
@@ -62,32 +75,47 @@ const JoinEventFilterModal = (props) => {
   const onClickSubmitFilter = (event) => {
     console.log("click apply butt");
     event.preventDefault();
-    const filter_props = {
-      "startTime": document
-        .getElementById("filter-date-start")
-        .value.concat(
-          " ",
-          document.getElementById("filter-time-start").value,
-          ":00"
-        ),
-      "endTime": document
-        .getElementById("filter-date-end")
-        .value.concat(
-          " ",
-          document.getElementById("filter-time-end").value,
-          ":00"
-        ),
-      // time_start: document.getElementById("filter-time-start").value,
-      // time_end: document.getElementById("filter-time-end").value,
-      // is_online: document.getElementById("Online-checkbox").value,
-      // is_onsite: document.getElementById("Onsite-checkbox").value,
-    };
-    props.setMState(false);
-    setTime(filter_props);
-    console.log(filter_props);
-    setSubmitted(submitted + 1);
-    console.log(submitted);
-    // onFilterSubmit(filter_props);
+    if (
+      document.getElementById("filter-date-start").value &&
+      document.getElementById("filter-time-start").value &&
+      document.getElementById("filter-date-end").value &&
+      document.getElementById("filter-time-end").value
+    ) {
+      const filter_props = {
+        "startTime": document
+          .getElementById("filter-date-start")
+          .value.concat(
+            " ",
+            document.getElementById("filter-time-start").value,
+            ":00"
+          ),
+        "endTime": document
+          .getElementById("filter-date-end")
+          .value.concat(
+            " ",
+            document.getElementById("filter-time-end").value,
+            ":00"
+          ),
+      };
+      props.setMState(false);
+      setTime(filter_props);
+      console.log(filter_props);
+      setSubmitted(submitted + 1);
+      console.log(submitted);
+    } else {
+      document.getElementById("filter-date-start").value
+        ? setDateStartStyle(blackBorder)
+        : setDateStartStyle(redBorder);
+      document.getElementById("filter-date-end").value
+        ? setDateEndStyle(blackBorder)
+        : setDateEndStyle(redBorder);
+      document.getElementById("filter-time-start").value
+        ? setTimeStartStyle(blackBorder)
+        : setTimeStartStyle(redBorder);
+      document.getElementById("filter-time-end").value
+        ? setTimeEndStyle(blackBorder)
+        : setTimeEndStyle(redBorder);
+    }
   };
 
   Modal.setAppElement("#root");
@@ -95,7 +123,6 @@ const JoinEventFilterModal = (props) => {
   console.log(props.mState);
 
   return (
-    // <div method="POST" className="modal">
     <div>
       <Modal
         className="ModalContainer"
@@ -131,7 +158,7 @@ const JoinEventFilterModal = (props) => {
               id={"filter-date-start"}
               // min={getTodayDate()}
               className="inputText inputBox"
-              style={{ marginRight: "20px" }}
+              style={{ marginRight: "20px", border: dateStartStyle }}
             ></input>
 
             {/* <label htmlFor="date-end">Date End :</label> */}
@@ -140,6 +167,7 @@ const JoinEventFilterModal = (props) => {
               id={"filter-date-end"}
               // min={getTodayDate()}
               className="inputText inputBox"
+              style={{ border: dateEndStyle }}
             ></input>
           </div>
         </div>
@@ -154,13 +182,14 @@ const JoinEventFilterModal = (props) => {
               type={"time"}
               id={"filter-time-start"}
               className="inputText inputBox"
-              style={{ marginRight: "20px" }}
+              style={{ marginRight: "20px", border: timeStartStyle }}
             />
             {/* <label htmlFor="filter-time-end">Time End :</label> */}
             <input
               type={"time"}
               id={"filter-time-end"}
               className="inputText inputBox"
+              style={{ border: timeEndStyle }}
             />
           </div>
         </div>
@@ -191,7 +220,16 @@ const JoinEventFilterModal = (props) => {
           <hr /> */}
 
         <div className="info-form-box centerBox">
-          <button className="closeButt" onClick={() => props.onClose()}>
+          <button
+            className="closeButt"
+            onClick={() => {
+              props.onClose();
+              setDateStartStyle(blackBorder);
+              setDateEndStyle(blackBorder);
+              setTimeStartStyle(blackBorder);
+              setTimeEndStyle(blackBorder);
+            }}
+          >
             <span>Close</span>
           </button>
           <button className="applyButt" onClick={onClickSubmitFilter}>
