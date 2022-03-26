@@ -61,7 +61,7 @@ const FormComponent = (props) => {
 
   // authen ip modal -------------------------------------------
   
-  const [isAuthenModalOpen, setauthenModalOpen] = useState(false)
+  const setAuthenModalOpen = props.setAuthenModalOpen;
 
   // -----------------------------------------------------------
 
@@ -118,7 +118,7 @@ const FormComponent = (props) => {
           console.log(response)
           //verify email
           // preventDefault();
-          setauthenModalOpen(true)
+          props.setAuthenModalOpen(true)
         }
       })
       .catch(function (error) {

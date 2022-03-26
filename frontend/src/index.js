@@ -15,6 +15,8 @@ import ChatList from "./screen/ChatList";
 import RateQuiz from "./components/PersonalityQuizRateForm.js";
 import PersonalQuiz from "./screens/PersonalQuiz";
 import EditProfile from "./screens/EditProfile";
+import Profile from "./screen/Profile";
+
 render(
   <BrowserRouter>
     <Routes>
@@ -31,6 +33,7 @@ render(
       <Route path="quiz" element={<PersonalQuiz />} />
       <Route path="quiz2" element={<RateQuiz />} />
       <Route path="editProfile" element={<EditProfile />} />
+      <Route path="profile" element={<Profile />} />
     </Routes>
   </BrowserRouter>,
   document.getElementById("root")
