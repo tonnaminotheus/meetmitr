@@ -17,6 +17,7 @@ const Profile = (props) => {
   const [dmID, setDmID] = useState(0);
   const [userId, setUserId] = useState(0);
   const { state } = useLocation();
+  console.log("state profile: ", state);
   const cookies = new Cookies();
   const navigate = useNavigate();
   const getButton = () => {
@@ -62,7 +63,7 @@ const Profile = (props) => {
             onClick={() => {
               navigate("/chat", {
                 state: {
-                  userId: userId,
+                  userId: profileId,
                   dmId: dmID,
                   profileName: profileName,
                   imgUrl: image,
@@ -112,7 +113,10 @@ const Profile = (props) => {
       .then(function () {
         // always executed
       });
-
+    console.log(
+      "TOKEN LINK PROFILE ",
+      globalApi.chatToken + `dm/${state.userId}`
+    );
     axios({
       method: "get",
       url: globalApi.chatToken + `dm/${state.userId}`,

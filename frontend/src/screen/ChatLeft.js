@@ -12,7 +12,13 @@ const ChatLeft = (props) => {
         style={picture}
       />
       <h1 style={text}>{props.name}</h1>
-      <button className="button" style={button}>
+      <button
+        className="button"
+        style={button}
+        onClick={() => {
+          navigate("/profile", { state: { userId: props.userId } });
+        }}
+      >
         See Profile
       </button>
       <button

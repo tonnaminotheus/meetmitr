@@ -2,7 +2,8 @@ import naem from "./../asset/naemblack.jpg";
 import { useNavigate } from "react-router-dom";
 const ChatListUser = (props) => {
   const navigate = useNavigate();
-
+  console.log("chatlist: id", props.userId);
+  let userId = props.userId;
   return (
     <div style={container}>
       <img
