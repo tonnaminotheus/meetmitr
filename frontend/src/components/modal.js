@@ -14,26 +14,28 @@ const JoinEventFilterModal = (props) => {
   // const onFilterSubmit = props.onFilterSubmit;
   const [time, setTime] = useState({});
   const cookies = new Cookies();
+  console.log(cookies.get("cookie"));
   var userData = cookies.get("cookie");
-  var submitted = 0;
+  const [submitted, setSubmitted] = useState(0);
   let numPage = 1;
 
   useEffect(() => {
     console.log("run useEffect");
     console.log(submitted);
     axios({
-      method: "GET",
+      method: "post",
       url: globalApi.getFilteredEvent + String(numPage),
       headers: {
-        authorization: userData.accessToken,
+        authorization: "Bearer " + userData.accessToken,
       },
-      data: {
-        time,
-      },
+      data: time,
     })
       .then(function (response) {
-        console.log(response.data);
-        props.setEvent(response.data);
+        if (submitted > 0) {
+          console.log("modal recieve data");
+          console.log(response.data);
+          props.setEvent(response.data);
+        }
       })
       .catch(function (error) {
         console.log("error!!");
@@ -61,14 +63,14 @@ const JoinEventFilterModal = (props) => {
     console.log("click apply butt");
     event.preventDefault();
     const filter_props = {
-      datetime_start: document
+      "startTime": document
         .getElementById("filter-date-start")
         .value.concat(
           " ",
           document.getElementById("filter-time-start").value,
           ":00"
         ),
-      datetime_end: document
+      "endTime": document
         .getElementById("filter-date-end")
         .value.concat(
           " ",
@@ -82,8 +84,9 @@ const JoinEventFilterModal = (props) => {
     };
     props.setMState(false);
     setTime(filter_props);
-    submitted = submitted + 1;
     console.log(filter_props);
+    setSubmitted(submitted + 1);
+    console.log(submitted);
     // onFilterSubmit(filter_props);
   };
 
@@ -126,7 +129,7 @@ const JoinEventFilterModal = (props) => {
             <input
               type={"date"}
               id={"filter-date-start"}
-              min={getTodayDate()}
+              // min={getTodayDate()}
               className="inputText inputBox"
               style={{ marginRight: "20px" }}
             ></input>
@@ -135,7 +138,7 @@ const JoinEventFilterModal = (props) => {
             <input
               type={"date"}
               id={"filter-date-end"}
-              min={getTodayDate()}
+              // min={getTodayDate()}
               className="inputText inputBox"
             ></input>
           </div>
