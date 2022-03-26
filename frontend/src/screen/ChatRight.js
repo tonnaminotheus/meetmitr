@@ -85,6 +85,7 @@ const ChatRight = (props) => {
     console.log(text);
   }, [socketArray, text, setText, setSocketArray]);
   useEffect(() => {
+    console.log("TOKEN LINK", globalApi.chatToken + `dm/${props.userId}`);
     axios({
       method: "get",
       url: globalApi.chatToken + `dm/${props.userId}`,
@@ -95,12 +96,12 @@ const ChatRight = (props) => {
       .then(function (response) {
         console.log(response.data);
         setSocketUrl(globalApi.chatSocket + response.data.token);
-        console.log(globalApi.chatSocket + response.data.token);
+        console.log("URL", globalApi.chatSocket + response.data.token);
         requestChatHistory();
         //redirect
       })
       .catch(function (error) {
-        console.log("error!!");
+        console.log("error at chatToken");
         console.log(error.response);
       })
       .then(function () {
@@ -127,7 +128,7 @@ const ChatRight = (props) => {
 
   const handleClickSendMessage = () => {
     //sendMessage("text");
-    console.log("TEXT ON CHANGE : ", text);
+    console.log("TEXT SENDING : ", text);
     sendMessage(text);
   };
 
@@ -153,7 +154,7 @@ const ChatRight = (props) => {
         //redirect
       })
       .catch(function (error) {
-        console.log("error!!");
+        console.log("error at chatHistory");
         console.log(error.response);
       })
       .then(function () {
