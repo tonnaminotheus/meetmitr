@@ -10,7 +10,7 @@ const CreateEventInfoComponent=(props)=>{
 
     return (
         <div className="info-component-container">
-            <InfoFormComponent eventID={props.eventID} img_path={props.img_path} setPicURL={props.setPicURL}/>
+            <InfoFormComponent eventID={props.eventID} img_path={props.img_path} setPicURL={props.setPicURL} img_ptr={props.img_ptr} setPicPtr={props.setPicPtr}/>
         </div>
     );
 }

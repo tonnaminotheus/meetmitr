@@ -10,14 +10,15 @@ const EditEventComponent = (props) => {
     // console.log("eventID :"+eventID)  
     
     const [img_path,setPicURL] = useState([])
-    const img_path_len = img_path.length
-    console.log("new length "+ img_path_len)
+    const [img_ptr,setPicPtr] = useState(Math.max(img_path.length-1,0))
+
+    // console.log("new length "+ img_path_len)
     
     return (
         <div id="create-event-container">
-            <CreateEventPicComponent img_path={img_path} setPicURL={setPicURL}/>
-            {state&&<CreateEventInfoComponent eventID={state.eventId} img_path={img_path} setPicURL={setPicURL}/>}
-            {!state&&<CreateEventInfoComponent img_path={img_path} setPicURL={setPicURL}/>}
+            <CreateEventPicComponent img_path={img_path} setPicURL={setPicURL} img_ptr={img_ptr} setPicPtr={setPicPtr}/>
+            {state&&<CreateEventInfoComponent eventID={state.eventId} img_path={img_path} setPicURL={setPicURL} img_ptr={img_ptr} setPicPtr={setPicPtr}/>}
+            {!state&&<CreateEventInfoComponent img_path={img_path} setPicURL={setPicURL} img_ptr={img_ptr} setPicPtr={setPicPtr}/>}
         </div>
     );
 }

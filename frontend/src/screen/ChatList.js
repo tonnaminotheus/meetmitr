@@ -2,13 +2,19 @@ import MMheader from "../components/MMheader";
 import ChatListUser from "../components/ChatListUser";
 import FriendYouMayKnow from "../components/FriendYouMayKnow";
 import globalApi from "../globalApi";
-import globalVar from "../cookie";
+import Cookies from "universal-cookie";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 var axios = require("axios").default;
 const ChatList = (props) => {
-  let accessToken = globalVar.accessToken;
-  const requestFriendList = () => {
+  const navigate = useNavigate();
+  const cookies = new Cookies();
+  //console.log(cookie);
+  const accessToken = cookies.get("cookie").accessToken;
+  //let accessToken = globalVar.accessToken;
+  const [partners, setPartners] = useState([]);
+  function requestFriendList() {
     //****might error if some fields is missing
-
 
     axios({
       method: "get",
@@ -18,26 +24,30 @@ const ChatList = (props) => {
       },
     })
       .then(function (response) {
-        console.log(response);
+        //console.log(response.data.partners);
+        setPartners(response.data.partners);
         //redirect
       })
       .catch(function (error) {
         console.log("error!!");
-        console.log(error);
+        console.log(error.response);
       })
       .then(function () {
         // always executed
       });
-  };
-  const a = requestFriendList();
-  const friendList = a.map((a) => {
+  }
+  useEffect(() => {
+    requestFriendList();
+  }, []);
+
+  const friendList = partners.map((partners) => {
     return (
       <ChatListUser
-        name={a.profileName}
-        imgUrl={a.profilePicUrl}
-        lastMessage={a.lastMessage}
-        friendId={a.userId}
-        dmId={a.DMId}
+        name={partners.profileName}
+        imgUrl={partners.profilePicUrl}
+        lastMessage={partners.lastMessage}
+        dmId={partners.DMId}
+        userId={partners.userId}
       ></ChatListUser>
     );
   });
@@ -56,7 +66,14 @@ const ChatList = (props) => {
           <div style={{ overflowY: "scroll", height: "90%", width: "60vw" }}>
             {friendList}
           </div>
-          <button style={button}>Back</button>
+          <button
+            style={button}
+            onClick={() => {
+              navigate("/feed");
+            }}
+          >
+            Back
+          </button>
         </div>
 
         <FriendYouMayKnow />

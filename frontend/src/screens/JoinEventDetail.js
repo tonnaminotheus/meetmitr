@@ -112,6 +112,7 @@ function JoinEventDetail(props) {
 
     participants: ["PRyuSudHod", "PRyuSudTae"],
   });
+
   const joinEvent = () => {
     axios({
       method: "POST",

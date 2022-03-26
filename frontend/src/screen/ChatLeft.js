@@ -3,10 +3,15 @@ import styles from "./ChatLeft.css";
 import { useNavigate } from "react-router-dom";
 const ChatLeft = (props) => {
   const navigate = useNavigate();
+  //console.log(props.imgUrl);
   return (
     <div style={container}>
-      <img src={naem} className="profile" style={picture} />
-      <h1 style={text}>NAEM BURAKU</h1>
+      <img
+        src={props.imgUrl === "" ? naem : props.imgUrl}
+        className="profile"
+        style={picture}
+      />
+      <h1 style={text}>{props.name}</h1>
       <button className="button" style={button}>
         See Profile
       </button>
