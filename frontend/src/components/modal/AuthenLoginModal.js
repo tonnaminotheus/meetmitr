@@ -34,7 +34,10 @@ const AuthenLoginModal = (props) => {
                 <Modal.Title>Please Verify Your Email</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                {`We’ve sent an email to ${getMsg(userEmail)} to verify your identity. The link in the email will expire in 10 minutes.`}
+                <p>{`We’re almost done!!.`}</p>
+                <p>{`We’ve sent an email to ${getMsg(userEmail)} to verify your identity. The link in the email will expire in 10 minutes.`}</p>
+                <p>{`Note`}</p>
+                <p>{`In the case where you can't verify in time, you can always re-login to get verify email again.`}</p>
             </Modal.Body>
             <Modal.Footer>
                 <Button className='btn custom-button'variant="success" onClick={hideModal}>Close</Button>

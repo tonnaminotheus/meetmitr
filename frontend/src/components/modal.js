@@ -22,42 +22,38 @@ const JoinEventFilterModal = (props) => {
   const [timeEndStyle, setTimeEndStyle] = useState("");
 
   let today = new Date();
-  const [time, setTime] = useState({
-    // "startTime": today.getFullYear.concat("-01-01 00:00:00"),
-    // "endTime": today.getFullYear.concat("-12-31 23:59:59")
-  });
+  const [time, setTime] = useState({});
   const cookies = new Cookies();
   console.log(cookies.get("cookie"));
   var userData = cookies.get("cookie");
-  const [submitted, setSubmitted] = useState(0);
-  let numPage = 1;
+  // const [submitted, setSubmitted] = useState(0);
 
-  useEffect(() => {
-    console.log("run useEffect");
-    console.log(submitted);
-    axios({
-      method: "post",
-      url: globalApi.getFilteredEvent + String(numPage),
-      headers: {
-        authorization: "Bearer " + userData.accessToken,
-      },
-      data: time,
-    })
-      .then(function (response) {
-        if (submitted > 0) {
-          console.log("modal recieve data");
-          console.log(response.data);
-          props.setEvent(response.data);
-        }
-      })
-      .catch(function (error) {
-        console.log("error!!");
-        console.log(error);
-      })
-      .then(function () {
-        // always executed
-      });
-  }, [submitted]);
+  // useEffect(() => {
+  //   console.log("run useEffect");
+  //   console.log(submitted);
+  //   axios({
+  //     method: "post",
+  //     url: globalApi.getFilteredEvent + String(numPage),
+  //     headers: {
+  //       authorization: "Bearer " + userData.accessToken,
+  //     },
+  //     data: time,
+  //   })
+  //     .then(function (response) {
+  //       if (submitted > 0) {
+  //         console.log("modal recieve data");
+  //         console.log(response.data);
+  //         props.setEvent(response.data);
+  //       }
+  //     })
+  //     .catch(function (error) {
+  //       console.log("error!!");
+  //       console.log(error);
+  //     })
+  //     .then(function () {
+  //       // always executed
+  //     });
+  // }, [submitted]);
 
   const getTodayDate = () => {
     let today = new Date();
@@ -98,10 +94,12 @@ const JoinEventFilterModal = (props) => {
           ),
       };
       props.setMState(false);
-      setTime(filter_props);
+      props.setNumPage(1);
+      props.setTime(filter_props);
+      props.setEvent([]);
       console.log(filter_props);
-      setSubmitted(submitted + 1);
-      console.log(submitted);
+      props.setSubmitted(props.submitted + 1);
+      console.log(props.submitted);
     } else {
       document.getElementById("filter-date-start").value
         ? setDateStartStyle(blackBorder)

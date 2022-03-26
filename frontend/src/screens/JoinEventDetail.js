@@ -1,6 +1,5 @@
 import "./JoinEventDetail.css";
 import styled from "styled-components";
-import logo from "../asset/icon.png";
 import React, { useEffect } from "react";
 import moment from "moment";
 import axios from "axios";
@@ -8,6 +7,7 @@ import globalApi from "../globalApi";
 import ImageGallery from "react-image-gallery";
 import { useLocation, useNavigate } from "react-router-dom";
 import Cookie from "universal-cookie";
+import Participant from "../components/Participant";
 
 const JoinOrEditButton = styled.button`
   background-color: #ffc229;
@@ -90,7 +90,6 @@ function JoinEventDetail(props) {
   const [progressData, setProgressData] = React.useState("50%");
   const [joined, setJoined] = React.useState(false);
   const [owner, setOwner] = React.useState(false);
-  const [eventId, setEventId] = React.useState(0);
   const [images, setImages] = React.useState([]);
   const [eventData, setEventData] = React.useState({
     eventId: 2,
@@ -112,6 +111,7 @@ function JoinEventDetail(props) {
 
     participants: ["PRyuSudHod", "PRyuSudTae"],
   });
+  const [participants, setParticipants] = React.useState([]);
 
   const joinEvent = () => {
     axios({
@@ -164,6 +164,14 @@ function JoinEventDetail(props) {
           });
         }
         setImages(imageList);
+        var participantList = [];
+        for (var i = 0; i < respond.data.participantsId.length; i++) {
+          participantList.push({
+            id: respond.data.participantsId[i],
+            image: respond.data.participantsImage[i],
+          });
+        }
+        setParticipants(participantList);
         console.log(imageList);
         console.log(respond.data);
       })
@@ -241,7 +249,7 @@ function JoinEventDetail(props) {
                       setProgressData(percent);
                     }}
                     onMouseEnter={() => {
-                      console.log("eventId is " + eventId);
+                      console.log("eventId is " + eventData.eventId);
                     }}
                   >
                     Joined
@@ -252,7 +260,7 @@ function JoinEventDetail(props) {
                     type="submit"
                     onClick={joinEvent}
                     onMouseEnter={() => {
-                      console.log("eventId is " + eventId);
+                      console.log("eventId is " + eventData.eventId);
                     }}
                   >
                     Join
@@ -332,7 +340,15 @@ function JoinEventDetail(props) {
           <div className="tabbar-detail">
             {show[0] && <p>{eventData.description}</p>}
             {show[1] && <p>{eventData.address}</p>}
-            {show[2] && <p>{eventData.participants}</p>}
+            {show[2] && (
+              <p>
+                {participants.map((item) => {
+                  return (
+                    <Participant id={item.id} participantImage={item.image} />
+                  );
+                })}
+              </p>
+            )}
           </div>
         </div>
       </div>
