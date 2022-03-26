@@ -26,9 +26,8 @@ import john from "../asset/John.jpg";
 
 function JoinComponent() {
   //test cookie
-  const cookies = new Cookies();
+  var cookies = new Cookies();
   var userData = cookies.get("cookie");
-  console.log("in feed");
   console.log(cookies.get("cookie"));
 
   let accessToken = cookies.accessToken;
@@ -49,7 +48,7 @@ function JoinComponent() {
     axios
       .get(globalApi.recommendFeed + String(numPage), {
         headers: {
-          Authorization: userData.accessToken,
+          "Authorization": "Bearer " + userData.accessToken,
         },
       })
       .then((res) => {
