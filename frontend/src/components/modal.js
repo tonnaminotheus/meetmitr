@@ -1,14 +1,48 @@
 import "./modal.css";
-import "../components/css_extensions/form_control.css"
+import "../components/css_extensions/form_control.css";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import globalApi from "../globalApi";
 
+import Cookies from "universal-cookie";
 import Modal from "react-modal";
-import { Button } from "react-bootstrap";
 
 // import { Button } from 'react-bootstrap';
 import { Form } from "react-bootstrap";
 
 const JoinEventFilterModal = (props) => {
-  const onFilterSubmit = props.onFilterSubmit;
+  // const onFilterSubmit = props.onFilterSubmit;
+  const [time, setTime] = useState({});
+  const cookies = new Cookies();
+  var userData = cookies.get("cookie");
+  var submitted = 0;
+  let numPage = 1;
+
+  useEffect(() => {
+    console.log("run useEffect");
+    console.log(submitted);
+    axios({
+      method: "GET",
+      url: globalApi.getFilteredEvent + String(numPage),
+      headers: {
+        authorization: userData.accessToken,
+      },
+      data: {
+        time,
+      },
+    })
+      .then(function (response) {
+        console.log(response.data);
+        props.setEvent(response.data);
+      })
+      .catch(function (error) {
+        console.log("error!!");
+        console.log(error);
+      })
+      .then(function () {
+        // always executed
+      });
+  }, [submitted]);
 
   const getTodayDate = () => {
     let today = new Date();
@@ -24,18 +58,33 @@ const JoinEventFilterModal = (props) => {
   };
 
   const onClickSubmitFilter = (event) => {
-    console.log("hi!!");
+    console.log("click apply butt");
     event.preventDefault();
     const filter_props = {
-      date_start: document.getElementById("filter-date-start").value,
-      date_end: document.getElementById("filter-date-end").value,
-      time_start: document.getElementById("filter-time-start").value,
-      time_end: document.getElementById("filter-time-end").value,
-      is_online: document.getElementById("Online-checkbox").value,
-      is_onsite: document.getElementById("Onsite-checkbox").value,
+      datetime_start: document
+        .getElementById("filter-date-start")
+        .value.concat(
+          " ",
+          document.getElementById("filter-time-start").value,
+          ":00"
+        ),
+      datetime_end: document
+        .getElementById("filter-date-end")
+        .value.concat(
+          " ",
+          document.getElementById("filter-time-end").value,
+          ":00"
+        ),
+      // time_start: document.getElementById("filter-time-start").value,
+      // time_end: document.getElementById("filter-time-end").value,
+      // is_online: document.getElementById("Online-checkbox").value,
+      // is_onsite: document.getElementById("Onsite-checkbox").value,
     };
+    props.setMState(false);
+    setTime(filter_props);
+    submitted = submitted + 1;
     console.log(filter_props);
-    onFilterSubmit(filter_props);
+    // onFilterSubmit(filter_props);
   };
 
   Modal.setAppElement("#root");
@@ -45,34 +94,77 @@ const JoinEventFilterModal = (props) => {
   return (
     // <div method="POST" className="modal">
     <div>
-      <Modal isOpen={props.mState} onRequestClose={() => props.onClose()}>
-        <form onSubmit={onFilterSubmit}>
-          <div className="info-form-box">
-            <h3>Date</h3>
-            <label htmlFor="date-start">Date Start :</label>
+      <Modal
+        className="ModalContainer"
+        isOpen={props.mState}
+        onRequestClose={() => props.onClose()}
+        style={{
+          overlay: {
+            backgroundColor: "rgba(88, 88, 88, 0.5)",
+          },
+          content: {
+            width: "797px",
+            height: "848px",
+
+            marginTop: "6vh",
+            marginLeft: "auto",
+            marginRight: "auto",
+
+            backgroundColor: "#FAF3E7",
+            overflow: "auto",
+            WebkitOverflowScrolling: "touch",
+            borderRadius: "20px",
+            outline: "none",
+            padding: "20px",
+          },
+        }}
+      >
+        <div className="info-form-box">
+          <h3>Date</h3>
+          <div className="centerBox">
+            {/* <label htmlFor="date-start">Date Start :</label> */}
             <input
               type={"date"}
               id={"filter-date-start"}
               min={getTodayDate()}
+              className="inputText inputBox"
+              style={{ marginRight: "20px" }}
             ></input>
 
-            <label htmlFor="date-end">Date End :</label>
+            {/* <label htmlFor="date-end">Date End :</label> */}
             <input
               type={"date"}
               id={"filter-date-end"}
               min={getTodayDate()}
+              className="inputText inputBox"
             ></input>
           </div>
+        </div>
 
+        <hr />
+
+        <h3>Time</h3>
+        <div className="centerBox">
           <div className="info-form-box">
-            <h3>Time</h3>
-            <label htmlFor="filter-time-start">Time Start :</label>
-            <input type={"time"} id={"filter-time-start"} />
-            <label htmlFor="filter-time-end">Time End :</label>
-            <input type={"time"} id={"filter-time-end"} />
+            {/* <label htmlFor="filter-time-start">Time Start :</label> */}
+            <input
+              type={"time"}
+              id={"filter-time-start"}
+              className="inputText inputBox"
+              style={{ marginRight: "20px" }}
+            />
+            {/* <label htmlFor="filter-time-end">Time End :</label> */}
+            <input
+              type={"time"}
+              id={"filter-time-end"}
+              className="inputText inputBox"
+            />
           </div>
+        </div>
 
-          <div>
+        <hr />
+
+        {/* <div>
             <h3>Category</h3>
           </div>
           <div className="info-form-box" id="checkbox-eventtype-container">
@@ -92,21 +184,17 @@ const JoinEventFilterModal = (props) => {
               className="checkbox-eventtype"
             />
           </div>
-          <div className="info-form-box">
-            <button
-              className="btn btn-success m-3"
-              onClick={onClickSubmitFilter}
-            >
-              <span>Create Event</span>
-            </button>
-            <button
-              className="btn btn-danger m-3"
-              onClick={() => props.onClose()}
-            >
-              <span>Close</span>
-            </button>
-          </div>
-        </form>
+
+          <hr /> */}
+
+        <div className="info-form-box centerBox">
+          <button className="closeButt" onClick={() => props.onClose()}>
+            <span>Close</span>
+          </button>
+          <button className="applyButt" onClick={onClickSubmitFilter}>
+            <span>Apply</span>
+          </button>
+        </div>
 
         {/* <Modal isOpen={props.mState} onRequestClose={() => props.onClose()}>
         <button className="btn btn-danger ml-3" onClick={() => props.onClose()}>

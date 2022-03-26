@@ -20,6 +20,8 @@ const NotificationModal=(props)=>{
     const setNotificationModalState = props.setNotificationModalState
 
     const [all_noti,setNoti] = useState([])
+
+    const [noti_count,setNotiCount] = useState(0)
     
     const hideModal=()=>{
         console.log("clicked hide modal")
@@ -29,6 +31,29 @@ const NotificationModal=(props)=>{
     const showModal=()=>{
         setNotificationModalState(true)
     }
+
+    // get noti count 
+    useEffect(()=>{
+        axios({
+            method: 'get',
+            url: globalApi.getNotiCount, // noti count endpoint
+            headers: {
+                "Authorization" : "Bearer "+user_cookie.accessToken,
+            },
+            timeout: 8000
+        })
+        .then((res)=>{
+            if (res.status == 200) {
+                console.log("ok herble")
+                console.log(res)
+                setNotiCount(res.data.count)
+            }
+        })
+        .catch((error) => {
+            console.log("error!!")
+            console.log(error)
+        })
+    },[])
 
     useEffect(()=>{
         axios({
@@ -44,6 +69,30 @@ const NotificationModal=(props)=>{
                 console.log("ok herble")
                 console.log(res)
                 setNoti(res.data.noti)
+            }
+        })
+        .catch((error) => {
+            console.log("error!!")
+            console.log(error)
+        })
+    },[])
+
+    // join event noti
+
+    useEffect(()=>{
+        axios({
+            method: 'get',
+            url: globalApi.getAllNoti, //friend noti endpoint
+            headers: {
+                "Authorization" : "Bearer "+user_cookie.accessToken,
+            },
+            timeout: 8000
+        })
+        .then((res)=>{
+            if (res.status == 200) {
+                console.log("ok herble")
+                console.log(res)
+                setNoti(all_noti.concat(res.data.noti))
             }
         })
         .catch((error) => {

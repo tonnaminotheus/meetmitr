@@ -1,4 +1,5 @@
 const url = "http://44.201.142.28:8080";
+
 const globalApi = {
   register: `${url}/api/v1/register`,
   login: `${url}/api/v1/login`,
@@ -18,7 +19,12 @@ const globalApi = {
   chatSocket: `ws://${url.slice(7)}/api/v1/chat/room/`, //+ token
   postQuiz: `${url}/api/v1/quiz`,
   getAllNoti: `${url}/api/v1/noti/getAll`,
+  getFilteredEvent: `${url}/api/v1/home/avt/`, //+ numPage
+  getNotiCount: `${url}/api/v1/noti/getCount`,
   chatToken: `${url}/api/v1/chat/token/`, //+ chatType + userId
+  chatPartner: `${url}/api/v1/chat/partners/`,
+  getAllNoti: `${url}/api/v1/noti/getAll`,
+
 };
 
 export default globalApi;

@@ -6,32 +6,70 @@ import globalApi from "../globalApi";
 import Cookies from "universal-cookie";
 
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 var axios = require("axios").default;
 var hash = require("object-hash");
 
 const FormComponent = (props) => {
-  //cookies
+
+
+  // ip ------------------------------------------------------
+  useEffect(()=>{
+    axios({
+        method: 'get',
+        url: `https://checkip.amazonaws.com/`,
+        timeout: 8000
+    })
+    .then((res)=>{
+      console.log(res)
+      let ip = res.data.trim()
+      let new_cookie_value = cookies.get("cookie");
+      new_cookie_value["ip"] = ip
+      cookies.set(
+        "cookie",
+        new_cookie_value,
+        { path: "/" }
+      )
+      console.log(cookies.get("cookie"))
+    })
+    .catch(error => {
+        console.log("error!!")
+        console.log(error)
+    })
+  },[]);
+  // ------------------------------------------------------------
+
+  //cookies -----------------------------------------------------
   const cookies = new Cookies();
   cookies.remove("cookie");
   cookies.set(
     "cookie",
-    { userID: "", accessToken: "", refreshToken: "" },
+    { userID: "", accessToken: "", refreshToken: ""},
     { path: "/" }
   );
-  console.log(cookies.get("cookie"));
+  // ------------------------------------------------------------
 
   const [pwdType, setpwdType] = useState("password");
 
+  // navigate ---------------------------------------------------
   let navigate = useNavigate();
   const toFeed = () => {
     navigate("/feed");
   };
+  // -----------------------------------------------------------
+
+  // authen ip modal -------------------------------------------
+  
+  const [isAuthenModalOpen, setauthenModalOpen] = useState(false)
+
+  // -----------------------------------------------------------
+
   const getCheckboxStatus = () => {
     return pwdType === "text";
     // document.getElementById("pwd-checkbox").checked
   };
+
   function togglePassword(event) {
     console.log(event.target.checked);
     if (pwdType === "text") {
@@ -40,6 +78,7 @@ const FormComponent = (props) => {
       setpwdType("text");
     }
   }
+
   const requestLogin = (event) => {
     event.preventDefault();
 
@@ -47,6 +86,7 @@ const FormComponent = (props) => {
       email: document.getElementById("email-input-box").value,
       // "password": hash(document.getElementById("password-input-box").value)
       password: document.getElementById("password-input-box").value,
+      ip: cookies.get("cookie")["ip"]
     };
 
     axios({
@@ -74,6 +114,12 @@ const FormComponent = (props) => {
           //redirect
           toFeed();
         }
+        else if (response.status == 202) {
+          console.log(response)
+          //verify email
+          // preventDefault();
+          setauthenModalOpen(true)
+        }
       })
       .catch(function (error) {
         console.log("error!!");
@@ -95,6 +141,7 @@ const FormComponent = (props) => {
             className="input-box"
             required
             pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+            onChange={(event)=>{props.setUserEmail(event.target.value)}}
           />
         </div>
         <div className="Form-control">
@@ -113,6 +160,7 @@ const FormComponent = (props) => {
             type="checkbox"
             id="pwd-checkbox"
             onClick={togglePassword}
+            onChange={(event)=>{console.log(event.target.checked)}}
             checked={getCheckboxStatus()}
           />
           Show Password

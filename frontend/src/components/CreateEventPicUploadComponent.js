@@ -56,8 +56,12 @@ const CreateEventPicUploadComponent=(props)=>{
             new_img_path.push(res.data.url)
             setPicURL(new_img_path)
 
-            if (props.img_path.length > 0) {
+            if (props.img_path.length > 1) {
                 props.setPicPtr(props.img_ptr+1)
+            }
+            else {
+                props.setPicPtr(-1)
+                props.setPicPtr(0)
             }
             alert("Upload Successfully!!")
             
