@@ -31,17 +31,19 @@ function JoinComponent() {
   console.log(cookies.get("cookie"));
 
   let accessToken = cookies.accessToken;
-  let numPage = 1;
+  const [numPage, setNumPage] = useState(1);
 
-  //noti modal state
   const [notificationState, setNotificationModalState] = useState(false);
 
-  const [cardInfo, setCardInfo] = useState({});
-  // const [cardsInfo, setCardsInfo] = useState({});
+  const [cardInfo, setCardInfo] = useState([]);
 
   const [search, setSearch] = useState("");
   const [modalstate, setModalstate] = useState(false);
-  // const [joinEventFilterProps, setJoinEventFilterProps] = useState({});
+  const [submitted, setSubmitted] = useState(0);
+  const [time, setTime] = useState({});
+  const [usingFilter, setUsingFilter] = useState(false);
+  const [disable, setDisable] = useState(false);
+  const [lockButtStyle, setLockButtStyle] = useState("");
 
   useEffect(() => {
     let isMounted = true;
@@ -53,8 +55,13 @@ function JoinComponent() {
       })
       .then((res) => {
         if (isMounted) {
-          console.log(res.data);
-          setCardInfo(res.data);
+          console.log(res.data["EventList"]);
+          setCardInfo([...cardInfo, ...res.data["EventList"]]);
+          console.log([...cardInfo, ...res.data["EventList"]]);
+          if (res.data["EventList"].length == 0) {
+            setDisable(true);
+            setLockButtStyle("#535353");
+          }
           // setCardsInfo((prevState) => {
           //   return {
           //     ...prevState,
@@ -70,7 +77,36 @@ function JoinComponent() {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [numPage]);
+
+  useEffect(() => {
+    console.log("run useEffect");
+    console.log(submitted);
+    axios({
+      method: "post",
+      url: globalApi.getFilteredEvent + "1",
+      headers: {
+        authorization: "Bearer " + userData.accessToken,
+      },
+      data: time,
+    })
+      .then(function (res) {
+        if (submitted > 0) {
+          console.log("modal recieve data");
+          console.log(res.data["EventList"]);
+          setCardInfo([...cardInfo, ...res.data["EventList"]]);
+          setDisable(true);
+          setLockButtStyle("#535353");
+        }
+      })
+      .catch(function (error) {
+        console.log("error!!");
+        console.log(error);
+      })
+      .then(function () {
+        // always executed
+      });
+  }, [submitted]);
 
   const updateSearch = (event) => {
     // console.log(event.target.value);
@@ -102,12 +138,12 @@ function JoinComponent() {
     return date;
   };
 
-  console.log(cardInfo["EventList"]);
+  console.log(cardInfo);
   console.log(Object.keys(cardInfo).length);
 
   let filteredEvents =
     Object.keys(cardInfo).length !== 0 &&
-    cardInfo["EventList"].filter((event) => {
+    cardInfo.filter((event) => {
       console.log(event.name);
       return event.name.toLowerCase().indexOf(search.toLowerCase()) !== -1;
     });
@@ -146,6 +182,10 @@ function JoinComponent() {
         setMState={setModalstate}
         onClose={setModalClose}
         setEvent={setCardInfo}
+        setNumPage={setNumPage}
+        submitted={submitted}
+        setSubmitted={setSubmitted}
+        setTime={setTime}
       />
 
       <NotificationModal
@@ -153,12 +193,18 @@ function JoinComponent() {
         setNotificationModalState={setNotificationModalState}
       />
 
-      {/* <input
-          type="text"
-          value={this.state.search}
-          onChange={this.updateSearch.bind(this)}
-        ></input> */}
       <Cards events={filteredEvents} />
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <button
+          className="loadButt"
+          disable={disable}
+          onClick={() => setNumPage(numPage + 1)}
+          style={{ backgroundColor: lockButtStyle }}
+        >
+          Load events
+        </button>
+      </div>
+
       {/* <div style="height:700px;overflow:auto;">
         <InfiniteScroll
           pageStart={1}

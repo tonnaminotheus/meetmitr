@@ -14,6 +14,8 @@ const Profile = (props) => {
   const [image, setImage] = useState("");
   const [bio, setBio] = useState("");
   const [profileName, setProfileName] = useState("");
+  const [dmID, setDmID] = useState(0);
+  const [userId, setUserId] = useState(0);
   const cookies = new Cookies();
   const navigate = useNavigate();
   const getButton = () => {
@@ -34,6 +36,9 @@ const Profile = (props) => {
             marginLeft: 16,
             borderWidth: 0,
           }}
+          onClick={() => {
+            navigate("/editProfile");
+          }}
         >
           Edit Profile
         </button>
@@ -53,6 +58,16 @@ const Profile = (props) => {
               marginLeft: 16,
               borderWidth: 0,
             }}
+            onClick={() => {
+              navigate("/chat", {
+                state: {
+                  userId: userId,
+                  dmId: dmID,
+                  profileName: profileName,
+                  imgUrl: image,
+                },
+              });
+            }}
           >
             Message
           </button>
@@ -70,7 +85,7 @@ const Profile = (props) => {
               borderWidth: 0,
             }}
           >
-            Edit Profile
+            Add Friend
           </button>
         </div>
       );
@@ -86,6 +101,27 @@ const Profile = (props) => {
         setImage(response.data.profilePicUrl);
         setBio(response.data.bio);
         setProfileName(`${response.data.profileName}`);
+        setUserId(response.data.userId);
+        //redirect
+      })
+      .catch(function (error) {
+        console.log("error!!");
+        console.log(error.response);
+      })
+      .then(function () {
+        // always executed
+      });
+
+    axios({
+      method: "get",
+      url: globalApi.chatToken + `dm/${props.userId}`,
+      headers: {
+        Authorization: "Bearer " + cookies.get("cookie").accessToken,
+      },
+    })
+      .then(function (response) {
+        console.log(response.data);
+        setDmID(response.data.DMId);
         //redirect
       })
       .catch(function (error) {
