@@ -13,9 +13,7 @@ import axios from "axios";
 //new
 import Cookies from "universal-cookie";
 import NotificationModal from "./modal/NotificationModal";
-import globalVar from "../cookie";
 import InfiniteScroll from "react-infinite-scroll-component";
-
 
 import nuke from "../asset/nuclear.png";
 import weed from "../asset/weed.jpg";
@@ -36,7 +34,6 @@ function JoinComponent() {
   let accessToken = cookies.accessToken;
   let numPage = 1;
 
-
   //noti modal state
   const [notificationState, setNotificationModalState] = useState(false);
 
@@ -52,7 +49,7 @@ function JoinComponent() {
     axios
       .get(globalApi.recommendFeed + String(numPage), {
         headers: {
-          "Authorization": userData.accessToken,
+          Authorization: userData.accessToken,
         },
       })
       .then((res) => {
