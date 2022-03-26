@@ -1,6 +1,5 @@
 import "./JoinEventDetail.css";
 import styled from "styled-components";
-import logo from "../asset/icon.png";
 import React, { useEffect } from "react";
 import moment from "moment";
 import axios from "axios";
@@ -91,7 +90,6 @@ function JoinEventDetail(props) {
   const [progressData, setProgressData] = React.useState("50%");
   const [joined, setJoined] = React.useState(false);
   const [owner, setOwner] = React.useState(false);
-  const [eventId, setEventId] = React.useState(0);
   const [images, setImages] = React.useState([]);
   const [eventData, setEventData] = React.useState({
     eventId: 2,
@@ -166,12 +164,11 @@ function JoinEventDetail(props) {
           });
         }
         setImages(imageList);
-
         var participantList = [];
         for (var i = 0; i < respond.data.participantsId.length; i++) {
           participantList.push({
             id: respond.data.participantsId[i],
-            image: respond.data.participantImage[i],
+            image: respond.data.participantsImage[i],
           });
         }
         setParticipants(participantList);
@@ -252,7 +249,7 @@ function JoinEventDetail(props) {
                       setProgressData(percent);
                     }}
                     onMouseEnter={() => {
-                      console.log("eventId is " + eventId);
+                      console.log("eventId is " + eventData.eventId);
                     }}
                   >
                     Joined
@@ -263,7 +260,7 @@ function JoinEventDetail(props) {
                     type="submit"
                     onClick={joinEvent}
                     onMouseEnter={() => {
-                      console.log("eventId is " + eventId);
+                      console.log("eventId is " + eventData.eventId);
                     }}
                   >
                     Join
@@ -346,7 +343,9 @@ function JoinEventDetail(props) {
             {show[2] && (
               <p>
                 {participants.map((item) => {
-                  <Participant id={item.id} image={item.image} />;
+                  return (
+                    <Participant id={item.id} participantImage={item.image} />
+                  );
                 })}
               </p>
             )}
