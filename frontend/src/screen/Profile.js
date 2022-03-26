@@ -15,6 +15,7 @@ const Profile = (props) => {
   const [bio, setBio] = useState("");
   const [profileName, setProfileName] = useState("");
   const cookies = new Cookies();
+  const navigate = useNavigate();
   const getButton = () => {
     let profileId = props.userId;
     let currentUserId = cookies.get("cookie").userID;
