@@ -13,7 +13,6 @@ import axios from "axios";
 //new
 import Cookies from "universal-cookie";
 import NotificationModal from "./modal/NotificationModal";
-import globalVar from "../cookie";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 
