@@ -1,0 +1,63 @@
+.applyButt {
+    background-color: #ffc229;
+    color: white;
+    border-radius: 15px;
+    outline: 0;
+    border: 0px;
+    cursor: pointer;
+    transition: ease background-color 250ms;
+    height: 69px;
+    width: 172px;
+    margin-top: 30px;
+    margin-left: 40px;
+    font-size: 30px;
+    font-weight: bold;
+    font-family: "Roboto", sans-serif;
+    /* align-self: flex-end; */
+}
+
+.closeButt {
+    background-color: #535353;
+    color: white;
+    border-radius: 15px;
+    outline: 0;
+    border: 0px;
+    cursor: pointer;
+    transition: ease background-color 250ms;
+    height: 69px;
+    width: 172px;
+    margin-top: 30px;
+    font-size: 30px;
+    font-weight: bold;
+    font-family: "Roboto", sans-serif;
+    /* align-self: flex-end; */
+}
+
+.centerBox {
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+    /* border:#000000 solid 3px */
+}
+
+.ModalContainer {
+    font-size: 30px;
+    font-weight: bold;
+    font-family: "Roboto", sans-serif;
+}
+
+.inputText {
+    font-size: 25px;
+    /* font-weight: 100; */
+    font-family: "Roboto", sans-serif;
+    padding: 20px;
+}
+
+.inputBox {
+    height: 86px;
+    width: 337px;
+    border: black solid 1px;
+    background-color: #F4EDE0;
+    border-radius: 10px;
+}

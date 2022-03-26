@@ -2,9 +2,13 @@ import naem from "./../asset/naemblack.jpg";
 import { useNavigate } from "react-router-dom";
 const ChatListUser = (props) => {
   const navigate = useNavigate();
+
   return (
     <div style={container}>
-      <img src={props.imgUrl} style={picture}></img>
+      <img
+        src={props.imgUrl === "" ? naem : props.imgUrl}
+        style={picture}
+      ></img>
       <div style={profile}>
         <p style={usernameText}>{props.name}</p>
         <p style={descriptionText}>{props.lastMessage}</p>
@@ -12,7 +16,14 @@ const ChatListUser = (props) => {
       <button
         style={button}
         onClick={() => {
-          navigate("/chat");
+          navigate("/chat", {
+            state: {
+              userId: props.userId,
+              dmId: props.dmId,
+              profileName: props.name,
+              imgUrl: props.imgUrl,
+            },
+          });
         }}
       >
         Message
@@ -66,7 +77,7 @@ const usernameText = {
 const descriptionText = {
   fontFamily: "Roboto",
   fontSize: 18,
-  marginTop: 12,
+  marginTop: 20,
 };
 
 const button = {
