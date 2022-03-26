@@ -8,6 +8,7 @@ import globalApi from "../globalApi";
 import ImageGallery from "react-image-gallery";
 import { useLocation, useNavigate } from "react-router-dom";
 import Cookie from "universal-cookie";
+import Participant from "../components/Participant";
 
 const JoinOrEditButton = styled.button`
   background-color: #ffc229;
@@ -112,6 +113,7 @@ function JoinEventDetail(props) {
 
     participants: ["PRyuSudHod", "PRyuSudTae"],
   });
+  const [participants, setParticipants] = React.useState([]);
 
   const joinEvent = () => {
     axios({
@@ -164,6 +166,15 @@ function JoinEventDetail(props) {
           });
         }
         setImages(imageList);
+
+        var participantList = [];
+        for (var i = 0; i < respond.data.participantsId.length; i++) {
+          participantList.push({
+            id: respond.data.participantsId[i],
+            image: respond.data.participantImage[i],
+          });
+        }
+        setParticipants(participantList);
         console.log(imageList);
         console.log(respond.data);
       })
@@ -332,7 +343,13 @@ function JoinEventDetail(props) {
           <div className="tabbar-detail">
             {show[0] && <p>{eventData.description}</p>}
             {show[1] && <p>{eventData.address}</p>}
-            {show[2] && <p>{eventData.participants}</p>}
+            {show[2] && (
+              <p>
+                {participants.map((item) => {
+                  <Participant id={item.id} image={item.image} />;
+                })}
+              </p>
+            )}
           </div>
         </div>
       </div>
