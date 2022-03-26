@@ -3,6 +3,7 @@ package handlers
 import (
 	"backend/app/requests"
 	"backend/app/responses"
+	"fmt"
 
 	"github.com/gin-gonic/gin"
 )
@@ -12,6 +13,7 @@ func GetUserHandler(c *gin.Context) {
 
 	user, err := userService.FindUserById(userId)
 	if err != nil {
+		fmt.Print(err.Error())
 		c.JSON(400, gin.H{
 			"message": "no user with this userId",
 		})
