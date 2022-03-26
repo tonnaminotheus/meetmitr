@@ -3,8 +3,7 @@ import React, { useEffect, useState } from "react";
 import globalApi from "../globalApi";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import Cookies from "universal-cookie";
-const cookies = new Cookies();
-let currentUserId = cookies.get("cookie").userID;
+
 var axios = require("axios").default;
 const textChat = {
   maxWidth: 500,
@@ -69,6 +68,7 @@ const ChatRight = (props) => {
   //console.log("COOKIES : ", cookies);
   let accessToken = cookies.get("cookie").accessToken;
 
+  let currentUserId = cookies.get("cookie").userID;
   //const [messageHistory, setMessageHistory] = useState([]);
 
   //const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
@@ -95,6 +95,7 @@ const ChatRight = (props) => {
       .then(function (response) {
         console.log(response.data);
         setSocketUrl(globalApi.chatSocket + response.data.token);
+        console.log(globalApi.chatSocket + response.data.token);
         requestChatHistory();
         //redirect
       })
