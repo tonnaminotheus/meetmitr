@@ -19,10 +19,10 @@ const ChatLeft = (props) => {
         className="button"
         style={button}
         onClick={() => {
-          navigate("/chatList");
+          navigate(-1);
         }}
       >
-        Back to Chat List
+        Back
       </button>
     </div>
   );

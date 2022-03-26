@@ -28,7 +28,14 @@ const ChatListUser = (props) => {
       >
         Message
       </button>
-      <button style={button}>See Profile</button>
+      <button
+        style={button}
+        onClick={() => {
+          navigate("/profile", { state: { userId: props.userId } });
+        }}
+      >
+        See Profile
+      </button>
     </div>
   );
 };
