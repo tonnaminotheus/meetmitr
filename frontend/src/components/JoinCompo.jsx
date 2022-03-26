@@ -16,6 +16,7 @@ import NotificationModal from "./modal/NotificationModal";
 import globalVar from "../cookie";
 import InfiniteScroll from "react-infinite-scroll-component";
 
+
 import nuke from "../asset/nuclear.png";
 import weed from "../asset/weed.jpg";
 import dota from "../asset/dota2_social.jpg";
@@ -34,6 +35,7 @@ function JoinComponent() {
 
   let accessToken = cookies.accessToken;
   let numPage = 1;
+
 
   //noti modal state
   const [notificationState, setNotificationModalState] = useState(false);
