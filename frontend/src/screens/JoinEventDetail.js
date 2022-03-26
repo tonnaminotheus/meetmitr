@@ -1,6 +1,5 @@
 import "./JoinEventDetail.css";
 import styled from "styled-components";
-import host from "../asset/naemblack.jpg";
 import logo from "../asset/icon.png";
 import React, { useEffect } from "react";
 import moment from "moment";
@@ -93,19 +92,6 @@ function JoinEventDetail(props) {
   const [owner, setOwner] = React.useState(false);
   const [eventId, setEventId] = React.useState(0);
   const [images, setImages] = React.useState([]);
-  const [hostData, setHostData] = React.useState({
-    userId: 1,
-    email: "test@gmail.com",
-    gender: "unspecified",
-    profileName: "jack",
-    bio: "",
-    birthdate: "2000-11-23",
-    firstName: "ryuio",
-    middleName: "ioio",
-    lastName: "ryuryu",
-    numberOfPenalty: 0,
-    profilePicUrl: "",
-  });
   const [eventData, setEventData] = React.useState({
     eventId: 2,
     name: "What",
@@ -121,6 +107,9 @@ function JoinEventDetail(props) {
     price: 0,
     createdTimeStamp: "2022-02-13 07:56:41",
     creatorId: 1,
+    creatorName: "JackDeBuff",
+    creatorImage: "imgUrl",
+
     participants: ["PRyuSudHod", "PRyuSudTae"],
   });
   const joinEvent = () => {
@@ -165,7 +154,6 @@ function JoinEventDetail(props) {
         setAttendance(attenNum);
         setProgressData(percent);
         setJoined(respond.data.isJoin);
-        const hostId = respond.data.creatorId;
         var imageList = [];
         console.log(respond.data.imagUrl);
         for (const image of respond.data.imagUrl) {
@@ -177,14 +165,6 @@ function JoinEventDetail(props) {
         setImages(imageList);
         console.log(imageList);
         console.log(respond.data);
-        axios({
-          method: "GET",
-          url: globalApi.userData + hostId,
-        })
-          .then((respond) => {
-            setHostData(respond.data);
-          })
-          .catch((error) => {});
       })
       .catch((error) => {
         console.log(error);
@@ -223,9 +203,9 @@ function JoinEventDetail(props) {
             </p>
           </div>
           <div className="header-right">
-            <img className="host" src={host} alt="" />
+            <img className="host" src={eventData.creatorImage} alt="" />
             <p>
-              {hostData.profileName} is <span>Host!</span>
+              {eventData.creatorName} is <span>Host!</span>
             </p>
           </div>
         </div>

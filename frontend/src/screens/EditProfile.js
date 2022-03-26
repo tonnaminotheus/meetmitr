@@ -1,7 +1,10 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import bg from "../asset/MeetmitrBgNoHead.png";
 import moment from "moment";
+import axios from "axios";
+import globalApi from "../globalApi";
+import Cookies from "universal-cookie";
 
 const Button = styled.button`
   background-color: #ffc229;
@@ -97,6 +100,9 @@ const InputHeader = styled.p`
 `;
 
 function EditProfile() {
+  const cookies = new Cookies();
+  let user_cookie = cookies.get("cookie");
+
   // Create a reference to the hidden file input element
   const hiddenFileInput = useRef(null);
 
@@ -133,11 +139,45 @@ function EditProfile() {
     const objectUrl = URL.createObjectURL(event.target.files[0]);
     setProfileImg(objectUrl);
     setProfileImgFile(event.target.files[0]);
-    console.log(objectUrl);
   };
-  const uploadPicture = () => {};
+  const uploadPicture = () => {
+    const formData = new FormData();
+    formData.append("file", profileImgFile);
+    axios
+      .post(globalApi.upload, formData, {
+        headers: {
+          Authorization: "Bearer " + user_cookie["accessToken"],
+        },
+      })
+      .then((res) => {
+        setProfileImg(res.data.url);
+        alert("Upload Successfully!!");
+      })
+      .catch((error) => {
+        console.log("error");
+        console.log(error.response);
+        alert("Upload not successful!!");
+      });
+  };
   const sumbitProfile = () => {};
   const cancleEdit = () => {};
+
+  useEffect(() => {
+    axios
+      .get(globalApi.userData + user_cookie["userID"])
+      .then((res) => {
+        setFirstName(res.data.firstName);
+        setLastName(res.data.lastName);
+        setGender(res.data.gender);
+        setProfileImg(res.data.profilePicUrls[0]);
+        setBio(res.data.bio);
+        setBirthDate(res.data.birthDate);
+      })
+      .catch((error) => {
+        console.log("error");
+        console.log(error.response);
+      });
+  }, []);
   return (
     <div
       className="editProfilePage"

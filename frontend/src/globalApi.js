@@ -1,4 +1,4 @@
-const url = "http://18.233.226.58:8080";
+const url = "http://44.201.142.28:8080";
 const globalApi = {
   register: `${url}/api/v1/register`,
   login: `${url}/api/v1/login`,
@@ -15,7 +15,7 @@ const globalApi = {
   recommendFeed: `${url}/api/v1/home/`, //+:numPage v2022.01
   postQuiz: `${url}/api/v1/quiz`,
   chatPartner: `${url}/api/v1/chat/partners/`,
-  getAllNoti: `${url}/api/v1/noti/getAll`
+  getAllNoti: `${url}/api/v1/noti/getAll`,
 };
 
 export default globalApi;
