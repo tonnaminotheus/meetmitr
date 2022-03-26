@@ -14,13 +14,14 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import ChatList from "./screen/ChatList";
 import RateQuiz from "./components/PersonalityQuizRateForm.js";
 import PersonalQuiz from "./screens/PersonalQuiz";
+import EditProfile from "./screens/EditProfile";
 render(
   <BrowserRouter>
     <Routes>
       <Route path="/" element={<LoginRootComponent />} />
       <Route path="register" element={<Register />} />
       <Route path="verifyEmail" element={<VerifyEmail />} />
-      <Route path="finishRegister" element={<FinishRegister />} />
+      <Route path="activate/:activateStr" element={<FinishRegister />} />
       <Route path="joinEvent" element={<JoinEvent />} />
       <Route path="feed" element={<JoinComponent />} />
       <Route path="chat" element={<Chat />} />
@@ -29,6 +30,7 @@ render(
       <Route path="chatList" element={<ChatList />} />
       <Route path="quiz" element={<PersonalQuiz />} />
       <Route path="quiz2" element={<RateQuiz />} />
+      <Route path="editProfile" element={<EditProfile />} />
     </Routes>
   </BrowserRouter>,
   document.getElementById("root")

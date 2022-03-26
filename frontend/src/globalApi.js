@@ -1,4 +1,5 @@
-const url = "http://44.203.152.173:8080";
+const url = "http://44.201.142.28:8080";
+
 const globalApi = {
   register: `${url}/api/v1/register`,
   login: `${url}/api/v1/login`,
@@ -20,6 +21,8 @@ const globalApi = {
   getAllNoti: `${url}/api/v1/noti/getAll`,
   getNotiCount: `${url}/api/v1/noti/getCount`,
   chatToken: `${url}/api/v1/chat/token/`, //+ chatType + userId
+  chatPartner: `${url}/api/v1/chat/partners/`,
+  getAllNoti: `${url}/api/v1/noti/getAll`,
 };
 
 export default globalApi;
