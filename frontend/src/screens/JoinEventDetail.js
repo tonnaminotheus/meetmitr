@@ -134,6 +134,27 @@ function JoinEventDetail(props) {
         alert(error);
       });
   };
+  const unJoinEvent = () => {
+    axios({
+      method: "POST",
+      url: globalApi.unJoinEvent + eventData.eventId,
+      headers: {
+        authorization: userData.accessToken,
+      },
+    })
+      .then((respond) => {
+        setJoined(true);
+        const nAttenNum = attendance - 1;
+        const percent =
+          String((nAttenNum / eventData.maxParticipant) * 100) + "%";
+        setAttendance(nAttenNum);
+        setProgressData(percent);
+      })
+      .catch((error) => {
+        console.log(error);
+        alert(error);
+      });
+  };
   useEffect(() => {
     axios({
       method: "GET",
@@ -239,15 +260,7 @@ function JoinEventDetail(props) {
                 {joined && (
                   <JoinedButton
                     type="submit"
-                    onClick={() => {
-                      setJoined(false);
-                      const nAttenNum = attendance - 1;
-                      const percent =
-                        String((nAttenNum / eventData.maxParticipant) * 100) +
-                        "%";
-                      setAttendance(nAttenNum);
-                      setProgressData(percent);
-                    }}
+                    onClick={unJoinEvent}
                     onMouseEnter={() => {
                       console.log("eventId is " + eventData.eventId);
                     }}
