@@ -41,18 +41,42 @@ const NotificationModal=(props)=>{
         setNotificationModalState(!isModalShow)
     }
 
-    const customStyles = {
-        content: {
-        // position: "fixed",
-        top: "15%",
-        right: "2%",
-        width: "25%",
-        bottom: 'auto',
-        left: "auto",
-        // marginRight: '-50%',
-        transform: 'translate(-50%, -50%)',
+    // const customStyles = {
+    //     content: {
+    //     position: "fixed",
+    //     top: "20%",
+    //     right: "-10%",
+    //     width: "25%",
+    //     bottom: 'auto',
+    //     left: "auto",
+    //     marginRight: '0px',
+    //     transform: 'translate(-50%, -50%)',
+    //     "background-color": "#FAF3E7"
+    //     },
+    //   };
+
+    const customStyles={
+        overlay: {
+          backgroundColor: "rgba(88, 88, 88, 0.1)",
         },
-      };
+        content: {
+          width: "25%",
+          height: "auto",
+
+          marginTop: "5vh",
+          marginLeft: "auto",
+          marginRight: "1vh",
+
+          backgroundColor: "#FAF3E7",
+          overflow: "auto",
+          WebkitOverflowScrolling: "touch",
+          borderRadius: "20px",
+          outline: "none",
+          padding: "20px",
+        },
+      }
+
+      
 
     // get noti count 
     useEffect(()=>{
@@ -123,6 +147,28 @@ const NotificationModal=(props)=>{
         })
     },[])
 
+    useEffect(()=>{
+        axios({
+            method: 'get',
+            url: globalApi.getNotiCount,
+            headers: {
+                "Authorization" : "Bearer "+user_cookie.accessToken,
+            },
+            timeout: 8000
+        })
+        .then((res)=>{
+            if (res.status == 200) {
+                setNotiCount(res.data.count)
+            }
+        })
+        .catch((error) => {
+            console.log("error!!")
+            console.log(error)
+        })
+    },[])
+
+    
+
     // {Object.keys(this.props.events).length !== 0 &&
     //     Object.keys(this.props.events).map((key, index) => (
     //       <EventCard
@@ -156,11 +202,20 @@ const NotificationModal=(props)=>{
                 onRequestClose={() => hideModal}
                 style={customStyles}
             >
+                <div className='modal_header'>
+                    <h3>Notifications <Button className='btn custom-button'variant="info" style={{"position": "relative", "float": "right", "top":"0", "margin-top":"0"}}>{noti_count}</Button></h3>
+                </div>
                 {all_noti.length > 0 && all_noti.map((noti)=>{
                         return <NotiBox noti={noti}/>
                 })}
-                {all_noti.length <= 0 && <p>No new notifications</p>}
-                <Button className='btn custom-button'variant="success" onClick={hideModal}>Close</Button>
+                {all_noti.length <= 0 && <NotiBox noti={{
+                    "notiContent" : "No new Notifications",
+                    "url" : "/",
+                    "dateTime" : "2021-11-23 23:22:00"
+                }}
+                />}
+
+                <div style={{"position": "absolute", "bottom": "0", "right": "0", "margin": "10px"}}><Button className='btn custom-button'variant="success" onClick={hideModal}>Close</Button></div>
             </Modal>
         </div>
     );

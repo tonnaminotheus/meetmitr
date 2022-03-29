@@ -5,6 +5,7 @@ import moment from "moment";
 import axios from "axios";
 import globalApi from "../globalApi";
 import Cookies from "universal-cookie";
+import {useNavigate} from "react-router-dom"
 
 const Button = styled.button`
   background-color: #ffc229;
@@ -102,6 +103,8 @@ const InputHeader = styled.p`
 function EditProfile() {
   const cookies = new Cookies();
   let user_cookie = cookies.get("cookie");
+
+  const navigate = useNavigate();
 
   // Create a reference to the hidden file input element
   const hiddenFileInput = useRef(null);
