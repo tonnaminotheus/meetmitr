@@ -5,7 +5,7 @@ import moment from "moment";
 import axios from "axios";
 import globalApi from "../globalApi";
 import Cookies from "universal-cookie";
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 
 const Button = styled.button`
   background-color: #ffc229;
