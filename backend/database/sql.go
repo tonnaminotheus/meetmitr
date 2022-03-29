@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	address  = "rds-mysql-meetmitr.c3nxpkhzuwh3.us-east-1.rds.amazonaws.com:3306"
+	address  = "meetmitr2.c3nxpkhzuwh3.us-east-1.rds.amazonaws.com:3306"
 	user     = "admin"
 	password = "preryusudhod"
 	dbName   = "meetmitr"
