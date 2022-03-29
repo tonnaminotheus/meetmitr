@@ -151,6 +151,7 @@ function EditProfile() {
       })
       .then((res) => {
         setProfileImg(res.data.url);
+        setChangepic(true);
         alert("Upload Successfully!!");
       })
       .catch((error) => {
@@ -159,8 +160,34 @@ function EditProfile() {
         alert("Upload not successful!!");
       });
   };
-  const sumbitProfile = () => {};
-  const cancleEdit = () => {};
+  const sumbitProfile = () => {
+    axios({
+      method: "PUT",
+      url: globalApi.editProfile,
+      headers: {
+        Authorization: "Bearer " + user_cookie["accessToken"],
+      },
+      data: {
+        firstName: firstName,
+        lastName: lastName,
+        birthdate: birthDate,
+        gender: gender,
+        bio: bio,
+        profilePicUrl: profileImg,
+      },
+    })
+      .then((respond) => {
+        navigate("/profile", {
+          state: { userId: user_cookie["userID"] },
+        });
+      })
+      .catch((error) => {});
+  };
+  const cancleEdit = () => {
+    navigate("/profile", {
+      state: { userId: user_cookie["userID"] },
+    });
+  };
 
   useEffect(() => {
     axios
