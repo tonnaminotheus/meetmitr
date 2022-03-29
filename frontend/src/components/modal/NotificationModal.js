@@ -1,5 +1,10 @@
 import { useEffect, useState } from 'react';
-import Modal from 'react-bootstrap/Modal'
+
+// import Modal from 'react-bootstrap/Modal'
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Modal from 'react-modal';
+
 import { Button } from 'react-bootstrap';
 import "./NotificationModal.css"
 import Cookies from 'universal-cookie';
@@ -31,6 +36,23 @@ const NotificationModal=(props)=>{
     const showModal=()=>{
         setNotificationModalState(true)
     }
+
+    const toggleModal=()=>{
+        setNotificationModalState(!isModalShow)
+    }
+
+    const customStyles = {
+        content: {
+        // position: "fixed",
+        top: "15%",
+        right: "2%",
+        width: "25%",
+        bottom: 'auto',
+        left: "auto",
+        // marginRight: '-50%',
+        transform: 'translate(-50%, -50%)',
+        },
+      };
 
     // get noti count 
     useEffect(()=>{
@@ -112,7 +134,7 @@ const NotificationModal=(props)=>{
 
     return (
         <div>
-            <Modal className='modal fade' id="noti-modal" data-easein={"bounce"} show={isModalShow} onHide={hideModal}>
+            {/* <Modal className='modal fade' id="noti-modal" animation={true} data-easein="bounce" show={isModalShow} onHide={hideModal}>
                 <Modal.Header closeButton>
                     <Modal.Title>Notification</Modal.Title>
                 </Modal.Header>
@@ -125,6 +147,20 @@ const NotificationModal=(props)=>{
                 <Modal.Footer>
                     <Button className='btn custom-button'variant="success" onClick={hideModal}>Close</Button>
                 </Modal.Footer>
+            </Modal> */}
+
+            <Modal
+                closeTimeoutMS={200}
+                isOpen={isModalShow}
+                contentLabel="modal"
+                onRequestClose={() => hideModal}
+                style={customStyles}
+            >
+                {all_noti.length > 0 && all_noti.map((noti)=>{
+                        return <NotiBox noti={noti}/>
+                })}
+                {all_noti.length <= 0 && <p>No new notifications</p>}
+                <Button className='btn custom-button'variant="success" onClick={hideModal}>Close</Button>
             </Modal>
         </div>
     );
