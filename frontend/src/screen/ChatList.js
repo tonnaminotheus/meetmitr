@@ -44,7 +44,7 @@ const ChatList = (props) => {
     return (
       <ChatListUser
         name={partners.profileName}
-        imgUrl={partners.profilePicUrl}
+        imgUrl={partners.displayPic}
         lastMessage={partners.lastMessage}
         dmId={partners.DMId}
         userId={partners.userId}
