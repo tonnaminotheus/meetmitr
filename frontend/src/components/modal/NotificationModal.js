@@ -1,18 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 // import Modal from 'react-bootstrap/Modal'
-import React from 'react';
-import ReactDOM from 'react-dom';
-import Modal from 'react-modal';
+import React from "react";
+import ReactDOM from "react-dom";
+import Modal from "react-modal";
 
-import { Button } from 'react-bootstrap';
-import "./NotificationModal.css"
-import Cookies from 'universal-cookie';
-import globalApi from '../../globalApi';
+import { Button } from "react-bootstrap";
+import "./NotificationModal.css";
+import Cookies from "universal-cookie";
+import globalApi from "../../globalApi";
 
-import NotiBox from "./NotiBox"
+import NotiBox from "./NotiBox";
 
-import "../css_extensions/btn.css"
+import "../css_extensions/btn.css";
 
 var axios = require("axios").default;
 
@@ -184,8 +184,39 @@ const NotificationModal=(props)=>{
                 <div style={{"position": "absolute", "bottom": "0", "right": "0", "margin": "10px"}}><Button className='btn custom-button'variant="success" onClick={hideModal}>Close</Button></div>
             </Modal>
         </div>
-    );
+        {all_noti.length > 0 &&
+          all_noti.map((noti) => {
+            return <NotiBox noti={noti} />;
+          })}
+        {all_noti.length <= 0 && (
+          <NotiBox
+            noti={{
+              notiContent: "No new Notifications",
+              url: "/",
+              dateTime: "2021-11-23 23:22:00",
+            }}
+          />
+        )}
 
-}
+        <div
+          style={{
+            position: "absolute",
+            bottom: "0",
+            right: "0",
+            margin: "10px",
+          }}
+        >
+          <Button
+            className="btn custom-button"
+            variant="success"
+            onClick={hideModal}
+          >
+            Close
+          </Button>
+        </div>
+      </Modal>
+    </div>
+  );
+};
 
 export default NotificationModal;
