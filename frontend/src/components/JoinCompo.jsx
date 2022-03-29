@@ -62,12 +62,6 @@ function JoinComponent() {
             setDisable(true);
             setLockButtStyle("#535353");
           }
-          // setCardsInfo((prevState) => {
-          //   return {
-          //     ...prevState,
-          //     cardInfo,
-          //   };
-          // });
         }
       })
       .catch(function (error) {
@@ -82,30 +76,31 @@ function JoinComponent() {
   useEffect(() => {
     console.log("run useEffect");
     console.log(submitted);
-    axios({
-      method: "post",
-      url: globalApi.getFilteredEvent + "1",
-      headers: {
-        authorization: "Bearer " + userData.accessToken,
-      },
-      data: time,
-    })
-      .then(function (res) {
-        if (submitted > 0) {
-          console.log("modal recieve data");
-          console.log(res.data["EventList"]);
-          setCardInfo([...cardInfo, ...res.data["EventList"]]);
-          setDisable(true);
-          setLockButtStyle("#535353");
-        }
+    if (Object.keys(time).length > 0)
+      axios({
+        method: "post",
+        url: globalApi.getFilteredEvent + "1",
+        headers: {
+          authorization: "Bearer " + userData.accessToken,
+        },
+        data: time,
       })
-      .catch(function (error) {
-        console.log("error!!");
-        console.log(error);
-      })
-      .then(function () {
-        // always executed
-      });
+        .then(function (res) {
+          if (submitted > 0) {
+            console.log("modal recieve data");
+            console.log(res.data["EventList"]);
+            setCardInfo([...cardInfo, ...res.data["EventList"]]);
+            setDisable(true);
+            setLockButtStyle("#535353");
+          }
+        })
+        .catch(function (error) {
+          console.log("error!!");
+          console.log(error);
+        })
+        .then(function () {
+          // always executed
+        });
   }, [submitted]);
 
   const updateSearch = (event) => {
