@@ -1,7 +1,7 @@
 import globalApi from "../globalApi";
 import Cookies from "universal-cookie";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import icon from "../asset/icon.png";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
@@ -16,10 +16,12 @@ const Profile = (props) => {
   const [profileName, setProfileName] = useState("");
   const [dmID, setDmID] = useState(0);
   const [userId, setUserId] = useState(0);
+  const { state } = useLocation();
+  console.log("state profile: ", state);
   const cookies = new Cookies();
   const navigate = useNavigate();
   const getButton = () => {
-    let profileId = props.userId;
+    let profileId = state.userId;
     let currentUserId = cookies.get("cookie").userID;
     if (profileId === currentUserId) {
       console.log("Hey");
@@ -61,7 +63,7 @@ const Profile = (props) => {
             onClick={() => {
               navigate("/chat", {
                 state: {
-                  userId: userId,
+                  userId: profileId,
                   dmId: dmID,
                   profileName: profileName,
                   imgUrl: image,
@@ -94,7 +96,7 @@ const Profile = (props) => {
   const shootAPIUser = () => {
     axios({
       method: "get",
-      url: globalApi.userData + `${props.userId}`,
+      url: globalApi.userData + `${state.userId}`,
     })
       .then(function (response) {
         console.log(response.data);
@@ -111,10 +113,13 @@ const Profile = (props) => {
       .then(function () {
         // always executed
       });
-
+    console.log(
+      "TOKEN LINK PROFILE ",
+      globalApi.chatToken + `dm/${state.userId}`
+    );
     axios({
       method: "get",
-      url: globalApi.chatToken + `dm/${props.userId}`,
+      url: globalApi.chatToken + `dm/${state.userId}`,
       headers: {
         Authorization: "Bearer " + cookies.get("cookie").accessToken,
       },
