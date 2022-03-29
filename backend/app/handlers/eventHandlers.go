@@ -253,7 +253,7 @@ func JoinEventHandler(c *gin.Context) {
 		from User,CoinTransaction where User.userId=CoinTransaction.UserId and User.userId=?) and Event.maxParticipant>(select COALESCE(count(*),0) 
 		from UserEventStatus, User where UserEventStatus.UserId=User.userId and UserEventStatus.eventId=?)`, eventId, userId, eventId).Scan(&checkJoin)
 	if err4 != nil || checkJoin == nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
+		c.JSON(400, gin.H{
 			"message": "join not success",
 		})
 		return
