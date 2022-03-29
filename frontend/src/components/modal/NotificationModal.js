@@ -169,7 +169,7 @@ const NotificationModal=(props)=>{
                 style={customStyles}
             >
                 <div className='modal_header'>
-                    <h3>Notifications <Button className='btn custom-button'variant="info" style={{"position": "relative", "float": "right", "top":"0", "margin-top":"0"}}>{noti_count}</Button></h3>
+                    <h3>Notifications <Button className='btn custom-button'variant="info" style={{"position": "relative", "float": "right", "top":"0", "marginTop":"0"}}>{noti_count}</Button></h3>
                 </div>
                 {all_noti.length > 0 && all_noti.map((noti, index)=>{
                         return <NotiBox key={index} noti={noti}/>
@@ -182,8 +182,7 @@ const NotificationModal=(props)=>{
                 />}
 
                 <div style={{"position": "absolute", "bottom": "0", "right": "0", "margin": "10px"}}><Button className='btn custom-button'variant="success" onClick={hideModal}>Close</Button></div>
-            </Modal>
-        </div>
+ 
         {all_noti.length > 0 &&
           all_noti.map((noti) => {
             return <NotiBox noti={noti} />;

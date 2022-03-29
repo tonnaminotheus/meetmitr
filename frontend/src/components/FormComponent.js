@@ -1,6 +1,8 @@
 // import "./FormComponent.css";
 import "../components/css_extensions/form_control.css";
 
+import "./FormComponent.css"
+
 import globalApi from "../globalApi";
 
 import Cookies from "universal-cookie";
