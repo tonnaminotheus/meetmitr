@@ -1,22 +1,38 @@
-#noti-modal{
+/* #noti-modal{
     position: fixed;
-    top: 8%;
+    top: 50%;
     right: 2%;
     width: 25%;
-}
+} */
+
+
+/* .Modal {
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    right: 40px;
+    bottom: 40px;
+    background-color: papayawhip;
+  } */
 
 .ReactModal__Overlay {
     opacity: 0;
-    transform: translateX(-100px);
+    transform: translateY(-100px);
     transition: all 500ms ease-in-out;
-  }
-  
-  .ReactModal__Overlay--after-open {
+}
+
+.ReactModal__Overlay--after-open {
     opacity: 1;
-    transform: translateX(0px);
-  }
-  
-  .ReactModal__Overlay--before-close {
+    transform: translateY(0px);
+}
+
+.ReactModal__Overlay--before-close {
     opacity: 0;
-    transform: translateX(-100px);
-  }
+    transform: translateY(-100px);
+}
+
+.modal_header{
+    margin: 10px;
+    /* margin-bottom: 20px; */
+    
+}

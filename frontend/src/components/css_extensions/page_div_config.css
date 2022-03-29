@@ -10,12 +10,12 @@
   }
   
   /* -------- global css ------------ */
-  a {
+  /* a {
     text-decoration: none;
     color: rgb(0, 255, 170);
   }
   a:hover{
-    /* font-size: larger; */
+    font-size: larger;
     font-weight: bolder;
     transition: 0.15s;
-  }
+  } */
