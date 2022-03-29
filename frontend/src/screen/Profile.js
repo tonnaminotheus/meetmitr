@@ -100,7 +100,7 @@ const Profile = (props) => {
     })
       .then(function (response) {
         console.log(response.data);
-        setImage(response.data.profilePicUrl);
+        setImage(response.data.displayPic);
         setBio(response.data.bio);
         setProfileName(`${response.data.profileName}`);
         setUserId(response.data.userId);
@@ -197,11 +197,6 @@ const Profile = (props) => {
                 {profileName == "" ? "user" : profileName}
               </text>
               {button}
-              <text
-                style={{ fontFamily: "Roboto", fontSize: 70, marginLeft: 16 }}
-              >
-                ...
-              </text>
             </div>
 
             <text style={{ fontFamily: "Roboto", fontSize: 36 }}>
