@@ -4,7 +4,7 @@ import styled from "styled-components";
 function Participant({ participantImage, id }) {
   const navigate = useNavigate();
   const ParticipantButton = styled.button`
-    background-color: url(participantImage);
+    background-image: url(${participantImage});
     height: 86px;
     width: 86px;
     border-radius: 43px;
