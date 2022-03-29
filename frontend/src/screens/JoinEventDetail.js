@@ -114,11 +114,12 @@ function JoinEventDetail(props) {
   const [participants, setParticipants] = React.useState([]);
 
   const joinEvent = () => {
+    console.log(userData.accessToken);
     axios({
       method: "POST",
       url: globalApi.joinEvent + eventData.eventId,
       headers: {
-        authorization: userData.accessToken,
+        authorization: "Bearer " + userData.accessToken,
       },
     })
       .then((respond) => {
@@ -130,7 +131,7 @@ function JoinEventDetail(props) {
         setProgressData(percent);
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error.respond);
         alert(error);
       });
   };
@@ -139,7 +140,7 @@ function JoinEventDetail(props) {
       method: "POST",
       url: globalApi.unJoinEvent + eventData.eventId,
       headers: {
-        authorization: userData.accessToken,
+        authorization: "Bearer " + userData.accessToken,
       },
     })
       .then((respond) => {
@@ -164,6 +165,7 @@ function JoinEventDetail(props) {
       },
     })
       .then((respond) => {
+        console.log("EVENT DATA", respond.data);
         setOwner(respond.data.creatorId === userData.userID);
         var attenNum = 0;
         if (respond.data.participants) {
