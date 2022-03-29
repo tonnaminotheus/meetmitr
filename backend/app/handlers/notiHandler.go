@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"backend/app/models"
+	"backend/app/responses"
 	"backend/database"
 	"net/http"
 
@@ -17,7 +17,7 @@ func NotiHandler(c *gin.Context) {
 		return
 	}
 
-	rows, err := database.Sql.Query(`select NotiContent,URL,DateTime from Noti where userId=?`, userId)
+	rows, err := database.Sql.Query(`select notiContent,url,datetime from Noti where userId=?`, userId)
 
 	if err != nil {
 		c.JSON(500, gin.H{
@@ -27,8 +27,8 @@ func NotiHandler(c *gin.Context) {
 	}
 	defer rows.Close()
 
-	notis := []models.Noti{}
-	noti := models.Noti{}
+	notis := []responses.Noti_info{}
+	noti := responses.Noti_info{}
 
 	for rows.Next() {
 		rows.Scan(&noti.NotiContent, &noti.URL, &noti.DateTime)
