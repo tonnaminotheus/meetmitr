@@ -101,7 +101,7 @@ function JoinComponent() {
       })
       .catch(function (error) {
         console.log("error!!");
-        console.log(error);
+        console.log(error.response);
       })
       .then(function () {
         // always executed

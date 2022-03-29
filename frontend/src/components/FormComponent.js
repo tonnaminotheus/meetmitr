@@ -84,7 +84,7 @@ const FormComponent = (props) => {
 
     const data = {
       email: document.getElementById("email-input-box").value,
-      // "password": hash(document.getElementById("password-input-box").value)
+      // password: hash(document.getElementById("password-input-box").value),
       password: document.getElementById("password-input-box").value,
       ip: cookies.get("cookie")["ip"]
     };
