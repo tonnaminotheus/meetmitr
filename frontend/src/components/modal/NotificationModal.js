@@ -1,5 +1,10 @@
 import { useEffect, useState } from 'react';
-import Modal from 'react-bootstrap/Modal'
+
+// import Modal from 'react-bootstrap/Modal'
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Modal from 'react-modal';
+
 import { Button } from 'react-bootstrap';
 import "./NotificationModal.css"
 import Cookies from 'universal-cookie';
@@ -31,6 +36,47 @@ const NotificationModal=(props)=>{
     const showModal=()=>{
         setNotificationModalState(true)
     }
+
+    const toggleModal=()=>{
+        setNotificationModalState(!isModalShow)
+    }
+
+    // const customStyles = {
+    //     content: {
+    //     position: "fixed",
+    //     top: "20%",
+    //     right: "-10%",
+    //     width: "25%",
+    //     bottom: 'auto',
+    //     left: "auto",
+    //     marginRight: '0px',
+    //     transform: 'translate(-50%, -50%)',
+    //     "background-color": "#FAF3E7"
+    //     },
+    //   };
+
+    const customStyles={
+        overlay: {
+          backgroundColor: "rgba(88, 88, 88, 0.1)",
+        },
+        content: {
+          width: "25%",
+          height: "auto",
+
+          marginTop: "5vh",
+          marginLeft: "auto",
+          marginRight: "1vh",
+
+          backgroundColor: "#FAF3E7",
+          overflow: "auto",
+          WebkitOverflowScrolling: "touch",
+          borderRadius: "20px",
+          outline: "none",
+          padding: "20px",
+        },
+      }
+
+      
 
     // get noti count 
     useEffect(()=>{
@@ -101,6 +147,28 @@ const NotificationModal=(props)=>{
         })
     },[])
 
+    useEffect(()=>{
+        axios({
+            method: 'get',
+            url: globalApi.getNotiCount,
+            headers: {
+                "Authorization" : "Bearer "+user_cookie.accessToken,
+            },
+            timeout: 8000
+        })
+        .then((res)=>{
+            if (res.status == 200) {
+                setNotiCount(res.data.count)
+            }
+        })
+        .catch((error) => {
+            console.log("error!!")
+            console.log(error)
+        })
+    },[])
+
+    
+
     // {Object.keys(this.props.events).length !== 0 &&
     //     Object.keys(this.props.events).map((key, index) => (
     //       <EventCard
@@ -112,7 +180,7 @@ const NotificationModal=(props)=>{
 
     return (
         <div>
-            <Modal className='modal fade' id="noti-modal" data-easein={"bounce"} show={isModalShow} onHide={hideModal}>
+            {/* <Modal className='modal fade' id="noti-modal" animation={true} data-easein="bounce" show={isModalShow} onHide={hideModal}>
                 <Modal.Header closeButton>
                     <Modal.Title>Notification</Modal.Title>
                 </Modal.Header>
@@ -125,6 +193,29 @@ const NotificationModal=(props)=>{
                 <Modal.Footer>
                     <Button className='btn custom-button'variant="success" onClick={hideModal}>Close</Button>
                 </Modal.Footer>
+            </Modal> */}
+
+            <Modal
+                closeTimeoutMS={200}
+                isOpen={isModalShow}
+                contentLabel="modal"
+                onRequestClose={() => hideModal}
+                style={customStyles}
+            >
+                <div className='modal_header'>
+                    <h3>Notifications <Button className='btn custom-button'variant="info" style={{"position": "relative", "float": "right", "top":"0", "margin-top":"0"}}>{noti_count}</Button></h3>
+                </div>
+                {all_noti.length > 0 && all_noti.map((noti)=>{
+                        return <NotiBox noti={noti}/>
+                })}
+                {all_noti.length <= 0 && <NotiBox noti={{
+                    "notiContent" : "No new Notifications",
+                    "url" : "/",
+                    "dateTime" : "2021-11-23 23:22:00"
+                }}
+                />}
+
+                <div style={{"position": "absolute", "bottom": "0", "right": "0", "margin": "10px"}}><Button className='btn custom-button'variant="success" onClick={hideModal}>Close</Button></div>
             </Modal>
         </div>
     );
