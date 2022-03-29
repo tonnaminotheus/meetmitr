@@ -118,7 +118,7 @@ function JoinEventDetail(props) {
       method: "POST",
       url: globalApi.joinEvent + eventData.eventId,
       headers: {
-        authorization: userData.accessToken,
+        authorization: "Bearer " + userData.accessToken,
       },
     })
       .then((respond) => {
@@ -130,20 +130,20 @@ function JoinEventDetail(props) {
         setProgressData(percent);
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error.response);
         alert(error);
       });
   };
   const unJoinEvent = () => {
     axios({
-      method: "POST",
+      method: "DELETE",
       url: globalApi.unJoinEvent + eventData.eventId,
       headers: {
-        authorization: userData.accessToken,
+        authorization: "Bearer " + userData.accessToken,
       },
     })
       .then((respond) => {
-        setJoined(true);
+        setJoined(false);
         const nAttenNum = attendance - 1;
         const percent =
           String((nAttenNum / eventData.maxParticipant) * 100) + "%";
@@ -151,7 +151,7 @@ function JoinEventDetail(props) {
         setProgressData(percent);
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error.response);
         alert(error);
       });
   };

@@ -199,9 +199,10 @@ function EditProfile() {
         setFirstName(res.data.firstName);
         setLastName(res.data.lastName);
         setGender(res.data.gender);
-        setProfileImg(res.data.profilePicUrls[0]);
+        setProfileImg(res.data.displayPic);
         setBio(res.data.bio);
         setBirthDate(res.data.birthDate);
+        console.log(res.data)
       })
       .catch((error) => {
         console.log("error");
