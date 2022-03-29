@@ -421,7 +421,7 @@ function EditProfile() {
         <div style={{ display: "flex", flexDirection: "row" }}>
           <div className="empty" style={{ flex: 1 }} />
           <img
-            src={profileImg}
+            src={url(profileImg)}
             id="profile_img"
             style={{
               height: "500px",
