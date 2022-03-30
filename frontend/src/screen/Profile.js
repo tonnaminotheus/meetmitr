@@ -182,7 +182,11 @@ const Profile = (props) => {
           ></img>
           <div
             className="ProfileDesc"
-            style={{ display: "flex", flexDirection: "column" }}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              flex: 1,
+            }}
           >
             <div
               style={{
@@ -196,7 +200,17 @@ const Profile = (props) => {
               >
                 {profileName == "" ? "user" : profileName}
               </text>
-              {button}
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "flex-end",
+                  flex: 1,
+                  marginRight: 32,
+                }}
+              >
+                {button}
+              </div>
             </div>
 
             <text style={{ fontFamily: "Roboto", fontSize: 36 }}>

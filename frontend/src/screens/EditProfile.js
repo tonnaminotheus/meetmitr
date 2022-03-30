@@ -202,7 +202,7 @@ function EditProfile() {
         setProfileImg(res.data.displayPic);
         setBio(res.data.bio);
         setBirthDate(res.data.birthDate);
-        console.log(res.data)
+        console.log(res.data);
       })
       .catch((error) => {
         console.log("error");
@@ -421,7 +421,7 @@ function EditProfile() {
         <div style={{ display: "flex", flexDirection: "row" }}>
           <div className="empty" style={{ flex: 1 }} />
           <img
-            src={url(profileImg)}
+            src={profileImg}
             id="profile_img"
             style={{
               height: "500px",
