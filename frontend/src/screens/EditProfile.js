@@ -5,7 +5,7 @@ import moment from "moment";
 import axios from "axios";
 import globalApi from "../globalApi";
 import Cookies from "universal-cookie";
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 
 const Button = styled.button`
   background-color: #ffc229;
@@ -199,9 +199,10 @@ function EditProfile() {
         setFirstName(res.data.firstName);
         setLastName(res.data.lastName);
         setGender(res.data.gender);
-        setProfileImg(res.data.profilePicUrls[0]);
+        setProfileImg(res.data.displayPic);
         setBio(res.data.bio);
         setBirthDate(res.data.birthDate);
+        console.log(res.data);
       })
       .catch((error) => {
         console.log("error");

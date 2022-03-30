@@ -100,7 +100,7 @@ const Profile = (props) => {
     })
       .then(function (response) {
         console.log(response.data);
-        setImage(response.data.profilePicUrl);
+        setImage(response.data.displayPic);
         setBio(response.data.bio);
         setProfileName(`${response.data.profileName}`);
         setUserId(response.data.userId);
@@ -182,7 +182,11 @@ const Profile = (props) => {
           ></img>
           <div
             className="ProfileDesc"
-            style={{ display: "flex", flexDirection: "column" }}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              flex: 1,
+            }}
           >
             <div
               style={{
@@ -196,12 +200,17 @@ const Profile = (props) => {
               >
                 {profileName == "" ? "user" : profileName}
               </text>
-              {button}
-              <text
-                style={{ fontFamily: "Roboto", fontSize: 70, marginLeft: 16 }}
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "flex-end",
+                  flex: 1,
+                  marginRight: 32,
+                }}
               >
-                ...
-              </text>
+                {button}
+              </div>
             </div>
 
             <text style={{ fontFamily: "Roboto", fontSize: 36 }}>
