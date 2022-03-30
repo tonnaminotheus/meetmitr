@@ -210,6 +210,24 @@ const Profile = (props) => {
                 }}
               >
                 {button}
+                <button
+                  style={{
+                    width: 210,
+                    height: 59,
+                    fontFamily: "Roboto",
+                    fontSize: 36,
+                    backgroundColor: "#FFC229",
+                    color: "white",
+                    borderRadius: 11,
+                    marginTop: 16,
+                    borderWidth: 0,
+                  }}
+                  onClick={() => {
+                    navigate("/feed");
+                  }}
+                >
+                  To Feed
+                </button>
               </div>
             </div>
 
