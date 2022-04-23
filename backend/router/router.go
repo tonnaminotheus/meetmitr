@@ -9,6 +9,8 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
+	ginSwagger "github.com/swaggo/gin-swagger"
+	"github.com/swaggo/gin-swagger/swaggerFiles"
 	// swagger embed files
 )
 
@@ -35,7 +37,7 @@ func GenerateRouter() *gin.Engine {
 	router.NoRoute(func(c *gin.Context) {
 		c.JSON(404, gin.H{"message": "Page not found."})
 	})
-
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	router.POST("/api/v1/register", handlers.RegisterHandler)
 	router.POST("/api/v1/activate/:activStr", handlers.ActivateUserHandler)
 	router.POST("/api/v1/login", handlers.LoginHandler)

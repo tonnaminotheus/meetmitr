@@ -9,6 +9,10 @@ import (
 	gomail "gopkg.in/mail.v2"
 )
 
+type ResponseMessage struct {
+	Message string `json:"message" example:"message"`
+}
+
 var (
 	randomSource  = rand.NewSource(time.Now().UTC().UnixNano())
 	random        = rand.New(randomSource)
