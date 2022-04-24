@@ -120,7 +120,7 @@ func GetVerificationReqsHandler(c *gin.Context) {
 		rows.Scan(&resp.UserId, &resp.FirstName, &resp.LastName, &resp.DisplayPic)
 		allReq = append(allReq, resp)
 	}
-	c.JSON(200, allReq)
+	c.JSON(200, gin.H{"requests": allReq})
 }
 
 // VerifyUserHandler create verification request
@@ -162,7 +162,14 @@ func VerifyUserHandler(c *gin.Context) {
 			return
 		}
 	} else {
-		_, err := database.Sql.Exec("delete from Verified where userId = ?", userId)
+		_, err := database.Sql.Exec("delete from VeriRequest where userId = ?", userId)
+		if err != nil {
+			c.JSON(500, gin.H{
+				"message": err.Error(),
+			})
+			return
+		}
+		_, err = database.Sql.Exec("delete from Verified where userId = ?", userId)
 		if err != nil {
 			c.JSON(500, gin.H{
 				"message": err.Error(),
@@ -174,4 +181,12 @@ func VerifyUserHandler(c *gin.Context) {
 		"message": "ok",
 	})
 
+}
+
+func GetIsAdminHandler(c *gin.Context) {
+	userId := c.GetString("user_id")
+	ok := userService.IsAdmin(userId)
+	c.JSON(200, gin.H{
+		"isAdmin": ok,
+	})
 }

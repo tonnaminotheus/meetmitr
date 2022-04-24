@@ -44,9 +44,14 @@ func GenerateRouter() *gin.Engine {
 	router.POST("/api/v1/loginVerif/:loginKey", handlers.LoginVerifHandler)
 	router.GET("/api/v1/user/:userId", handlers.GetUserHandler)
 	router.PUT("/api/v1/user", AttractAuthMiddleware(ABORT), handlers.UpdateUserHandler)
+	router.POST("/api/v1/user/veriRequest", AttractAuthMiddleware(ABORT), handlers.CreateVerificationReqHandler)
+	router.GET("/api/v1/veriRequests", AttractAuthMiddleware(ABORT), handlers.GetVerificationReqsHandler)
+	router.POST("/api/v1/verify/:userId/:verify", AttractAuthMiddleware(ABORT), handlers.VerifyUserHandler)
+	router.GET("/api/v1/isAdmin", AttractAuthMiddleware(ABORT), handlers.GetIsAdminHandler)
 	// EventHandler
 	v1Event := router.Group("/api/v1/event")
 	{
+		v1Event.DELETE("/:eventId", AttractAuthMiddleware(ABORT), handlers.DeleteEventHandler)
 		v1Event.GET("/descriptions/:eventId", AttractAuthMiddleware(ABORT), handlers.GetEventDescHandler)
 		v1Event.GET("/tags", handlers.GetEventTagsHandler)
 

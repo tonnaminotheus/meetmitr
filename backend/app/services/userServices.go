@@ -188,6 +188,6 @@ func (s *UserServiceImpl) CheckLoginVerif(verifKey string) (bool, string) {
 
 func (s *UserServiceImpl) IsAdmin(userId string) bool {
 	var adminId string
-	err := database.Sql.QueryRow("Select adminId from Admin where userId = ?", adminId).Scan(&adminId)
+	err := database.Sql.QueryRow("Select adminId from Admin where userId = ?", userId).Scan(&adminId)
 	return err == nil
 }

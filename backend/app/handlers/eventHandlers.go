@@ -408,21 +408,39 @@ func UnjoinEventHandler(c *gin.Context) {
 func DeleteEventHandler(c *gin.Context) {
 	userId := c.GetString("user_id")
 	eventId := c.Param("eventId")
-	if ok := userService.IsAdmin(userId); !ok {
-		var id string
-		err := database.Sql.QueryRow("Select userId from Event where eventId = ?", eventId).Scan(&id)
-		if err != nil {
-			c.JSON(404, gin.H{
-				"message": "event not found",
-			})
-		}
-		if id != userId {
-			c.JSON(400, gin.H{
-				"message": "no authority",
-			})
-		}
+	var id string
+	err := database.Sql.QueryRow("Select userId from Event where eventId = ?", eventId).Scan(&id)
+	if err != nil {
+		c.JSON(404, gin.H{
+			"message": "event not found",
+		})
+		return
 	}
-	_, err := database.Sql.Exec("delete from Event where eventId = ?", eventId)
+	if ok := id == userId || userService.IsAdmin(userId); !ok {
+		c.JSON(400, gin.H{
+			"message": "no authority",
+		})
+		return
+	}
+	_, err = database.Sql.Exec("delete from EventImage where eventId = ?", eventId)
+	if err != nil {
+		c.JSON(500, gin.H{
+			"message": err.Error(),
+		})
+	}
+	_, err = database.Sql.Exec("delete from EventTag where eventId = ?", eventId)
+	if err != nil {
+		c.JSON(500, gin.H{
+			"message": err.Error(),
+		})
+	}
+	_, err = database.Sql.Exec("delete from UserEventStatus where eventId = ?", eventId)
+	if err != nil {
+		c.JSON(500, gin.H{
+			"message": err.Error(),
+		})
+	}
+	_, err = database.Sql.Exec("delete from Event where eventId = ?", eventId)
 	if err != nil {
 		c.JSON(500, gin.H{
 			"message": err.Error(),
