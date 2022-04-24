@@ -34,6 +34,7 @@ func HomeWithAvtHandler(c *gin.Context) {
 		c.JSON(400, gin.H{
 			"message": err1.Error(),
 		})
+		return
 	}
 	EventPerPage := 6
 	startRow := (intNumPage-1)*EventPerPage + 1

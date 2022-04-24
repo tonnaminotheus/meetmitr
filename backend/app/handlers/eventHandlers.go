@@ -113,7 +113,7 @@ func GetEventDescHandler(c *gin.Context) {
 	} else {
 		event.IsJoin = true
 	}
-	_ = database.Sql.QueryRow(`SELECT profileName, displayPic FROM User WHERE userId=?`, userId).Scan(&event.CreatorName, &event.CreatorImage)
+	_ = database.Sql.QueryRow(`SELECT profileName, displayPic FROM User WHERE userId=?`, event.UserID).Scan(&event.CreatorName, &event.CreatorImage)
 
 	c.JSON(http.StatusOK, event)
 }
