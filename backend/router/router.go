@@ -9,6 +9,8 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
+	ginSwagger "github.com/swaggo/gin-swagger"
+	"github.com/swaggo/gin-swagger/swaggerFiles"
 	// swagger embed files
 )
 
@@ -35,16 +37,21 @@ func GenerateRouter() *gin.Engine {
 	router.NoRoute(func(c *gin.Context) {
 		c.JSON(404, gin.H{"message": "Page not found."})
 	})
-
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	router.POST("/api/v1/register", handlers.RegisterHandler)
 	router.POST("/api/v1/activate/:activStr", handlers.ActivateUserHandler)
 	router.POST("/api/v1/login", handlers.LoginHandler)
 	router.POST("/api/v1/loginVerif/:loginKey", handlers.LoginVerifHandler)
 	router.GET("/api/v1/user/:userId", handlers.GetUserHandler)
 	router.PUT("/api/v1/user", AttractAuthMiddleware(ABORT), handlers.UpdateUserHandler)
+	router.POST("/api/v1/user/veriRequest", AttractAuthMiddleware(ABORT), handlers.CreateVerificationReqHandler)
+	router.GET("/api/v1/veriRequests", AttractAuthMiddleware(ABORT), handlers.GetVerificationReqsHandler)
+	router.POST("/api/v1/verify/:userId/:verify", AttractAuthMiddleware(ABORT), handlers.VerifyUserHandler)
+	router.GET("/api/v1/isAdmin", AttractAuthMiddleware(ABORT), handlers.GetIsAdminHandler)
 	// EventHandler
 	v1Event := router.Group("/api/v1/event")
 	{
+		v1Event.DELETE("/:eventId", AttractAuthMiddleware(ABORT), handlers.DeleteEventHandler)
 		v1Event.GET("/descriptions/:eventId", AttractAuthMiddleware(ABORT), handlers.GetEventDescHandler)
 		v1Event.GET("/tags", handlers.GetEventTagsHandler)
 
