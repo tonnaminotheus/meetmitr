@@ -16,6 +16,7 @@ import RateQuiz from "./components/PersonalityQuizRateForm.js";
 import PersonalQuiz from "./screens/PersonalQuiz";
 import EditProfile from "./screens/EditProfile";
 import Profile from "./screen/Profile";
+import VerifyRequest from "./components/VerifyRequest"
 
 render(
   <BrowserRouter>
@@ -34,6 +35,10 @@ render(
       <Route path="quiz2" element={<RateQuiz />} />
       <Route path="editProfile" element={<EditProfile />} />
       <Route path="profile" element={<Profile />} />
+      
+      
+      
+      <Route path="v" element={<VerifyRequest />} /> 
     </Routes>
   </BrowserRouter>,
   document.getElementById("root")

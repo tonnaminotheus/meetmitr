@@ -1,4 +1,4 @@
-const url = "http://44.201.205.13:8080";
+const url = "http://44.204.176.139:8080";
 const globalApi = {
   register: `${url}/api/v1/register`,
   login: `${url}/api/v1/login`,
@@ -27,6 +27,7 @@ const globalApi = {
   isAdmin: `${url}/api/v1/isAdmin`,
   veriRequest: `${url}/api/v1/user/veriRequest`,
   getRequests: `${url}/api/v1/veriRequests`,
+  verifyUser: `${url}/api/v1/verify`
 };
 
 export default globalApi;
