@@ -24,6 +24,7 @@ const globalApi = {
   chatToken: `${url}/api/v1/chat/token/`, //+ chatType + userId
   chatPartner: `${url}/api/v1/chat/partners/`,
   getAllNoti: `${url}/api/v1/noti/getAll`,
+  isAdmin: `${url}/api/v1/isAdmin`
 };
 
 export default globalApi;
