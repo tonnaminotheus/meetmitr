@@ -1,0 +1,9 @@
+#forget-passowrd-link {
+    text-decoration: none;
+    color: rgb(6, 172, 116);
+  }
+  #forget-passowrd-link:hover{
+    font-size: larger;
+    font-weight: bolder;
+    transition: 0.5s;
+  }

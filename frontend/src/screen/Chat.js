@@ -6,11 +6,15 @@ import { useLocation, useNavigate } from "react-router-dom";
 import naem from "../../src/asset/naemblack.jpg";
 const Chat = (props) => {
   const { state } = useLocation();
-  //console.log("state : ", state);
+  console.log("state chat : ", state);
   //const state = { imgUrl: "", profileName: "naem", dmId: 2, userId: 3 };
   return (
     <div className="flexbox-container">
-      <ChatLeft imgUrl={state.imgUrl} name={state.profileName} />
+      <ChatLeft
+        imgUrl={state.imgUrl}
+        name={state.profileName}
+        userId={state.userId}
+      />
       <ChatRight dmId={state.dmId} userId={state.userId} />
     </div>
   );

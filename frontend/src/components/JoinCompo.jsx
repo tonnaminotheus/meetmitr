@@ -13,6 +13,7 @@ import axios from "axios";
 //new
 import Cookies from "universal-cookie";
 import NotificationModal from "./modal/NotificationModal";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 import nuke from "../asset/nuclear.png";
 import weed from "../asset/weed.jpg";
@@ -25,40 +26,42 @@ import john from "../asset/John.jpg";
 
 function JoinComponent() {
   //test cookie
-  const cookies = new Cookies();
-  console.log("in feed");
+  var cookies = new Cookies();
+  var userData = cookies.get("cookie");
   console.log(cookies.get("cookie"));
 
-  let accessToken = cookies.get("cookie").accessToken;
+  let accessToken = cookies.accessToken;
+  const [numPage, setNumPage] = useState(1);
 
-  //noti modal state
   const [notificationState, setNotificationModalState] = useState(false);
 
-  const [cardInfo, setCardInfo] = useState({});
-  const [cardsInfo, setCardsInfo] = useState({});
+  const [cardInfo, setCardInfo] = useState([]);
 
   const [search, setSearch] = useState("");
   const [modalstate, setModalstate] = useState(false);
-  const [joinEventFilterProps, setJoinEventFilterProps] = useState({});
+  const [submitted, setSubmitted] = useState(0);
+  const [time, setTime] = useState({});
+  const [usingFilter, setUsingFilter] = useState(false);
+  const [disable, setDisable] = useState(false);
+  const [lockButtStyle, setLockButtStyle] = useState("");
 
   useEffect(() => {
     let isMounted = true;
     axios
-      .get(globalApi.recommendFeed + "1", {
+      .get(globalApi.recommendFeed + String(numPage), {
         headers: {
-          Authorization: "Bearer " + accessToken,
+          "Authorization": "Bearer " + userData.accessToken,
         },
       })
       .then((res) => {
         if (isMounted) {
-          console.log(res.data);
-          setCardInfo(res.data);
-          // setCardsInfo((prevState) => {
-          //   return {
-          //     ...prevState,
-          //     cardInfo,
-          //   };
-          // });
+          console.log(res.data["EventList"]);
+          setCardInfo([...cardInfo, ...res.data["EventList"]]);
+          console.log([...cardInfo, ...res.data["EventList"]]);
+          if (res.data["EventList"].length == 0) {
+            setDisable(true);
+            setLockButtStyle("#535353");
+          }
         }
       })
       .catch(function (error) {
@@ -68,7 +71,37 @@ function JoinComponent() {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [numPage]);
+
+  useEffect(() => {
+    console.log("run useEffect");
+    console.log(submitted);
+    if (Object.keys(time).length > 0)
+      axios({
+        method: "post",
+        url: globalApi.getFilteredEvent + "1",
+        headers: {
+          authorization: "Bearer " + userData.accessToken,
+        },
+        data: time,
+      })
+        .then(function (res) {
+          if (submitted > 0) {
+            console.log("modal recieve data");
+            console.log(res.data["EventList"]);
+            setCardInfo([...cardInfo, ...res.data["EventList"]]);
+            setDisable(true);
+            setLockButtStyle("#535353");
+          }
+        })
+        .catch(function (error) {
+          console.log("error!!");
+          console.log(error);
+        })
+        .then(function () {
+          // always executed
+        });
+  }, [submitted]);
 
   const updateSearch = (event) => {
     // console.log(event.target.value);
@@ -84,10 +117,10 @@ function JoinComponent() {
   };
 
   //passed function
-  const onFilterSubmit = (filter_props) => {
-    console.log("get props from child compo");
-    setJoinEventFilterProps(filter_props);
-  };
+  // const onFilterSubmit = (filter_props) => {
+  //   console.log("get props from child compo");
+  //   setJoinEventFilterProps(filter_props);
+  // };
 
   const date = () => {
     var today = new Date();
@@ -100,12 +133,12 @@ function JoinComponent() {
     return date;
   };
 
-  console.log(cardInfo["EventList"]);
+  console.log(cardInfo);
   console.log(Object.keys(cardInfo).length);
 
   let filteredEvents =
     Object.keys(cardInfo).length !== 0 &&
-    cardInfo["EventList"].filter((event) => {
+    cardInfo.filter((event) => {
       console.log(event.name);
       return event.name.toLowerCase().indexOf(search.toLowerCase()) !== -1;
     });
@@ -139,9 +172,15 @@ function JoinComponent() {
         </Row>
       </Form.Group>
       <JoinEventFilterModal
-        onFilterSubmit={onFilterSubmit}
+        // onFilterSubmit={onFilterSubmit}
         mState={modalstate}
+        setMState={setModalstate}
         onClose={setModalClose}
+        setEvent={setCardInfo}
+        setNumPage={setNumPage}
+        submitted={submitted}
+        setSubmitted={setSubmitted}
+        setTime={setTime}
       />
 
       <NotificationModal
@@ -149,12 +188,33 @@ function JoinComponent() {
         setNotificationModalState={setNotificationModalState}
       />
 
-      {/* <input
-          type="text"
-          value={this.state.search}
-          onChange={this.updateSearch.bind(this)}
-        ></input> */}
       <Cards events={filteredEvents} />
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <button
+          className="loadButt"
+          disable={disable}
+          onClick={() => setNumPage(numPage + 1)}
+          style={{ backgroundColor: lockButtStyle }}
+        >
+          Load events
+        </button>
+      </div>
+
+      {/* <div style="height:700px;overflow:auto;">
+        <InfiniteScroll
+          pageStart={1}
+          loadMore={loadFunc}
+          hasMore={true || false}
+          loader={
+            <div className="loader" key={0}>
+              Loading ...
+            </div>
+          }
+          useWindow={false}
+        >
+          {items}
+        </InfiniteScroll>
+      </div> */}
     </div>
   );
 }

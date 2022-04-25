@@ -1,6 +1,8 @@
 // import "./FormComponent.css";
 import "../components/css_extensions/form_control.css";
 
+import "./FormComponent.css"
+
 import globalApi from "../globalApi";
 
 import Cookies from "universal-cookie";
@@ -61,7 +63,7 @@ const FormComponent = (props) => {
 
   // authen ip modal -------------------------------------------
   
-  const [isAuthenModalOpen, setauthenModalOpen] = useState(false)
+  const setAuthenModalOpen = props.setAuthenModalOpen;
 
   // -----------------------------------------------------------
 
@@ -84,7 +86,7 @@ const FormComponent = (props) => {
 
     const data = {
       email: document.getElementById("email-input-box").value,
-      // "password": hash(document.getElementById("password-input-box").value)
+      // password: hash(document.getElementById("password-input-box").value),
       password: document.getElementById("password-input-box").value,
       ip: cookies.get("cookie")["ip"]
     };
@@ -118,7 +120,7 @@ const FormComponent = (props) => {
           console.log(response)
           //verify email
           // preventDefault();
-          setauthenModalOpen(true)
+          props.setAuthenModalOpen(true)
         }
       })
       .catch(function (error) {

@@ -1,4 +1,4 @@
-const url = "http://44.203.152.173:8080";
+const url = "http://44.201.205.13:8080";
 const globalApi = {
   register: `${url}/api/v1/register`,
   login: `${url}/api/v1/login`,
@@ -10,6 +10,7 @@ const globalApi = {
   eventDescription: `${url}/api/v1/event/descriptions/`, //+:eventId v2022.01
   createEvent: `${url}/api/v1/event/create`, //v2022.01
   userData: `${url}/api/v1/user/`, //+:userId
+  editProfile: `${url}/api/v1/user`, //PUT
   upload: `${url}/api/v1/upload`,
   rate: `${url}/api/v1/rate/`,
   recommendFeed: `${url}/api/v1/home/`, //+:numPage v2022.01
@@ -18,8 +19,11 @@ const globalApi = {
   chatSocket: `ws://${url.slice(7)}/api/v1/chat/room/`, //+ token
   postQuiz: `${url}/api/v1/quiz`,
   getAllNoti: `${url}/api/v1/noti/getAll`,
+  getFilteredEvent: `${url}/api/v1/home/avt/`, //+ numPage
   getNotiCount: `${url}/api/v1/noti/getCount`,
   chatToken: `${url}/api/v1/chat/token/`, //+ chatType + userId
+  chatPartner: `${url}/api/v1/chat/partners/`,
+  getAllNoti: `${url}/api/v1/noti/getAll`,
 };
 
 export default globalApi;

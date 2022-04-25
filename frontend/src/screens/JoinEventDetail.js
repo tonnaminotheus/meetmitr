@@ -1,7 +1,5 @@
 import "./JoinEventDetail.css";
 import styled from "styled-components";
-import host from "../asset/naemblack.jpg";
-import logo from "../asset/icon.png";
 import React, { useEffect } from "react";
 import moment from "moment";
 import axios from "axios";
@@ -9,6 +7,7 @@ import globalApi from "../globalApi";
 import ImageGallery from "react-image-gallery";
 import { useLocation, useNavigate } from "react-router-dom";
 import Cookie from "universal-cookie";
+import Participant from "../components/Participant";
 
 const JoinOrEditButton = styled.button`
   background-color: #ffc229;
@@ -91,21 +90,7 @@ function JoinEventDetail(props) {
   const [progressData, setProgressData] = React.useState("50%");
   const [joined, setJoined] = React.useState(false);
   const [owner, setOwner] = React.useState(false);
-  const [eventId, setEventId] = React.useState(0);
   const [images, setImages] = React.useState([]);
-  const [hostData, setHostData] = React.useState({
-    userId: 1,
-    email: "test@gmail.com",
-    gender: "unspecified",
-    profileName: "jack",
-    bio: "",
-    birthdate: "2000-11-23",
-    firstName: "ryuio",
-    middleName: "ioio",
-    lastName: "ryuryu",
-    numberOfPenalty: 0,
-    profilePicUrl: "",
-  });
   const [eventData, setEventData] = React.useState({
     eventId: 2,
     name: "What",
@@ -121,15 +106,20 @@ function JoinEventDetail(props) {
     price: 0,
     createdTimeStamp: "2022-02-13 07:56:41",
     creatorId: 1,
+    creatorName: "JackDeBuff",
+    creatorImage: "imgUrl",
+
     participants: ["PRyuSudHod", "PRyuSudTae"],
   });
+  const [participants, setParticipants] = React.useState([]);
 
   const joinEvent = () => {
+    console.log(userData.accessToken);
     axios({
       method: "POST",
       url: globalApi.joinEvent + eventData.eventId,
       headers: {
-        authorization: userData.accessToken,
+        authorization: "Bearer " + userData.accessToken,
       },
     })
       .then((respond) => {
@@ -141,7 +131,28 @@ function JoinEventDetail(props) {
         setProgressData(percent);
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error.respond);
+        alert(error);
+      });
+  };
+  const unJoinEvent = () => {
+    axios({
+      method: "DELETE",
+      url: globalApi.unJoinEvent + eventData.eventId,
+      headers: {
+        authorization: "Bearer " + userData.accessToken,
+      },
+    })
+      .then((respond) => {
+        setJoined(false);
+        const nAttenNum = attendance - 1;
+        const percent =
+          String((nAttenNum / eventData.maxParticipant) * 100) + "%";
+        setAttendance(nAttenNum);
+        setProgressData(percent);
+      })
+      .catch((error) => {
+        console.log(error.response);
         alert(error);
       });
   };
@@ -154,6 +165,7 @@ function JoinEventDetail(props) {
       },
     })
       .then((respond) => {
+        console.log("EVENT DATA", respond.data);
         setOwner(respond.data.creatorId === userData.userID);
         var attenNum = 0;
         if (respond.data.participants) {
@@ -166,7 +178,6 @@ function JoinEventDetail(props) {
         setAttendance(attenNum);
         setProgressData(percent);
         setJoined(respond.data.isJoin);
-        const hostId = respond.data.creatorId;
         var imageList = [];
         console.log(respond.data.imagUrl);
         for (const image of respond.data.imagUrl) {
@@ -176,16 +187,16 @@ function JoinEventDetail(props) {
           });
         }
         setImages(imageList);
+        var participantList = [];
+        for (var i = 0; i < respond.data.participantsId.length; i++) {
+          participantList.push({
+            id: respond.data.participantsId[i],
+            image: respond.data.participantsImage[i],
+          });
+        }
+        setParticipants(participantList);
         console.log(imageList);
         console.log(respond.data);
-        axios({
-          method: "GET",
-          url: globalApi.userData + hostId,
-        })
-          .then((respond) => {
-            setHostData(respond.data);
-          })
-          .catch((error) => {});
       })
       .catch((error) => {
         console.log(error);
@@ -224,9 +235,9 @@ function JoinEventDetail(props) {
             </p>
           </div>
           <div className="header-right">
-            <img className="host" src={host} alt="" />
+            <img className="host" src={eventData.creatorImage} alt="" />
             <p>
-              {hostData.profileName} is <span>Host!</span>
+              {eventData.creatorName} is <span>Host!</span>
             </p>
           </div>
         </div>
@@ -251,17 +262,9 @@ function JoinEventDetail(props) {
                 {joined && (
                   <JoinedButton
                     type="submit"
-                    onClick={() => {
-                      setJoined(false);
-                      const nAttenNum = attendance - 1;
-                      const percent =
-                        String((nAttenNum / eventData.maxParticipant) * 100) +
-                        "%";
-                      setAttendance(nAttenNum);
-                      setProgressData(percent);
-                    }}
+                    onClick={unJoinEvent}
                     onMouseEnter={() => {
-                      console.log("eventId is " + eventId);
+                      console.log("eventId is " + eventData.eventId);
                     }}
                   >
                     Joined
@@ -272,7 +275,7 @@ function JoinEventDetail(props) {
                     type="submit"
                     onClick={joinEvent}
                     onMouseEnter={() => {
-                      console.log("eventId is " + eventId);
+                      console.log("eventId is " + eventData.eventId);
                     }}
                   >
                     Join
@@ -352,7 +355,15 @@ function JoinEventDetail(props) {
           <div className="tabbar-detail">
             {show[0] && <p>{eventData.description}</p>}
             {show[1] && <p>{eventData.address}</p>}
-            {show[2] && <p>{eventData.participants}</p>}
+            {show[2] && (
+              <p>
+                {participants.map((item) => {
+                  return (
+                    <Participant id={item.id} participantImage={item.image} />
+                  );
+                })}
+              </p>
+            )}
           </div>
         </div>
       </div>

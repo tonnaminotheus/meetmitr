@@ -3,8 +3,7 @@ import React, { useEffect, useState } from "react";
 import globalApi from "../globalApi";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import Cookies from "universal-cookie";
-const cookies = new Cookies();
-let currentUserId = cookies.get("cookie").userID;
+
 var axios = require("axios").default;
 const textChat = {
   maxWidth: 500,
@@ -69,6 +68,7 @@ const ChatRight = (props) => {
   //console.log("COOKIES : ", cookies);
   let accessToken = cookies.get("cookie").accessToken;
 
+  let currentUserId = cookies.get("cookie").userID;
   //const [messageHistory, setMessageHistory] = useState([]);
 
   //const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
@@ -85,6 +85,7 @@ const ChatRight = (props) => {
     console.log(text);
   }, [socketArray, text, setText, setSocketArray]);
   useEffect(() => {
+    console.log("TOKEN LINK", globalApi.chatToken + `dm/${props.userId}`);
     axios({
       method: "get",
       url: globalApi.chatToken + `dm/${props.userId}`,
@@ -95,11 +96,12 @@ const ChatRight = (props) => {
       .then(function (response) {
         console.log(response.data);
         setSocketUrl(globalApi.chatSocket + response.data.token);
+        console.log("URL", globalApi.chatSocket + response.data.token);
         requestChatHistory();
         //redirect
       })
       .catch(function (error) {
-        console.log("error!!");
+        console.log("error at chatToken");
         console.log(error.response);
       })
       .then(function () {
@@ -126,7 +128,7 @@ const ChatRight = (props) => {
 
   const handleClickSendMessage = () => {
     //sendMessage("text");
-    console.log("TEXT ON CHANGE : ", text);
+    console.log("TEXT SENDING : ", text);
     sendMessage(text);
   };
 
@@ -152,7 +154,7 @@ const ChatRight = (props) => {
         //redirect
       })
       .catch(function (error) {
-        console.log("error!!");
+        console.log("error at chatHistory");
         console.log(error.response);
       })
       .then(function () {
