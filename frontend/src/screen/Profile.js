@@ -182,7 +182,11 @@ const Profile = (props) => {
           ></img>
           <div
             className="ProfileDesc"
-            style={{ display: "flex", flexDirection: "column" }}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              flex: 1,
+            }}
           >
             <div
               style={{
@@ -196,7 +200,35 @@ const Profile = (props) => {
               >
                 {profileName == "" ? "user" : profileName}
               </text>
-              {button}
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "flex-end",
+                  flex: 1,
+                  marginRight: 32,
+                }}
+              >
+                {button}
+                <button
+                  style={{
+                    width: 210,
+                    height: 59,
+                    fontFamily: "Roboto",
+                    fontSize: 36,
+                    backgroundColor: "#FFC229",
+                    color: "white",
+                    borderRadius: 11,
+                    marginTop: 16,
+                    borderWidth: 0,
+                  }}
+                  onClick={() => {
+                    navigate("/feed");
+                  }}
+                >
+                  To Feed
+                </button>
+              </div>
             </div>
 
             <text style={{ fontFamily: "Roboto", fontSize: 36 }}>
