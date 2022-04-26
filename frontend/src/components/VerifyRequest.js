@@ -13,12 +13,15 @@ import Row from "react-bootstrap/Row";
 import { useNavigate } from "react-router-dom";
 
 import RequestComponent from "./RequestComponent";
+import MMheader from "./MMheader";
 
 const VerifyRequest=(props)=>{
     
     //attr
     const [isAdmin, setAdmin] = useState(false)
     const [requests, setRequests] = useState([])
+
+    const [notificationState, setNotificationModalState] = useState(false);
 
     //get cookie
     const cookies = new Cookies()
@@ -86,6 +89,14 @@ const VerifyRequest=(props)=>{
 
     return (
         <div className="backG">
+            <MMheader
+                name="Verify Request"
+                navName="Manage Event"
+                toBeNavi="/feed"
+                isAdmin={true}
+                notificationState={notificationState}
+                setNotificationModalState={setNotificationModalState}
+            />
             <div className="verify-page-container">
                 <h1>Hello!!!</h1>
                 <RequestComponent/>

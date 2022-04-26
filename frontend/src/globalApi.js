@@ -1,9 +1,4 @@
-<<<<<<< HEAD
 const url = "http://3.86.12.64:8080";
-=======
-const url = "http://44.204.176.139:8080";
-
->>>>>>> bba96516ae36597de7395850ad08cf7d1663a89a
 const globalApi = {
   register: `${url}/api/v1/register`,
   login: `${url}/api/v1/login`,
