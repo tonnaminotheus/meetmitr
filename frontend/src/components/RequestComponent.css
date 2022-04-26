@@ -6,10 +6,12 @@
     padding: 1%;
     /* margin: 2%; */
     background-color: white;
+    margin-top: 2vh;
+    margin-bottom: 2vh;
 }
 
 .verify-btn-container{
-    background-color: #FFDB87;
+    /* background-color: #FFDB87; */
     padding: 20px;
     margin: 2px;
     margin-top: 5%;
@@ -20,9 +22,10 @@
     width: 30vh;
     text-align: center;
     /* float: right; */
-    
-    
-    
+}
+
+.extra-margin{
+    margin : 10px
 }
 
 .showAdminProfilePic{
@@ -34,10 +37,14 @@
     text-align: left;
 }
 
-.col-center{
-    /* text-align: center; */
+/* .col-center{
+    text-align: center;
 }
 
 .col-right{
-    /* text-align: right; */
-}
+    text-align: right;
+} */
+
+/* .accept_verify{
+    
+} */
