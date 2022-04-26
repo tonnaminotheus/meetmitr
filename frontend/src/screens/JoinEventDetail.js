@@ -43,6 +43,23 @@ const JoinedButton = styled.button`
   font-family: "Roboto", sans-serif;
   align-self: flex-end;
 `;
+const DeleteButton = styled.button`
+  background-color: #c72200;
+  color: #ffffff;
+  border-radius: 15px;
+  outline: 0;
+  border: 0px;
+  cursor: pointer;
+  transition: ease background-color 250ms;
+  height: 77px;
+  width: 246px;
+  margin-right: 10px;
+  margin-left: 0px;
+  font-size: 30px;
+  font-weight: bold;
+  font-family: "Roboto", sans-serif;
+  align-self: flex-end;
+`;
 const SelectedTabbarButton = styled.button`
   background-color: transparent;
   color: #000000;
@@ -86,6 +103,7 @@ function JoinEventDetail(props) {
   var cookies = new Cookie();
   var userData = cookies.get("cookie");
   const [show, setShow] = React.useState([true, false, false]);
+  const [isAdmin, setIsAdmin] = React.useState(false);
   const [attendance, setAttendance] = React.useState(0);
   const [progressData, setProgressData] = React.useState("50%");
   const [joined, setJoined] = React.useState(false);
@@ -156,6 +174,21 @@ function JoinEventDetail(props) {
         alert(error);
       });
   };
+  const deleteEvent = () => {
+    axios({
+      method: "DELETE",
+      url: globalApi.deleteEvent + eventData.eventId,
+      headers: {
+        authorization: "Bearer " + userData.accessToken,
+      },
+    })
+      .then((respond) => {
+        navigate("/feed");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   useEffect(() => {
     axios({
       method: "GET",
@@ -197,6 +230,20 @@ function JoinEventDetail(props) {
         setParticipants(participantList);
         console.log(imageList);
         console.log(respond.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    axios({
+      method: "GET",
+      url: globalApi.isAdmin,
+      headers: {
+        authorization: "Bearer " + userData.accessToken,
+      },
+    })
+      .then((respond) => {
+        setIsAdmin(respond.data.isAdmin);
       })
       .catch((error) => {
         console.log(error);
@@ -244,8 +291,12 @@ function JoinEventDetail(props) {
         <div className="status">
           <div className="joinButton">
             <p>Price : {eventData.price} Coin</p>
-
-            {owner && (
+            {isAdmin && (
+              <DeleteButton type="submit" onClick={deleteEvent}>
+                Delete
+              </DeleteButton>
+            )}
+            {!isAdmin && owner && (
               <JoinOrEditButton
                 type="submit"
                 onClick={() => {
@@ -257,7 +308,7 @@ function JoinEventDetail(props) {
                 Edit
               </JoinOrEditButton>
             )}
-            {!owner && (
+            {!isAdmin && !owner && (
               <div>
                 {joined && (
                   <JoinedButton

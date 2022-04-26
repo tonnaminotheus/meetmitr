@@ -160,61 +160,46 @@ const NotificationModal=(props)=>{
 
 
     return (
-        <div>
-            <Modal
-                closeTimeoutMS={200}
-                isOpen={isModalShow}
-                contentLabel="modal"
-                onRequestClose={() => hideModal}
-                style={customStyles}
-            >
-                <div className='modal_header'>
-                    <h3>Notifications <Button className='btn custom-button'variant="info" style={{"position": "relative", "float": "right", "top":"0", "marginTop":"0"}}>{noti_count}</Button></h3>
-                </div>
-                {all_noti.length > 0 && all_noti.map((noti, index)=>{
-                        return <NotiBox key={index} noti={noti}/>
-                })}
-                {all_noti.length <= 0 && <NotiBox noti={{
-                    "notiContent" : "No new Notifications",
-                    "url" : "/",
-                    "dateTime" : "2021-11-23 23:22:00"
-                }}
-                />}
-
-                <div style={{"position": "absolute", "bottom": "0", "right": "0", "margin": "10px"}}><Button className='btn custom-button'variant="success" onClick={hideModal}>Close</Button></div>
- 
-        {all_noti.length > 0 &&
-          all_noti.map((noti) => {
-            return <NotiBox noti={noti} />;
-          })}
-        {all_noti.length <= 0 && (
-          <NotiBox
-            noti={{
-              notiContent: "No new Notifications",
-              url: "/",
-              dateTime: "2021-11-23 23:22:00",
-            }}
-          />
-        )}
-
-        <div
-          style={{
-            position: "absolute",
-            bottom: "0",
-            right: "0",
-            margin: "10px",
-          }}
+      <div>
+        <Modal
+        closeTimeoutMS={200}
+        isOpen={isModalShow}
+        contentLabel="modal"
+        onRequestClose={hideModal}
+        shouldCloseOnEsc={true}
+        shouldCloseOnOverlayClick={false}
+        style={customStyles}
         >
-          <Button
-            className="btn custom-button"
-            variant="success"
-            onClick={hideModal}
+          <div className='modal_header'>
+              <h3>Notifications <Button className='btn custom-button'variant="info" style={{"position": "relative", "float": "right", "top":"0", "marginTop":"0"}}>{noti_count}</Button></h3>
+          </div>
+          {all_noti.length > 0 && all_noti.map((noti, index)=>{
+                  return <NotiBox key={index} noti={noti}/>
+          })}
+          {all_noti.length <= 0 && <NotiBox noti={{
+              "notiContent" : "No new Notifications",
+              "url" : "/",
+              "dateTime" : "2021-11-23 23:22:00"
+          }}
+          />}
+
+          <div
+            style={{
+              position: "relative",
+              bottom: "0",
+              "float": "right",
+              margin: "10px",
+            }}
           >
-            Close
-          </Button>
-        </div>
-      </Modal>
-    </div>
+            <Button
+              className="btn custom-button"
+              variant="success"
+              onClick={hideModal}
+            >Close
+            </Button>
+          </div>
+        </Modal>
+      </div>
   );
 };
 

@@ -1,4 +1,4 @@
-const url = "http://44.201.205.13:8080";
+const url = "http://3.86.12.64:8080";
 const globalApi = {
   register: `${url}/api/v1/register`,
   login: `${url}/api/v1/login`,
@@ -9,6 +9,7 @@ const globalApi = {
   updateEvent: `${url}/api/v1/event/update/`, //+:eventId v2022.01 (Auth)
   eventDescription: `${url}/api/v1/event/descriptions/`, //+:eventId v2022.01
   createEvent: `${url}/api/v1/event/create`, //v2022.01
+  deleteEvent: `${url}/api/v1/event/`, //:eventId,
   userData: `${url}/api/v1/user/`, //+:userId
   editProfile: `${url}/api/v1/user`, //PUT
   upload: `${url}/api/v1/upload`,
@@ -24,6 +25,10 @@ const globalApi = {
   chatToken: `${url}/api/v1/chat/token/`, //+ chatType + userId
   chatPartner: `${url}/api/v1/chat/partners/`,
   getAllNoti: `${url}/api/v1/noti/getAll`,
+  isAdmin: `${url}/api/v1/isAdmin`,
+  veriRequest: `${url}/api/v1/user/veriRequest`,
+  getRequests: `${url}/api/v1/veriRequests`,
+  verifyUser: `${url}/api/v1/verify`
 };
 
 export default globalApi;
