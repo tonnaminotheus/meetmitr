@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 const url = "http://3.86.12.64:8080";
+=======
+const url = "http://44.204.176.139:8080";
+
+>>>>>>> bba96516ae36597de7395850ad08cf7d1663a89a
 const globalApi = {
   register: `${url}/api/v1/register`,
   login: `${url}/api/v1/login`,
@@ -24,7 +29,10 @@ const globalApi = {
   chatToken: `${url}/api/v1/chat/token/`, //+ chatType + userId
   chatPartner: `${url}/api/v1/chat/partners/`,
   getAllNoti: `${url}/api/v1/noti/getAll`,
-  isAdmin: `${url}/api/v1/isAdmin`
+  isAdmin: `${url}/api/v1/isAdmin`,
+  veriRequest: `${url}/api/v1/user/veriRequest`,
+  getRequests: `${url}/api/v1/veriRequests`,
+  verifyUser: `${url}/api/v1/verify`
 };
 
 export default globalApi;
