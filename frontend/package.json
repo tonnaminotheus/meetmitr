@@ -13,6 +13,7 @@
     "multiselect-react-dropdown": "^2.0.21",
     "navigate": "^0.3.6",
     "object-hash": "^2.2.0",
+    "package": "^1.0.1",
     "package.json": "^2.0.1",
     "react": "^17.0.2",
     "react-bootstrap": "^2.1.2",

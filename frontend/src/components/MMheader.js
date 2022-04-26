@@ -29,7 +29,7 @@ const MMheader = (props) => {
           <h1 className="feedHeader">{props.name}</h1>
         </Col>
         <Col>
-          <div className="navButt">
+          {!props.isAdmin && <div className="navButt">
             <img
               src={createButt}
               alt="create"
@@ -57,7 +57,17 @@ const MMheader = (props) => {
               }}  
             ></img>
             <img src={drop} alt="drop" className="dropSetting"></img>
-          </div>
+          </div>}
+          {props.isAdmin && <div>
+            <button
+            className="topRightButt"
+            onClick={() => {
+              navigate(props.toBeNavi);
+            }}
+          >
+            <span className="topRightText">{props.navName}</span>
+          </button>
+          </div>}
         </Col>
       </Row>
     </div>
