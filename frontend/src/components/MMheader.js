@@ -62,7 +62,7 @@ const MMheader = (props) => {
             <button
             className="topRightButt"
             onClick={() => {
-              navigate("/chatList");
+              navigate(props.toBeNavi);
             }}
           >
             <span className="topRightText">{props.navName}</span>

@@ -173,6 +173,7 @@ function JoinComponent() {
       {isAdmin && <MMheader
         name="Manage Event"
         navName="Verify Request"
+        toBeNavi="/verify"
         isAdmin={isAdmin}
         notificationState={notificationState}
         setNotificationModalState={setNotificationModalState}
