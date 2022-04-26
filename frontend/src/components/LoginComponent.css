@@ -1,0 +1,11 @@
+.login-box{
+    /* border-style:groove;
+    border-color: crimson; */
+    margin : 5px;
+
+    display: flex;
+    flex: 50%;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+}

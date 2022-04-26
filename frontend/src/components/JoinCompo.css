@@ -1,0 +1,31 @@
+.Searcher{
+    margin-left: 30%;
+    margin-top: 20px;
+}
+
+.backG {
+    background-image: url("../asset/MeetmitrBgNoHead.png"); /* The image used */
+    background-color: #FAF3E7; /* Used if the image is unavailable */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: cover; /* Resize the background image to cover the entire container */
+    background-attachment: fixed;
+    height: 100vh;
+}
+
+.loadButt {
+    background-color: #ffc229;
+    color: white;
+    border-radius: 15px;
+    outline: 0;
+    border: 0px;
+    cursor: pointer;
+    transition: ease background-color 250ms;
+    height: 70px;
+    width: 230px;
+    margin-top: 30px;
+    margin-bottom: 50px;
+    font-size: 30px;
+    font-weight: bold;
+    font-family: "Roboto", sans-serif;
+}

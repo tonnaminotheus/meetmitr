@@ -1,0 +1,17 @@
+.form-box{
+    padding: 5px;
+    /* border-style: dashed; */
+    /* border-color: black; */
+    
+    /* text-align: center; */
+    /* justify-content: center; */
+    /* display: flex; */
+}
+
+#create_event_img_upload:hover{
+    transform: scale(1.1);
+}
+
+#upload-pic-btn:hover{
+    transform: scale(1.1);
+}
