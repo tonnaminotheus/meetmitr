@@ -113,7 +113,7 @@ function JoinComponent() {
       }
     })
       .then(function (res) {
-      setIsAdmin(res.data["isAdmin"]);
+        setIsAdmin(res.data["isAdmin"]);
       })
       .catch(function (error) {
         console.log("error!!");
