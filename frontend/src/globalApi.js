@@ -9,6 +9,7 @@ const globalApi = {
   updateEvent: `${url}/api/v1/event/update/`, //+:eventId v2022.01 (Auth)
   eventDescription: `${url}/api/v1/event/descriptions/`, //+:eventId v2022.01
   createEvent: `${url}/api/v1/event/create`, //v2022.01
+  deleteEvent: `${url}/api/v1/event/`, //:eventId,
   userData: `${url}/api/v1/user/`, //+:userId
   editProfile: `${url}/api/v1/user`, //PUT
   upload: `${url}/api/v1/upload`,
