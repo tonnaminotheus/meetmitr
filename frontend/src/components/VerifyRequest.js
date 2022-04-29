@@ -97,6 +97,9 @@ const VerifyRequest = (props) => {
           requests.map((req, index) => {
             return <RequestComponent key={index} userData={req} />;
           })}
+        {requests.length === 0 && (
+          <p style={{ fontSize: "30px" }}>No Requests From Users</p>
+        )}
         {/* Stack */}
       </div>
     </div>
