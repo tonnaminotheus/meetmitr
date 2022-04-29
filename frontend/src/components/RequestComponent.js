@@ -62,13 +62,14 @@ const RequestComponent=(props)=>{
             timeout: 8000
         })
         .then((res)=>{
+            console.log("ok herble")
             if (res.status === 200) {
-                console.log(res.data["message"])
+                console.log(res.data)
             }
         })
         .catch(error => {
             console.log("error!!")
-            console.log(error.data["message"])
+            console.log(error)
         })
     }
 
@@ -78,7 +79,7 @@ const RequestComponent=(props)=>{
         setStatus({"isVerified":true, "msg":"User Accepted"})
 
         //api
-
+        requestVerification(status["isVerified"], toVerifyUID)
     }
 
     const handleReject=(event)=>{
@@ -86,7 +87,7 @@ const RequestComponent=(props)=>{
         setStatus({"isVerified":true, "msg":"User Rejected"})
 
         //api
-
+        requestVerification(status["isVerified"], toVerifyUID)
     }
     
     const getButtons=()=>{
