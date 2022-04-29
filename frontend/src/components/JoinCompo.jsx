@@ -44,7 +44,7 @@ function JoinComponent() {
   const [usingFilter, setUsingFilter] = useState(false);
   const [disable, setDisable] = useState(false);
   const [lockButtStyle, setLockButtStyle] = useState("");
-  const [isAdmin, setIsAdmin] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -106,7 +106,7 @@ function JoinComponent() {
 
   useEffect(() => {
     axios({
-      method: "post",
+      method: "get",
       url: globalApi.isAdmin,
       headers: {
         authorization: "Bearer " + userData.accessToken,
