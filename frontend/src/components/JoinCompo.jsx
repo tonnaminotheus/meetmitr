@@ -51,7 +51,7 @@ function JoinComponent() {
     axios
       .get(globalApi.recommendFeed + String(numPage), {
         headers: {
-          "Authorization": "Bearer " + userData.accessToken,
+          Authorization: "Bearer " + userData.accessToken,
         },
       })
       .then((res) => {
@@ -106,11 +106,11 @@ function JoinComponent() {
 
   useEffect(() => {
     axios({
-      method: "post",
+      method: "get",
       url: globalApi.isAdmin,
       headers: {
         authorization: "Bearer " + userData.accessToken,
-      }
+      },
     })
       .then(function (res) {
         setIsAdmin(res.data["isAdmin"]);
@@ -118,7 +118,7 @@ function JoinComponent() {
       .catch(function (error) {
         console.log("error!!");
         console.log(error);
-      })
+      });
   });
 
   const updateSearch = (event) => {
@@ -163,21 +163,25 @@ function JoinComponent() {
 
   return (
     <div className="backG">
-      {!isAdmin && <MMheader
-        name="Event Feed"
-        navName=""
-        isAdmin={isAdmin}
-        notificationState={notificationState}
-        setNotificationModalState={setNotificationModalState}
-      />}
-      {isAdmin && <MMheader
-        name="Manage Event"
-        navName="Verify Request"
-        toBeNavi="/v"
-        isAdmin={isAdmin}
-        notificationState={notificationState}
-        setNotificationModalState={setNotificationModalState}
-      />} 
+      {!isAdmin && (
+        <MMheader
+          name="Event Feed"
+          navName=""
+          isAdmin={isAdmin}
+          notificationState={notificationState}
+          setNotificationModalState={setNotificationModalState}
+        />
+      )}
+      {isAdmin && (
+        <MMheader
+          name="Manage Event"
+          navName="Verify Request"
+          toBeNavi="/v"
+          isAdmin={isAdmin}
+          notificationState={notificationState}
+          setNotificationModalState={setNotificationModalState}
+        />
+      )}
       <Form.Group className="Searcher" controlId="exampleForm.ControlInput1">
         <Row>
           <Col>
