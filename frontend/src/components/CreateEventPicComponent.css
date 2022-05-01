@@ -1,0 +1,23 @@
+.pic-component-container{
+    /* border-style: solid; */
+    border-color: black;
+    float: left;
+    width: 49%;
+    height:85vh;
+    /* overflow: auto; */
+    
+    /* text-align: center; */
+    justify-content:flex-start;
+    display: flex;
+    flex-direction: column;
+}
+
+.img-div-container{
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+}
+
+.img-div-container{
+    justify-content:flex-end;
+}

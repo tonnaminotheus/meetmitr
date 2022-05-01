@@ -1,0 +1,10 @@
+.info-component-container {
+    border-style:solid;
+    border-color: black;
+    border-radius: 10px;
+    float: right;
+    padding-left: 5px;
+    
+    width: 49%;
+    height: auto;
+}
