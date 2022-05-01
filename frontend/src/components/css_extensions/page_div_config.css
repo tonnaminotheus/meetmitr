@@ -1,0 +1,21 @@
+.App {
+    background-color: rgb(255, 218, 155);
+    height:95vh;
+    margin: 0.5%;
+    padding-left: 0.5%;
+    padding-right: 0.5%;
+  
+    background-image: url(https://cdn.discordapp.com/attachments/929697662901555230/940574193534271538/unknown.png);
+    background-size: cover;
+  }
+  
+  /* -------- global css ------------ */
+  /* a {
+    text-decoration: none;
+    color: rgb(0, 255, 170);
+  }
+  a:hover{
+    font-size: larger;
+    font-weight: bolder;
+    transition: 0.15s;
+  } */

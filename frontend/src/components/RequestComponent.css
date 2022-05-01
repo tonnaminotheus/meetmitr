@@ -1,0 +1,50 @@
+.request-container{
+    border-radius: 20px;
+    border-color: black;
+    border-style: solid;
+    border-width: 1px;
+    padding: 1%;
+    /* margin: 2%; */
+    background-color: white;
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+}
+
+.verify-btn-container{
+    /* background-color: #FFDB87; */
+    padding: 20px;
+    margin: 2px;
+    margin-top: 5%;
+    margin-bottom: 2%;
+    border: 5px;
+    border-radius: 20px;
+    border-width: 2px;
+    width: 30vh;
+    text-align: center;
+    /* float: right; */
+}
+
+.extra-margin{
+    margin : 10px
+}
+
+.showAdminProfilePic{
+    width: 100px;
+
+}
+
+.col-left{
+    text-align: left;
+}
+
+/* .col-center{
+    text-align: center;
+}
+
+.col-right{
+    text-align: right;
+} */
+
+/* .accept_verify{
+    
+} */
