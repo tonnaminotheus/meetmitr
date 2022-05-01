@@ -2,28 +2,32 @@ package database
 
 import (
 	"database/sql"
+	"log"
+	"os"
 
 	_ "github.com/go-sql-driver/mysql"
 )
 
 const (
-	address  = "rds-mysql-meetmitr.c3nxpkhzuwh3.us-east-1.rds.amazonaws.com:3306"
-	user     = "admin"
-	password = "preryusudhod"
+	address  = "meetmitr2.c3nxpkhzuwh3.us-east-1.rds.amazonaws.com:3306"
 	dbName   = "meetmitr"
 	protocal = "tcp"
 )
 
 var (
-	UserTable *sql.DB
+	user     = os.Getenv("dbUser")
+	Sql      *sql.DB
+	password = os.Getenv("dbPW")
 )
 
 func GetConnString() string {
 	return user + ":" + password + "@" + protocal + "(" + address + ")/" + dbName
 }
 
-func Init() error {
+func InitMySql() {
 	var err error
-	UserTable, err = sql.Open("mysql", GetConnString())
-	return err
+	Sql, err = sql.Open("mysql", GetConnString())
+	if err != nil {
+		log.Fatal(err)
+	}
 }

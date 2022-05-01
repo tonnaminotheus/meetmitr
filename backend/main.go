@@ -3,12 +3,10 @@ package main
 import (
 	"backend/database"
 	"backend/router"
-	"log"
 )
 
 func main() {
-	errs := database.Init()
-	log.Panic(errs)
+	database.Init()
 	router := router.GenerateRouter()
 	router.Run()
 }
