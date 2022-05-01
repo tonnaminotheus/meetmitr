@@ -4,16 +4,21 @@ import (
 	"crypto/tls"
 	"fmt"
 	"math/rand"
+	"os"
 	"time"
 
 	gomail "gopkg.in/mail.v2"
 )
 
+type ResponseMessage struct {
+	Message string `json:"message" example:"message"`
+}
+
 var (
 	randomSource  = rand.NewSource(time.Now().UTC().UnixNano())
 	random        = rand.New(randomSource)
 	MainEmail     = "se2.meetmitr@gmail.com"
-	EmailPassword = "preryusudhod"
+	EmailPassword = os.Getenv("prejacksudhod")
 	ActivatePath  = "/activate/"
 	StoragePath   = "gs://meetmitr-se2.appspot.com/"
 	BucketName    = "meetmitr-se2.appspot.com"

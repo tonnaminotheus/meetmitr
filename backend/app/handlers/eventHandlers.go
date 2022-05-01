@@ -392,3 +392,63 @@ func UnjoinEventHandler(c *gin.Context) {
 	})
 
 }
+
+// DeleteEventHandler delete event
+// @Summary delete event by creator or admin
+// @Description delete event by creator or admin
+// @Tags Event
+// @Param eventId path string true "eventId of event" default(1)
+// @Param Authorization header string false "check the authority of the one making request" default(Bearer <Add access token here>)
+// @ID DeleteEvnetHandler
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} utils.ResponseMessage
+// @Failure 400 {object} utils.ResponseMessage
+// @Router /api/v1/event/{eventId} [delete]
+func DeleteEventHandler(c *gin.Context) {
+	userId := c.GetString("user_id")
+	eventId := c.Param("eventId")
+	var id string
+	err := database.Sql.QueryRow("Select userId from Event where eventId = ?", eventId).Scan(&id)
+	if err != nil {
+		c.JSON(404, gin.H{
+			"message": "event not found",
+		})
+		return
+	}
+	if ok := id == userId || userService.IsAdmin(userId); !ok {
+		c.JSON(400, gin.H{
+			"message": "no authority",
+		})
+		return
+	}
+	_, err = database.Sql.Exec("delete from EventImage where eventId = ?", eventId)
+	if err != nil {
+		c.JSON(500, gin.H{
+			"message": err.Error(),
+		})
+	}
+	_, err = database.Sql.Exec("delete from EventTag where eventId = ?", eventId)
+	if err != nil {
+		c.JSON(500, gin.H{
+			"message": err.Error(),
+		})
+	}
+	_, err = database.Sql.Exec("delete from UserEventStatus where eventId = ?", eventId)
+	if err != nil {
+		c.JSON(500, gin.H{
+			"message": err.Error(),
+		})
+	}
+	_, err = database.Sql.Exec("delete from Event where eventId = ?", eventId)
+	if err != nil {
+		c.JSON(500, gin.H{
+			"message": err.Error(),
+		})
+	} else {
+		c.JSON(200, gin.H{
+			"message": "ok",
+		})
+	}
+
+}
