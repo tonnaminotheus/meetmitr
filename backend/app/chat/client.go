@@ -5,6 +5,8 @@
 package chat
 
 import (
+	"backend/app/models"
+	"backend/utils"
 	"bytes"
 	"log"
 	"net/http"
@@ -35,6 +37,10 @@ var (
 var upgrader = websocket.Upgrader{
 	ReadBufferSize:  1024,
 	WriteBufferSize: 1024,
+	// Resolve cross-domain problems
+	CheckOrigin: func(r *http.Request) bool {
+		return true
+	},
 }
 
 // Client is a middleman between the websocket connection and the hub.
@@ -45,7 +51,7 @@ type Client struct {
 	conn *websocket.Conn
 
 	// Buffered channel of outbound messages.
-	send chan Message
+	send chan models.Message
 }
 
 // readPump pumps messages from the websocket connection to the hub.
@@ -70,7 +76,8 @@ func (c *Client) readPump() {
 			break
 		}
 		message = bytes.TrimSpace(bytes.Replace(message, newline, space, -1))
-		c.hub.broadcast <- Message{Message: string(message), SenderId: c.userId, DateTime: time.Now()}
+		formatMessage := models.Message{Message: string(message), SenderId: c.userId, DateTime: utils.FormatTime(time.Now())}
+		c.hub.broadcast <- formatMessage
 	}
 }
 
@@ -129,7 +136,7 @@ func serveWs(hub *Hub, w http.ResponseWriter, r *http.Request, userId int) {
 		log.Println(err)
 		return
 	}
-	client := &Client{hub: hub, conn: conn, send: make(chan Message), userId: userId}
+	client := &Client{hub: hub, conn: conn, send: make(chan models.Message), userId: userId}
 	client.hub.register <- client
 
 	// Allow collection of memory referenced by the caller by doing all work in

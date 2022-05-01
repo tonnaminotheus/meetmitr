@@ -7,7 +7,7 @@ type Event struct {
 	Tags             []string `json:"tags"`
 	Address          string   `json:"address"`
 	Province         string   `json:"province"`
-	ImagUrl          string   `json:"imagUrl"`
+	ImagUrl          []string `json:"imagUrl"`
 	StartTime        string   `json:"startTime"`
 	EndTime          string   `json:"endTime"`
 	Onsite           bool     `json:"onsite"`
@@ -17,4 +17,14 @@ type Event struct {
 	UserID           int      `json:"creatorId"`
 	Participants     []string `json:"participants"`
 	IsJoin           bool     `json:"isJoin"`
+}
+
+type EventHome struct {
+	EventId   int      `json:"eventId"`
+	Name      string   `json:"name"`
+	Tags      []string `json:"tags"`
+	Address   string   `json:"address"`
+	Province  string   `json:"province"`
+	StartTime string   `json:"startTime"`
+	Images    []string `json:"images"`
 }

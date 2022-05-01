@@ -3,11 +3,8 @@ package services
 import (
 	"backend/app/responses"
 	"backend/utils"
-	"crypto/tls"
 
 	"backend/database"
-
-	gomail "gopkg.in/mail.v2"
 )
 
 func RegisterRequestValidator(err error) *responses.RegisterResp {
@@ -17,21 +14,9 @@ func RegisterRequestValidator(err error) *responses.RegisterResp {
 }
 
 func SendActivationfEmail(email, activateKey string) error {
-	sentence := "Please activate your MeetMitr account at\n" + utils.ActivatePath + activateKey
-	m := gomail.NewMessage()
-	m.SetHeader("From", utils.MainEmail)
-	m.SetHeader("To", email)
-	m.SetHeader("Subject", "Please Activate Your MeetMitr Account")
-	m.SetBody("text/plain", sentence)
-
-	d := gomail.NewDialer("smtp.gmail.com", 587, utils.MainEmail, utils.EmailPassword)
-	d.TLSConfig = &tls.Config{InsecureSkipVerify: true}
-
-	if err := d.DialAndSend(m); err != nil {
-		return err
-	}
-
-	return nil
+	sentence := "Please activate your MeetMitr account at\n" + utils.GetActivatePath() + activateKey
+	subject := "Please Activate Your MeetMitr Account"
+	return utils.SendTextEmail(email, subject, sentence)
 }
 
 func RepeatedEmail(email string) bool {

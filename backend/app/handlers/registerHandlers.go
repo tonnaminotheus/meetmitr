@@ -40,7 +40,7 @@ func RegisterHandler(c *gin.Context) {
 		`Insert Into PreUser
 		(activateKey, email, gender, profileName, birthDate, password, firstName, middleName, lastName, hideGender, createdAt)
 		VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-		activeKey, body.Email, body.Gender, body.FirstName + " " + body.LastName, body.BirthDate, body.Password,
+		activeKey, body.Email, body.Gender, body.FirstName+" "+body.LastName, body.BirthDate, body.Password,
 		body.FirstName, body.MiddleName, body.LastName, hideGender, createdAt)
 	if err != nil {
 		c.JSON(500, gin.H{
@@ -74,8 +74,8 @@ func ActivateUserHandler(c *gin.Context) {
 	}
 	_, err = database.Sql.Exec(
 		`Insert Into User
-		(email, gender, profileName, birthDate, password, firstName, middleName, lastName, hideGender)
-		VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+		(email, gender, profileName, bio, birthDate, password, firstName, middleName, lastName, hideGender)
+		VALUES(?, ?, ?, "", ?, ?, ?, ?, ?, ?)`,
 		email, gender, profileName, birthDate, password, firstName, middleName, lastName, hideGender)
 
 	if err != nil {
