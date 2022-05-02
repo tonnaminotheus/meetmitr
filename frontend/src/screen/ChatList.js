@@ -24,7 +24,7 @@ const ChatList = (props) => {
       },
     })
       .then(function (response) {
-        //console.log(response.data.partners);
+        console.log(response.data.partners);
         setPartners(response.data.partners);
         //redirect
       })
@@ -44,7 +44,7 @@ const ChatList = (props) => {
     return (
       <ChatListUser
         name={partners.profileName}
-        imgUrl={partners.displayPic}
+        imgUrl={partners.profilePicUrl}
         lastMessage={partners.lastMessage}
         dmId={partners.DMId}
         userId={partners.userId}

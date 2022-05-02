@@ -28,7 +28,7 @@ const globalApi = {
   isAdmin: `${url}/api/v1/isAdmin`,
   veriRequest: `${url}/api/v1/user/veriRequest`,
   getRequests: `${url}/api/v1/veriRequests`,
-  verifyUser: `${url}/api/v1/verify`
+  verifyUser: `${url}/api/v1/verify`,
 };
 
 export default globalApi;
