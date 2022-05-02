@@ -37,7 +37,7 @@ func HomeWithAvtHandler(c *gin.Context) {
 		})
 		return
 	}
-	EventPerPage := 6
+	EventPerPage := 100
 	startRow := (intNumPage-1)*EventPerPage + 1
 	endRow := intNumPage * EventPerPage
 	rows, err := database.Sql.Query(
@@ -173,7 +173,7 @@ func HomeHandler(c *gin.Context) {
 		})
 		return
 	}
-	EventPerPage := 100
+	EventPerPage := 6
 	startRow := (intNumPage-1)*EventPerPage + 1
 	endRow := intNumPage * EventPerPage
 	rows, err := database.Sql.Query(
@@ -183,7 +183,7 @@ func HomeHandler(c *gin.Context) {
 				(SELECT ROW_NUMBER() OVER (Order by eventId) AS RowNumber, Event.eventId as ID, Event.name as N, 
 																Event.address as A, Event.province as P, Event.startTime as ST
 				FROM Event) as sq
-				where RowNumber>=? and RowNumber<=?) as sqq`, startRow, endRow)
+				where RowNumber>=? and RowNumber<=?) as sqq`, 1, 100)
 
 	//fmt.Println(rows)
 
@@ -198,8 +198,8 @@ func HomeHandler(c *gin.Context) {
 		return
 	}
 	defer rows.Close()
-	eventHomes := []models.EventHome{}
-	eventHome := models.EventHome{}
+	eventHomes := []models.EventHomeScore{}
+	eventHome := models.EventHomeScore{}
 	var mp = make(map[int]int)
 	var mpEventScore = make(map[int]int)
 	var tag string
@@ -208,12 +208,14 @@ func HomeHandler(c *gin.Context) {
 	for rows.Next() {
 		rows.Scan(&eventHome.EventId, &eventHome.Name, &eventHome.Address,
 			&eventHome.Province, &eventHome.StartTime)
+
 		counterIdx, ok := mp[eventHome.EventId]
 		if ok {
 			eventHomes[counterIdx].Tags = append(eventHomes[counterIdx].Tags, tag)
 		} else {
 			eventHome.Tags = []string{}
 			eventHome.Images = []string{}
+			eventHome.Score = 0
 			eventHomes = append(eventHomes, eventHome)
 			mp[eventHome.EventId] = counter
 			mpEventScore[eventHome.EventId] = 0
@@ -267,29 +269,30 @@ func HomeHandler(c *gin.Context) {
 		counterIdx, ok := mp[eventId]
 		if ok {
 			eventHomes[counterIdx].Tags = append(eventHomes[counterIdx].Tags, tag)
-
-		} else {
-			mpEventScore[eventId] = mpEventScore[eventId] - mpScore[tag]
+			eventHomes[counterIdx].Score = eventHomes[counterIdx].Score + mpScore[tag]
 		}
 	}
 
-	keys := make([]int, 0, len(mpEventScore))
-	for k := range mpEventScore {
-		keys = append(keys, k)
-	}
-
-	sort.Ints(keys)
+	sort.Slice(eventHomes, func(i, j int) bool {
+		return eventHomes[i].Score > eventHomes[j].Score
+	})
 	//fmt.Println(eventHomes)
 
 	eventHomesFinal := []models.EventHome{}
 	var cc = 0
-	for _, k := range keys {
+	eventHome2 := models.EventHome{}
+	for _, ev := range eventHomes {
 		cc += 1
-		eventHomesFinal = append(eventHomesFinal, eventHomes[mp[k]])
-		if cc >= 6 {
-			break
+		if cc >= startRow && cc <= endRow {
+			eventHome2.EventId = ev.EventId
+			eventHome2.Name = ev.Name
+			eventHome2.Address = ev.Address
+			eventHome2.Province = ev.Province
+			eventHome2.StartTime = ev.StartTime
+			eventHome2.Tags = ev.Tags
+			eventHome2.Images = ev.Images
+			eventHomesFinal = append(eventHomesFinal, eventHome2)
 		}
-		//fmt.Println(k, m[k])
 	}
 
 	c.JSON(http.StatusOK, gin.H{
