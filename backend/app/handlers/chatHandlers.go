@@ -62,7 +62,7 @@ func GetChatTokenHandler(c *gin.Context) {
 func GetChatPartners(c *gin.Context) {
 	userId := c.GetString("user_id")
 	//log.Println("userId", userId)
-	rows, err := database.Sql.Query(`Select D.dmChatId, U.profileName, U.UserId  From DMChat D, User U
+	rows, err := database.Sql.Query(`Select D.dmChatId, U.profileName, U.displayPic, U.UserId  From DMChat D, User U
 	 where (D.UserId1 = ? or D.UserId2 = ?) and ((U.userId = D.UserId1 or U.userId = D.userId2) and U.userId != ?)`, userId, userId, userId)
 	if err != nil || rows == nil {
 		message := "no chat found"
@@ -78,10 +78,9 @@ func GetChatPartners(c *gin.Context) {
 	defer rows.Close()
 	for rows.Next() {
 		var dm, partnerId int
-		var profileName string
-		rows.Scan(&dm, &profileName, &partnerId)
-		partner := responses.Partner{DMId: dm, UserId: partnerId, ProfileName: profileName}
-		partner.ProfilePicUrl = ""
+		var profileName, profilePicUrl string
+		rows.Scan(&dm, &profileName, &profilePicUrl, &partnerId)
+		partner := responses.Partner{DMId: dm, UserId: partnerId, ProfileName: profileName, ProfilePicUrl: profilePicUrl}
 		partner.LastMessage = ""
 		partner.LastMessageId = ""
 		iter := database.Firestore.Collection("DM"+strconv.Itoa(dm)).OrderBy("DateTime", firestore.Desc).Limit(1).Documents(context.Background())
