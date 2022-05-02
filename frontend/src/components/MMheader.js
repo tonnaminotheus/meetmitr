@@ -18,6 +18,13 @@ const MMheader = (props) => {
     setNotificationModalState(true)
   }
 
+  // const is, setDropDown
+  const dropdownState = props.dropdownState
+  const setDropdownState = props.setDropdownState
+  const openDropdown=()=>{
+    setDropdownState(true)
+  }
+
   return (
     //let filterEvent = this.props.events;
     <div className="MMbar">
@@ -56,18 +63,34 @@ const MMheader = (props) => {
                 openNotification()
               }}  
             ></img>
-            <img src={drop} alt="drop" className="dropSetting"></img>
+            <img src={drop} alt="drop" className="dropSetting" 
+            onClick={(event)=>{
+                console.log("clicked dropdown")
+                openDropdown()
+              }}></img>
+
           </div>}
-          {props.isAdmin && <div>
-            <button
-            className="topRightButt"
-            onClick={() => {
-              navigate(props.toBeNavi);
-            }}
-          >
-            <span className="topRightText">{props.navName}</span>
-          </button>
-          </div>}
+          {props.isAdmin && (
+            <div>
+              <button
+                className="topRightButt"
+                onClick={() => {
+                  navigate("/");
+                }}
+              >
+                <span className="topRightText">Logout</span>
+              </button>
+
+              <button
+                className="topRightButt"
+                onClick={() => {
+                  navigate(props.toBeNavi);
+                }}
+              >
+                <span className="topRightText">{props.navName}</span>
+              </button>
+            </div>
+          )}
         </Col>
       </Row>
     </div>

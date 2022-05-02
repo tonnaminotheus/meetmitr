@@ -149,7 +149,7 @@ function Register() {
           email: email,
           gender: gender,
           birthdate: birthDate,
-          password: password,
+          password: hash(password),
           firstName: firstName,
           lastName: lastName,
         },

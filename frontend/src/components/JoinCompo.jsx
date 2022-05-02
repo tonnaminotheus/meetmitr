@@ -9,6 +9,7 @@ import "./JoinCompo.css";
 import { useState } from "react";
 import globalApi from "../globalApi";
 import axios from "axios";
+import Dropdown from "./modal/Dropdown";
 
 //new
 import Cookies from "universal-cookie";
@@ -45,6 +46,8 @@ function JoinComponent() {
   const [disable, setDisable] = useState(false);
   const [lockButtStyle, setLockButtStyle] = useState("");
   const [isAdmin, setIsAdmin] = useState(true);
+
+  const [dropdownState, setDropdownState] = useState(false)
 
   useEffect(() => {
     let isMounted = true;
@@ -170,6 +173,8 @@ function JoinComponent() {
           isAdmin={isAdmin}
           notificationState={notificationState}
           setNotificationModalState={setNotificationModalState}
+          dropdownState={dropdownState}
+          setDropdownState={setDropdownState}
         />
       )}
       {isAdmin && (
@@ -218,6 +223,11 @@ function JoinComponent() {
       <NotificationModal
         notificationState={notificationState}
         setNotificationModalState={setNotificationModalState}
+      />
+      
+      <Dropdown
+        dropdownState={dropdownState}
+        setDropdownState={setDropdownState}
       />
 
       <Cards events={filteredEvents} />
