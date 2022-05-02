@@ -45,7 +45,7 @@ function JoinComponent() {
   const [usingFilter, setUsingFilter] = useState(false);
   const [disable, setDisable] = useState(false);
   const [lockButtStyle, setLockButtStyle] = useState("");
-  const [isAdmin, setIsAdmin] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const [dropdownState, setDropdownState] = useState(false)
 
