@@ -302,45 +302,54 @@ func CreateEventHandler(c *gin.Context) {
 	}
 
 	req := &requests.CreateEventReq{}
-	err1 := c.ShouldBindJSON(req)
-	if err1 != nil {
+	err := c.ShouldBindJSON(req)
+	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"message": err1.Error(),
+			"message": err.Error(),
 		})
 		return
 	}
 
-	stmt, err2 := database.Sql.Exec(
+	var userId2 string
+	err = database.Sql.QueryRow("select userId from Verified where userId=?", userId).Scan(&userId2)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": "please verify your account",
+		})
+		return
+	}
+
+	stmt, err := database.Sql.Exec(
 		`INSERT INTO Event 
 		VALUES (null, ?, ?, ?,?,?,?,?,?,?,CURRENT_TIMESTAMP,?)`,
 		req.Name, req.Description, req.Address, req.Province, req.StartTime,
 		req.EndTime, req.Onsite, req.MaxParticipant, *req.Price, userId)
 
-	if err2 != nil {
+	if err != nil {
 		c.JSON(500, gin.H{
-			"message": err2.Error(),
+			"message": err.Error(),
 		})
 		return
 	}
 
-	eventId, err3 := stmt.LastInsertId()
-	if err3 != nil {
+	eventId, err := stmt.LastInsertId()
+	if err != nil {
 		c.JSON(500, gin.H{
-			"message": err3.Error(),
+			"message": err.Error(),
 		})
 		return
 	}
 
 	for _, tag := range req.Tags {
 
-		_, err4 := database.Sql.Exec(
+		_, err := database.Sql.Exec(
 			`INSERT INTO EventTag
 			VALUES (?,?);`,
 			tag, eventId)
 
-		if err4 != nil {
+		if err != nil {
 			c.JSON(500, gin.H{
-				"message": err4.Error(),
+				"message": err.Error(),
 			})
 			return
 		}
@@ -348,14 +357,14 @@ func CreateEventHandler(c *gin.Context) {
 
 	for _, img := range req.ImagUrl {
 
-		_, err4 := database.Sql.Exec(
+		_, err := database.Sql.Exec(
 			`INSERT INTO EventImage
 			VALUES (?,?);`,
 			img, eventId)
 
-		if err4 != nil {
+		if err != nil {
 			c.JSON(500, gin.H{
-				"message": err4.Error(),
+				"message": err.Error(),
 			})
 			return
 		}
