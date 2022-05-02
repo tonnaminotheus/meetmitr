@@ -75,6 +75,12 @@ const Dropdown=(props)=>{
         navigate("/")
     }
 
+    const viewProfile=()=>{
+        hideModal()
+        console.log(user_cookie)
+        navigate("/profile", { state: { userId: user_cookie.userID } });
+    }
+
 
     const customStyles={
         overlay: {
@@ -129,7 +135,15 @@ const Dropdown=(props)=>{
                         className="btn dropdown-btn"
                         variant="warning"
                         onClick={verify}
-                    >Verify
+                    >Request Verification
+                </Button>
+                </Row>
+                <Row className="dropdown-row">
+                    <Button
+                        className="btn dropdown-btn"
+                        variant="success"
+                        onClick={viewProfile}
+                    >View Profile
                 </Button>
                 </Row>
                 <Row className="dropdown-row">
