@@ -253,7 +253,7 @@ func JoinEventHandler(c *gin.Context) {
 		from User,CoinTransaction where User.userId=CoinTransaction.UserId and User.userId=?) and Event.maxParticipant>(select COALESCE(count(*),0) 
 		from UserEventStatus, User where UserEventStatus.UserId=User.userId and UserEventStatus.eventId=?)`, eventId, userId, eventId).Scan(&checkJoin)
 	if err4 != nil || checkJoin == nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
+		c.JSON(400, gin.H{
 			"message": "join not success",
 		})
 		return
@@ -263,7 +263,7 @@ func JoinEventHandler(c *gin.Context) {
 			`INSERT INTO CoinTransaction(coinAmount,createdTimeStamp,UserId)
 			VALUES (?,CURRENT_TIMESTAMP,?)`, payPrice, userId)
 		if err2 != nil {
-			c.JSON(500, gin.H{
+			c.JSON(400, gin.H{
 				"message": "payment failure",
 			})
 			return
@@ -302,45 +302,54 @@ func CreateEventHandler(c *gin.Context) {
 	}
 
 	req := &requests.CreateEventReq{}
-	err1 := c.ShouldBindJSON(req)
-	if err1 != nil {
+	err := c.ShouldBindJSON(req)
+	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"message": err1.Error(),
+			"message": err.Error(),
 		})
 		return
 	}
 
-	stmt, err2 := database.Sql.Exec(
+	var userId2 int
+	err = database.Sql.QueryRow("select userId from Verified where userId=?", userId).Scan(&userId2)
+	if err != nil || userId2 == 0 {
+		c.JSON(400, gin.H{
+			"message": "please verify your account",
+		})
+		return
+	}
+
+	stmt, err := database.Sql.Exec(
 		`INSERT INTO Event 
 		VALUES (null, ?, ?, ?,?,?,?,?,?,?,CURRENT_TIMESTAMP,?)`,
 		req.Name, req.Description, req.Address, req.Province, req.StartTime,
 		req.EndTime, req.Onsite, req.MaxParticipant, *req.Price, userId)
 
-	if err2 != nil {
+	if err != nil {
 		c.JSON(500, gin.H{
-			"message": err2.Error(),
+			"message": err.Error(),
 		})
 		return
 	}
 
-	eventId, err3 := stmt.LastInsertId()
-	if err3 != nil {
+	eventId, err := stmt.LastInsertId()
+	if err != nil {
 		c.JSON(500, gin.H{
-			"message": err3.Error(),
+			"message": err.Error(),
 		})
 		return
 	}
 
 	for _, tag := range req.Tags {
 
-		_, err4 := database.Sql.Exec(
+		_, err := database.Sql.Exec(
 			`INSERT INTO EventTag
 			VALUES (?,?);`,
 			tag, eventId)
 
-		if err4 != nil {
+		if err != nil {
 			c.JSON(500, gin.H{
-				"message": err4.Error(),
+				"message": err.Error(),
 			})
 			return
 		}
@@ -348,14 +357,14 @@ func CreateEventHandler(c *gin.Context) {
 
 	for _, img := range req.ImagUrl {
 
-		_, err4 := database.Sql.Exec(
+		_, err := database.Sql.Exec(
 			`INSERT INTO EventImage
 			VALUES (?,?);`,
 			img, eventId)
 
-		if err4 != nil {
+		if err != nil {
 			c.JSON(500, gin.H{
-				"message": err4.Error(),
+				"message": err.Error(),
 			})
 			return
 		}
