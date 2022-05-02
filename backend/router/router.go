@@ -51,6 +51,7 @@ func GenerateRouter() *gin.Engine {
 	router.POST("/api/v1/verify/:userId/:verify", AttractAuthMiddleware(ABORT), handlers.VerifyUserHandler)
 	router.GET("/api/v1/isAdmin", AttractAuthMiddleware(ABORT), handlers.GetIsAdminHandler)
 	// EventHandler
+
 	v1Event := router.Group("/api/v1/event")
 	{
 		v1Event.DELETE("/:eventId", AttractAuthMiddleware(ABORT), handlers.DeleteEventHandler)

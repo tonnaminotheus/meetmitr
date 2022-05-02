@@ -5,6 +5,7 @@ import (
 	"backend/app/requests"
 	"backend/database"
 	"net/http"
+	"sort"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -136,12 +137,32 @@ func HomeWithAvtHandler(c *gin.Context) {
 }
 
 func HomeHandler(c *gin.Context) {
-	_, ok := c.Get("user_id")
+	userId, ok := c.Get("user_id")
 	if !ok {
 		c.JSON(401, gin.H{
 			"message": "invalid token",
 		})
 		return
+	}
+
+	tagRows, errT := database.Sql.Query(`select Tag.tagName,Rate.score from Rate,Tag where userId=? and Rate.tagId=Tag.tagId;`, userId)
+
+	if errT != nil || tagRows == nil {
+		message := "No user tag found"
+		if errT != nil {
+			message = errT.Error()
+		}
+		c.JSON(500, gin.H{
+			"message": message,
+		})
+		return
+	}
+	var mpScore = make(map[string]int)
+	var tagUser string
+	var scoreUser int
+	for tagRows.Next() {
+		tagRows.Scan(&tagUser, &scoreUser)
+		mpScore[tagUser] = scoreUser
 	}
 
 	stringNumPage := c.Param("numPage")
@@ -152,7 +173,7 @@ func HomeHandler(c *gin.Context) {
 		})
 		return
 	}
-	EventPerPage := 6
+	EventPerPage := 100
 	startRow := (intNumPage-1)*EventPerPage + 1
 	endRow := intNumPage * EventPerPage
 	rows, err := database.Sql.Query(
@@ -163,6 +184,8 @@ func HomeHandler(c *gin.Context) {
 																Event.address as A, Event.province as P, Event.startTime as ST
 				FROM Event) as sq
 				where RowNumber>=? and RowNumber<=?) as sqq`, startRow, endRow)
+
+	//fmt.Println(rows)
 
 	if err != nil || rows == nil {
 		message := "No event found"
@@ -178,6 +201,7 @@ func HomeHandler(c *gin.Context) {
 	eventHomes := []models.EventHome{}
 	eventHome := models.EventHome{}
 	var mp = make(map[int]int)
+	var mpEventScore = make(map[int]int)
 	var tag string
 	var counter int
 	counter = 0
@@ -192,6 +216,7 @@ func HomeHandler(c *gin.Context) {
 			eventHome.Images = []string{}
 			eventHomes = append(eventHomes, eventHome)
 			mp[eventHome.EventId] = counter
+			mpEventScore[eventHome.EventId] = 0
 			counter += 1
 		}
 	}
@@ -236,16 +261,39 @@ func HomeHandler(c *gin.Context) {
 	}
 
 	defer rows2.Close()
+
 	for rows3.Next() {
 		rows3.Scan(&eventId, &tag)
 		counterIdx, ok := mp[eventId]
 		if ok {
 			eventHomes[counterIdx].Tags = append(eventHomes[counterIdx].Tags, tag)
+
+		} else {
+			mpEventScore[eventId] = mpEventScore[eventId] - mpScore[tag]
 		}
 	}
 
+	keys := make([]int, 0, len(mpEventScore))
+	for k := range mpEventScore {
+		keys = append(keys, k)
+	}
+
+	sort.Ints(keys)
+	//fmt.Println(eventHomes)
+
+	eventHomesFinal := []models.EventHome{}
+	var cc = 0
+	for _, k := range keys {
+		cc += 1
+		eventHomesFinal = append(eventHomesFinal, eventHomes[mp[k]])
+		if cc >= 6 {
+			break
+		}
+		//fmt.Println(k, m[k])
+	}
+
 	c.JSON(http.StatusOK, gin.H{
-		"EventList": eventHomes,
+		"EventList": eventHomesFinal,
 	})
 
 }
