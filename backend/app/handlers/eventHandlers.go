@@ -310,9 +310,9 @@ func CreateEventHandler(c *gin.Context) {
 		return
 	}
 
-	var userId2 string
+	var userId2 int
 	err = database.Sql.QueryRow("select userId from Verified where userId=?", userId).Scan(&userId2)
-	if err != nil {
+	if err != nil || userId2 == 0 {
 		c.JSON(400, gin.H{
 			"message": "please verify your account",
 		})
