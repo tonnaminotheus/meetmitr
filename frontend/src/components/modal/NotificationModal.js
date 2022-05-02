@@ -167,7 +167,7 @@ const NotificationModal=(props)=>{
         contentLabel="modal"
         onRequestClose={hideModal}
         shouldCloseOnEsc={true}
-        shouldCloseOnOverlayClick={false}
+        shouldCloseOnOverlayClick={true}
         style={customStyles}
         >
           <div className='modal_header'>
@@ -177,9 +177,7 @@ const NotificationModal=(props)=>{
                   return <NotiBox key={index} noti={noti}/>
           })}
           {all_noti.length <= 0 && <NotiBox noti={{
-              "notiContent" : "No new Notifications",
-              "url" : "/",
-              "dateTime" : "2021-11-23 23:22:00"
+              "notiContent" : "No new Notifications"
           }}
           />}
 

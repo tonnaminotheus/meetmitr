@@ -134,6 +134,14 @@ function Register() {
       pass = false;
     }
     if (pass) {
+      console.log({
+        email: email,
+        gender: gender,
+        birthdate: birthDate,
+        password: password,
+        firstName: firstName,
+        lastName: lastName,
+      })
       axios({
         method: "POST",
         url: globalApi.register,
@@ -141,7 +149,7 @@ function Register() {
           email: email,
           gender: gender,
           birthdate: birthDate,
-          password: password,
+          password: hash(password),
           firstName: firstName,
           lastName: lastName,
         },
