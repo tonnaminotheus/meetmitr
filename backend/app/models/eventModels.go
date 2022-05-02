@@ -28,3 +28,14 @@ type EventHome struct {
 	StartTime string   `json:"startTime"`
 	Images    []string `json:"images"`
 }
+
+type EventHomeScore struct {
+	EventId   int      `json:"eventId"`
+	Name      string   `json:"name"`
+	Tags      []string `json:"tags"`
+	Address   string   `json:"address"`
+	Province  string   `json:"province"`
+	StartTime string   `json:"startTime"`
+	Images    []string `json:"images"`
+	Score     int      `json:"score"`
+}
