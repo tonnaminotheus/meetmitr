@@ -16,6 +16,53 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/api/v1/event/{eventId}": {
+            "delete": {
+                "description": "delete event by creator or admin",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Event"
+                ],
+                "summary": "delete event by creator or admin",
+                "operationId": "DeleteEvnetHandler",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "default": "1",
+                        "description": "eventId of event",
+                        "name": "eventId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "default": "Bearer \u003cAdd access token here\u003e",
+                        "description": "check the authority of the one making request",
+                        "name": "Authorization",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ResponseMessage"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ResponseMessage"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/user/verifRequest": {
             "post": {
                 "description": "user create verification request to be verify user",
@@ -93,21 +140,82 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/api/v1/user/verify/{userId}/{verify}": {
+            "post": {
+                "description": "aadmin verify or unverify user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "admin verify or unverify user",
+                "operationId": "VerifyUserHandler",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "default": "Bearer \u003cAdd access token here\u003e",
+                        "description": "admin token",
+                        "name": "Authorization",
+                        "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "default": "1",
+                        "description": "userId of involved user",
+                        "name": "userId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "default": "1",
+                        "description": "verification of involved user (1 = verify, 0 = unverify)",
+                        "name": "verify",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ResponseMessage"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ResponseMessage"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
         "responses.GetVerifReqResponse": {
             "type": "object",
             "properties": {
-                "userIds": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    },
-                    "example": [
-                        1,
-                        2
-                    ]
+                "displayPic": {
+                    "type": "string",
+                    "example": "example.com"
+                },
+                "firstName": {
+                    "type": "string",
+                    "example": "Jade"
+                },
+                "lastName": {
+                    "type": "string",
+                    "example": "Piromsopee"
+                },
+                "userId": {
+                    "type": "integer",
+                    "example": 5
                 }
             }
         },
@@ -120,17 +228,24 @@ const docTemplate = `{
                 }
             }
         }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
     }
 }`
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "",
+	Version:          "1.0",
 	Host:             "",
 	BasePath:         "",
-	Schemes:          []string{},
-	Title:            "",
-	Description:      "",
+	Schemes:          []string{"https", "http"},
+	Title:            "linkedist",
+	Description:      "application description",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 }

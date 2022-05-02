@@ -1,0 +1,56 @@
+.cardTemplate{
+    width: 350px;
+    height: 400px;
+    margin: 2em;
+    /* background: linear-gradient(180deg, #000000 67%, #ffffff 30%); */
+    box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    overflow: hidden;
+    background-color: #FFFFFF;
+}
+
+.cardTitleBg{
+    background-color: black;
+    color: white;
+    text-align: center;
+    font-size: 28px;
+    font-family: "Roboto", sans-serif;
+    padding: 5px;
+    margin-top: -5px;
+}
+
+.cardImg{
+    width: 350x;
+    height: 277px;
+    background-color: black;
+    color: white;
+}
+
+.cardCate {
+    margin: 10px;
+}
+
+.cardCateLi {
+    font-size: large;
+}
+
+/* .cardImg:hover {
+    
+    opacity:0;
+} */
+
+.eventDate{
+    color: red;
+    text-align: center;
+    margin: 0px;
+    margin-top: -10px;
+    font-size: 18px;
+    font-family: "Roboto", sans-serif;
+}
+
+.eventPlace{
+    text-align: center;
+    margin: 0px;
+    margin-top: 0px;
+    font-size: 18px;
+    font-family: "Roboto", sans-serif;
+}

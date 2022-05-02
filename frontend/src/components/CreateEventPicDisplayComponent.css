@@ -1,0 +1,22 @@
+#display_img{
+    /* margin-top: 5%; */
+    margin-bottom: 5%;
+    width: 100%;
+    height: 100%;
+    /* border: 1px solid black; */
+    /* background-size: cover; */
+    background-size: cover;
+    /* background-size: 100% auto; */
+    background-repeat: no-repeat;
+    background-position: center;
+
+    /* justify-content: center; */
+    /* display: flex; */
+
+    border-radius: 10px;
+}
+
+#display_img:hover{
+    transform: scale(0.95);
+    transition: 1.1s;
+}

@@ -1,0 +1,38 @@
+/* #noti-modal{
+    position: fixed;
+    top: 50%;
+    right: 2%;
+    width: 25%;
+} */
+
+
+/* .Modal {
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    right: 40px;
+    bottom: 40px;
+    background-color: papayawhip;
+  } */
+
+.ReactModal__Overlay {
+    opacity: 0;
+    transform: translateY(-100px);
+    transition: all 500ms ease-in-out;
+}
+
+.ReactModal__Overlay--after-open {
+    opacity: 1;
+    transform: translateY(0px);
+}
+
+.ReactModal__Overlay--before-close {
+    opacity: 0;
+    transform: translateY(-100px);
+}
+
+.modal_header{
+    margin: 10px;
+    /* margin-bottom: 20px; */
+    
+}

@@ -1,13 +1,18 @@
 definitions:
   responses.GetVerifReqResponse:
     properties:
-      userIds:
-        example:
-        - 1
-        - 2
-        items:
-          type: integer
-        type: array
+      displayPic:
+        example: example.com
+        type: string
+      firstName:
+        example: Jade
+        type: string
+      lastName:
+        example: Piromsopee
+        type: string
+      userId:
+        example: 5
+        type: integer
     type: object
   utils.ResponseMessage:
     properties:
@@ -17,7 +22,42 @@ definitions:
     type: object
 info:
   contact: {}
+  description: application description
+  title: linkedist
+  version: "1.0"
 paths:
+  /api/v1/event/{eventId}:
+    delete:
+      consumes:
+      - application/json
+      description: delete event by creator or admin
+      operationId: DeleteEvnetHandler
+      parameters:
+      - default: "1"
+        description: eventId of event
+        in: path
+        name: eventId
+        required: true
+        type: string
+      - default: Bearer <Add access token here>
+        description: check the authority of the one making request
+        in: header
+        name: Authorization
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.ResponseMessage'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ResponseMessage'
+      summary: delete event by creator or admin
+      tags:
+      - Event
   /api/v1/user/verifRequest:
     post:
       consumes:
@@ -70,4 +110,50 @@ paths:
       summary: admin view all verification requests
       tags:
       - user
+  /api/v1/user/verify/{userId}/{verify}:
+    post:
+      consumes:
+      - application/json
+      description: aadmin verify or unverify user
+      operationId: VerifyUserHandler
+      parameters:
+      - default: Bearer <Add access token here>
+        description: admin token
+        in: header
+        name: Authorization
+        type: string
+      - default: "1"
+        description: userId of involved user
+        in: path
+        name: userId
+        required: true
+        type: string
+      - default: "1"
+        description: verification of involved user (1 = verify, 0 = unverify)
+        in: path
+        name: verify
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.ResponseMessage'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ResponseMessage'
+      summary: admin verify or unverify user
+      tags:
+      - user
+schemes:
+- https
+- http
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"
