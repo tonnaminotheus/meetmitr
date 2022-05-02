@@ -3,20 +3,21 @@ package database
 import (
 	"database/sql"
 	"log"
+	"os"
 
 	_ "github.com/go-sql-driver/mysql"
 )
 
 const (
-	address  = "rds-mysql-meetmitr.c3nxpkhzuwh3.us-east-1.rds.amazonaws.com:3306"
-	user     = "admin"
-	password = "preryusudhod"
+	address  = "meetmitr2.c3nxpkhzuwh3.us-east-1.rds.amazonaws.com:3306"
 	dbName   = "meetmitr"
 	protocal = "tcp"
 )
 
 var (
-	Sql *sql.DB
+	user     = os.Getenv("dbUser")
+	Sql      *sql.DB
+	password = os.Getenv("dbPW")
 )
 
 func GetConnString() string {

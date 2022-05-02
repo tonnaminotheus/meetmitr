@@ -26,14 +26,23 @@ func LoginHandler(c *gin.Context) {
 	}
 
 	userId, err := userService.FindUserByUsernameAndPassword(req.Email, req.Password)
-
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "The email address you entered does not exist or wrong password.",
 		})
 		return
 	}
+	if req.Ip != "" {
+		ok := userService.CheckIp(userId, req.Ip)
+		if !ok {
+			userService.SendLoginVerif(userId, req.Ip, req.Email)
+			c.JSON(http.StatusAccepted, gin.H{
+				"message": "go verify in email",
+			})
+			return
+		}
 
+	}
 	// token, err := createToken("1") bug
 	accessToken, refreshToken, err := CreateToken(userId)
 
@@ -84,4 +93,29 @@ func CreateToken(userID string) (string, string, error) {
 	}
 
 	return accessToken, refreshToken, nil
+}
+
+func LoginVerifHandler(c *gin.Context) {
+	loginKey := c.Param("loginKey")
+	ok, userId := userService.CheckLoginVerif(loginKey)
+	if !ok {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "key not found",
+		})
+		return
+	}
+	accessToken, refreshToken, err := CreateToken(userId)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": err,
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"accessToken":  accessToken,
+		"refreshToken": refreshToken,
+		"userId":       userId,
+	})
 }

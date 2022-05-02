@@ -81,6 +81,7 @@ type User struct {
 	LastName        string `json:"lastName"`
 	HideGender      bool   `json:"hideGender,omitempty"`
 	NumberOfPenalty int    `json:"numberOfPenalty"`
+	Displaypic      string `json:"displayPic"`
 }
 type Usereventstatus struct {
 	UserId  int

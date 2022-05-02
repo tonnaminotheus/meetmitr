@@ -3,9 +3,12 @@ package handlers
 import (
 	"backend/app/models"
 	"backend/app/requests"
+	"backend/app/responses"
 	"backend/app/services"
 	"backend/database"
+	"backend/utils"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -21,11 +24,11 @@ func GetEventDescHandler(c *gin.Context) {
 
 	eventId := c.Param("eventId")
 
-	event := models.Event{}
+	event := responses.EventDescResponse{}
 
 	err := database.Sql.QueryRow(`SELECT * FROM Event WHERE eventId=?`, eventId).Scan(
 		&event.EventId, &event.Name, &event.Description, &event.Address, &event.Province,
-		&event.ImagUrl, &event.StartTime, &event.EndTime, &event.Onsite, &event.MaxParticipant,
+		&event.StartTime, &event.EndTime, &event.Onsite, &event.MaxParticipant,
 		&event.Price, &event.CreatedTimeStamp, &event.UserID)
 	if err != nil {
 		c.JSON(500, gin.H{
@@ -39,7 +42,7 @@ func GetEventDescHandler(c *gin.Context) {
 		where Tag.TagId=EventTag.tagId and EventTag.eventId=?`, eventId)
 	if err2 != nil || rows == nil {
 		message := "No tag found"
-		if err != nil {
+		if err2 != nil {
 			message = err.Error()
 		}
 		c.JSON(500, gin.H{
@@ -56,14 +59,34 @@ func GetEventDescHandler(c *gin.Context) {
 		event.Tags = append(event.Tags, tag)
 	}
 
+	rows, err5 := database.Sql.Query(`select imgURL from EventImage where eventId=?`, eventId)
+	if err5 != nil {
+		message := "No imgURL found"
+		if err5 != nil {
+			message = err5.Error()
+		}
+		c.JSON(500, gin.H{
+			"message": message,
+		})
+		return
+	}
+
+	defer rows.Close()
+
+	var img string
+	for rows.Next() {
+		rows.Scan(&img)
+		event.ImagUrl = append(event.ImagUrl, img)
+	}
+
 	rows, err3 := database.Sql.Query(
-		`select User.profileName
+		`select User.profileName, User.userId, User.displayPic
 		from User, UserEventStatus
-		where User.userId=UserEventStatus.userId and UserEventStatus.eventId=?`, eventId)
-	if err3 != nil || rows == nil {
+		where UserEventStatus.eventId=? and User.userId=UserEventStatus.userId`, eventId)
+	if err3 != nil {
 		message := "No user profile found"
-		if err != nil {
-			message = err.Error()
+		if err3 != nil {
+			message = err3.Error()
 		}
 		c.JSON(500, gin.H{
 			"message": message,
@@ -74,11 +97,15 @@ func GetEventDescHandler(c *gin.Context) {
 	defer rows.Close()
 
 	var participant string
-	for rows.Next() {
-		rows.Scan(&participant)
-		event.Participants = append(event.Participants, participant)
+	var participantId int
+	if rows != nil {
+		for rows.Next() {
+			rows.Scan(&participant, &participantId, &img)
+			event.Participants = append(event.Participants, participant)
+			event.ParticipantsId = append(event.ParticipantsId, participantId)
+			event.ParticipantsImage = append(event.ParticipantsImage, img)
+		}
 	}
-
 	var isJoin bool
 	err4 := database.Sql.QueryRow(`SELECT status FROM UserEventStatus WHERE userId=? and eventId=?`, userId, eventId).Scan(&isJoin)
 	if err4 != nil {
@@ -86,6 +113,7 @@ func GetEventDescHandler(c *gin.Context) {
 	} else {
 		event.IsJoin = true
 	}
+	_ = database.Sql.QueryRow(`SELECT profileName, displayPic FROM User WHERE userId=?`, event.UserID).Scan(&event.CreatorName, &event.CreatorImage)
 
 	c.JSON(http.StatusOK, event)
 }
@@ -203,12 +231,13 @@ func JoinEventHandler(c *gin.Context) {
 		})
 		return
 	}
-
+	userIdInt, _ := strconv.Atoi(userId.(string))
 	eventId := c.Param("eventId")
 
 	//get event price
 	var price int
-	err1 := database.Sql.QueryRow("select Event.price from Event where Event.eventId=?", eventId).Scan(&price)
+	var name string
+	err1 := database.Sql.QueryRow("select Event.price, Event.name from Event where Event.eventId=?", eventId).Scan(&price, &name)
 	if err1 != nil {
 		c.JSON(500, gin.H{
 			"message": err1.Error(),
@@ -249,8 +278,15 @@ func JoinEventHandler(c *gin.Context) {
 			})
 			return
 		}
+		err1 = services.AppendNoti(&models.Noti{NotiContent: "You have join event " + name,
+			URL: utils.EventUrl + eventId, UserId: userIdInt})
+		notiAppend := "ok"
+		if err1 != nil {
+			notiAppend = err1.Error()
+		}
 		c.JSON(http.StatusOK, gin.H{
 			"message": "join success",
+			"noti":    notiAppend,
 		})
 		return
 	}
@@ -276,8 +312,8 @@ func CreateEventHandler(c *gin.Context) {
 
 	stmt, err2 := database.Sql.Exec(
 		`INSERT INTO Event 
-		VALUES (null, ?, ?, ?,?,?,?,?,?,?,?,CURRENT_TIMESTAMP,?)`,
-		req.Name, req.Description, req.Address, req.Province, req.ImagUrl, req.StartTime,
+		VALUES (null, ?, ?, ?,?,?,?,?,?,?,CURRENT_TIMESTAMP,?)`,
+		req.Name, req.Description, req.Address, req.Province, req.StartTime,
 		req.EndTime, req.Onsite, req.MaxParticipant, *req.Price, userId)
 
 	if err2 != nil {
@@ -310,9 +346,109 @@ func CreateEventHandler(c *gin.Context) {
 		}
 	}
 
+	for _, img := range req.ImagUrl {
+
+		_, err4 := database.Sql.Exec(
+			`INSERT INTO EventImage
+			VALUES (?,?);`,
+			img, eventId)
+
+		if err4 != nil {
+			c.JSON(500, gin.H{
+				"message": err4.Error(),
+			})
+			return
+		}
+	}
+
 	c.JSON(http.StatusOK, gin.H{
 		"message": "create success",
 		"eventId": eventId,
 	})
+
+}
+
+func UnjoinEventHandler(c *gin.Context) {
+	userId, ok := c.Get("user_id")
+	if !ok {
+		c.JSON(401, gin.H{
+			"message": "invalid token",
+		})
+		return
+	}
+	eventId := c.Param("eventId")
+
+	_, err := database.Sql.Query(`DELETE FROM UserEventStatus WHERE userId=? and eventId=?`, userId, eventId)
+
+	if err != nil {
+		c.JSON(500, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "OK",
+	})
+
+}
+
+// DeleteEventHandler delete event
+// @Summary delete event by creator or admin
+// @Description delete event by creator or admin
+// @Tags Event
+// @Param eventId path string true "eventId of event" default(1)
+// @Param Authorization header string false "check the authority of the one making request" default(Bearer <Add access token here>)
+// @ID DeleteEvnetHandler
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} utils.ResponseMessage
+// @Failure 400 {object} utils.ResponseMessage
+// @Router /api/v1/event/{eventId} [delete]
+func DeleteEventHandler(c *gin.Context) {
+	userId := c.GetString("user_id")
+	eventId := c.Param("eventId")
+	var id string
+	err := database.Sql.QueryRow("Select userId from Event where eventId = ?", eventId).Scan(&id)
+	if err != nil {
+		c.JSON(404, gin.H{
+			"message": "event not found",
+		})
+		return
+	}
+	if ok := id == userId || userService.IsAdmin(userId); !ok {
+		c.JSON(400, gin.H{
+			"message": "no authority",
+		})
+		return
+	}
+	_, err = database.Sql.Exec("delete from EventImage where eventId = ?", eventId)
+	if err != nil {
+		c.JSON(500, gin.H{
+			"message": err.Error(),
+		})
+	}
+	_, err = database.Sql.Exec("delete from EventTag where eventId = ?", eventId)
+	if err != nil {
+		c.JSON(500, gin.H{
+			"message": err.Error(),
+		})
+	}
+	_, err = database.Sql.Exec("delete from UserEventStatus where eventId = ?", eventId)
+	if err != nil {
+		c.JSON(500, gin.H{
+			"message": err.Error(),
+		})
+	}
+	_, err = database.Sql.Exec("delete from Event where eventId = ?", eventId)
+	if err != nil {
+		c.JSON(500, gin.H{
+			"message": err.Error(),
+		})
+	} else {
+		c.JSON(200, gin.H{
+			"message": "ok",
+		})
+	}
 
 }
