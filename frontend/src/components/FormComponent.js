@@ -83,7 +83,7 @@ const FormComponent = (props) => {
 
   const requestLogin = (event) => {
     event.preventDefault();
-
+    console.log(hash(document.getElementById("password-input-box").value))
     const data = {
       email: document.getElementById("email-input-box").value,
       // password: hash(document.getElementById("password-input-box").value),

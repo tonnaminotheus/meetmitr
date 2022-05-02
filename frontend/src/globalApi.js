@@ -1,4 +1,4 @@
-const url = "http://44.203.191.19:8080";
+const url = "http://54.210.17.221:8080";
 
 const globalApi = {
   register: `${url}/api/v1/register`,
@@ -24,8 +24,6 @@ const globalApi = {
   getFilteredEvent: `${url}/api/v1/home/avt/`, //+ numPage
   getNotiCount: `${url}/api/v1/noti/getCount`,
   chatToken: `${url}/api/v1/chat/token/`, //+ chatType + userId
-  chatPartner: `${url}/api/v1/chat/partners/`,
-  getAllNoti: `${url}/api/v1/noti/getAll`,
   isAdmin: `${url}/api/v1/isAdmin`,
   veriRequest: `${url}/api/v1/user/veriRequest`,
   getRequests: `${url}/api/v1/veriRequests`,

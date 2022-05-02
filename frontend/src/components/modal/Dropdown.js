@@ -11,6 +11,7 @@ import globalApi from "../../globalApi";
 import { useNavigate } from "react-router-dom";
 
 import "./Dropdown.css"
+import "../css_extensions/btn.css"
 
 
 
@@ -115,29 +116,29 @@ const Dropdown=(props)=>{
         {/* <div style={{"margin":"10px"}}> */}
         <div>
             <Col>
-                <Row>
+                <Row className="dropdown-row">
                     <Button
-                        className="btn custom-button dropdown-btn"
+                        className="btn dropdown-btn"
                         variant="warning"
                         onClick={toPersonalQuiz}
                     >Personality Quiz
                     </Button>
                 </Row>
-                <Row>
-                <Button
-                    className="btn custom-button dropdown-btn"
-                    variant="warning"
-                    onClick={verify}
-                >Verify
+                <Row className="dropdown-row">
+                    <Button
+                        className="btn dropdown-btn"
+                        variant="warning"
+                        onClick={verify}
+                    >Verify
                 </Button>
                 </Row>
-                <Row>
-                <Button
-                    className="btn custom-button dropdown-btn"
-                    variant="warning"
-                    onClick={logout}
-                >Logout
-                </Button>
+                <Row className="dropdown-row">
+                    <Button
+                        className="btn dropdown-btn"
+                        variant="danger"
+                        onClick={logout}
+                    >Logout
+                    </Button>
                 </Row>
             </Col>
         </div>

@@ -8,8 +8,8 @@ const NotiBox=(props)=>{
         <div className="noti-container">
             <div>
                 <p style={{"font-weight": "bold"}}>{props.noti.notiContent}</p>
-                <p>{"link "+arrow} <a className="link" href={props.noti.url} style={{"textDecoration":"none"}}>{props.noti.url}</a></p>
-                <p style={{"textAlign": "right"}}>{"@"+props.noti.dateTime}</p>
+                {props.noti.url && <div><p>{"link "+arrow} <a className="link" href={props.noti.url} style={{"textDecoration":"none"}}>{props.noti.url}</a></p></div>}
+                {props.noti.dateTime && <div><p style={{"textAlign": "right"}}>{"@"+props.noti.dateTime}</p></div>}
             </div>
             
         </div>
