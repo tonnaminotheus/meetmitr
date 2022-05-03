@@ -31,7 +31,7 @@ func RateHandler(c *gin.Context) {
 	_, err1 := database.Sql.Exec(`DELETE FROM Rate WHERE userId=?`, userId.(string))
 	if err1 != nil {
 		c.JSON(500, gin.H{
-			"message": "Cannot delete old information",
+			"message": err1.Error(),
 		})
 		return
 	}

@@ -9,6 +9,7 @@ import Image from "react-bootstrap/Image";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import globalApi from "../globalApi";
+import Cookies from "universal-cookie";
 
 const RequestComponent = (props) => {
   // const [userData, setUserData] = useState({"profileName":"JickWohn", "bio":"ok google", "profilePicUrls":["https://i.redd.it/lgshxkmdoeez.jpg"]})
@@ -24,6 +25,9 @@ const RequestComponent = (props) => {
 
   const yellowBtnColor = "#FFC229";
   const greyBtnColor = "#535353";
+  const cookies = new Cookies();
+  let user_cookie = cookies.get("cookie");
+  let accessToken = user_cookie.accessToken;
 
   // console.log((+ false).toString())
 
@@ -49,15 +53,15 @@ const RequestComponent = (props) => {
   }, []);
 
   const requestVerification = (isVerify, Uid) => {
-    isVerify = (+isVerify).toString();
+    isVerify = (1-(+isVerify)).toString();
     axios({
       method: "post",
-      url: globalApi.verifyUser,
-      data: {
-        userId: `${toVerifyUID}`,
-        verify: isVerify,
-      },
+      url: globalApi.verifyUser+`/${toVerifyUID}/`+isVerify,
       timeout: 8000,
+      headers: {
+        Authorization: "Bearer " + accessToken
+        ,
+      },
     })
       .then((res) => {
         console.log("ok herble");
